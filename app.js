@@ -5,7 +5,7 @@ require('dotenv').config();
 const port = process.env.HOST_PORT;
 
 const cookieParser = require('cookie-parser');
-const router = require('router');
+const router = require('./routes');
 var cors = require('cors');
 
 app.use(cors());
