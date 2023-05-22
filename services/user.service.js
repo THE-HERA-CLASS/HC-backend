@@ -34,6 +34,22 @@ class UserService {
       console.error(err);
     }
   };
+
+  getProfile = async (user_id) => {
+    try {
+      return await this.userRepository.getProfile(user_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateProfile = async (userData) => {
+    try {
+      return await this.userRepository.updateProfile(userData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
 module.exports = UserService;

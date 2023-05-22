@@ -75,6 +75,40 @@ class UserController {
       return res.status(419).json({ message: '회원탈퇴 실패' });
     }
   };
+
+  getProfile = async (req, res) => {
+    // const { user_id } = res.locals.user;  // 원래는 로그인 쿠키에서 가져와야하지만, 지금은 구현안되서 직접할당
+    const { user_id } = req.params;
+    if (!user_id) {
+      res.status(411).json({ errorMessage: '값 없음 : user_id' });
+    }
+    const getProfileData = await this.userService.getProfile(user_id);
+    if (getProfileData) {
+      return res.status(200).json({ userData: getProfileData });
+    } else {
+      return res.status(419).json({ message: '회원정보 조회 실패' });
+    }
+  };
+
+  updateProfile = async (req, res) => {
+    // const { user_id } = res.locals.user;  // 원래는 로그인 쿠키에서 가져와야하지만, 지금은 구현안되서 직접할당
+    const { user_id } = req.params;
+    const userData = {
+      user_id,
+      email: req.body.email,
+      nickname: req.body.nickname,
+      password: req.body.password,
+      image: req.body.image,
+      authority: req.body.authority,
+      major_id: req.body.major_id,
+    };
+    const updateProfileData = await this.userService.updateProfile(userData);
+    if (updateProfileData) {
+      return res.status(200).json({ message: '회원정보 수정 완료' });
+    } else {
+      return res.status(419).json({ message: '회원정보 수정 실패' });
+    }
+  };
 }
 
 module.exports = UserController;
