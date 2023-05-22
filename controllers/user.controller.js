@@ -64,7 +64,7 @@ class UserController {
 
   withdrawal = async (req, res) => {
     // const { user_id } = res.locals.user;  // 원래는 로그인 쿠키에서 가져와야하지만, 지금은 구현안되서 직접할당
-    const { user_id } = req.body;
+    const { user_id } = req.params;
     if (!user_id) {
       res.status(411).json({ errorMessage: '값 없음 : user_id' });
     }
