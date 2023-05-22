@@ -9,6 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      certificate_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Certificates',
+          key: 'certificate_id',
+        },
+        onDelete: 'CASCADE',
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING,

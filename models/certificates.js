@@ -9,15 +9,44 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Subjects, {
+        sourceKey: 'certificate_id',
+        foreignKey: 'certificate_id',
+      });
+      this.hasMany(models.Exams, {
+        sourceKey: 'certificate_id',
+        foreignKey: 'certificate_id',
+      });
+      this.belongsTo(models.Majors, {
+        targetKey: 'major_id',
+        foreignKey: 'major_id',
+      });
     }
   }
   Certificates.init(
     {
-      name: DataTypes.STRING,
-      division: DataTypes.STRING,
+      certificate_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      major_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      division: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
+      timestamps: false,
       modelName: 'Certificates',
     }
   );

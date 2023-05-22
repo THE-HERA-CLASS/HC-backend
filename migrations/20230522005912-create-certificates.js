@@ -9,6 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      major_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Majors',
+          key: 'major_id',
+        },
+        onDelete: 'CASCADE',
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING,

@@ -52,20 +52,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      examinfo_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Examinfos',
-          key: 'examinfo_id',
-        },
-        onDelete: 'CASCADE',
-      },
-      examinfo_year: {
+      year: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      examinfo_round: {
+      round: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
