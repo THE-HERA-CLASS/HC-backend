@@ -1,20 +1,20 @@
 const UserService = require('../services/user.service.js');
-const errorUtil = require('../utils/error.util.js');
+const resUtil = require('../utils/response.util.js');
 
 class UserController {
   userService = new UserService();
 
   emailExists = async (req, res, next) => {
     try {
-      const email = req.params.email;
+      const email = req.query.email;
       if (!email) {
-        throw errorUtil(411, '값 없음 : email');
+        throw resUtil(411, '값 없음 : email');
       }
       const emailExistsData = await this.userService.emailExists(email);
       if (!emailExistsData) {
-        return res.status(200).json({ msg: '이메일 사용 가능' });
+        throw resUtil(200, '이메일 사용 가능');
       } else {
-        return res.status(201).json({ msg: '이메일 사용 불가능' });
+        throw resUtil(201, '이메일 사용 불가능');
       }
     } catch (err) {
       err.failedMsg = '전체 에러';
@@ -22,23 +22,23 @@ class UserController {
     }
   };
 
-  nicknameExists = async (req, res) => {
+  nicknameExists = async (req, res, next) => {
     try {
-      const nickname = req.params.nickname;
+      const nickname = req.query.nickname;
       if (!nickname) {
-        res.status(411).json({ errMsg: '값 없음 : nickname' });
+        throw resUtil(411, '값 없음 : nickname');
       }
       const nicknameExistsData = await this.userService.nicknameExists(
         nickname
       );
       if (!nicknameExistsData) {
-        return res.status(200).json({ msg: '닉네임 사용 가능' });
+        throw resUtil(200, '닉네임 사용 가능');
       } else {
-        return res.status(201).json({ msg: '닉네임 사용 불가능' });
+        throw resUtil(201, '닉네임 사용 불가능');
       }
     } catch (err) {
-      console.error(err);
-      res.status(400).json({ errMsg: '전체 에러' });
+      err.failedMsg = '전체 에러';
+      next(err);
     }
   };
 
