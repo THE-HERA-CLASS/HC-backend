@@ -1,4 +1,4 @@
-errorUtil = (statusCode, errorMsg, failedMsg) => {
+resUtil = (statusCode, errorMsg, failedMsg) => {
   let error = new Error(errorMsg);
 
   error.statusCode = statusCode;
@@ -8,4 +8,4 @@ errorUtil = (statusCode, errorMsg, failedMsg) => {
   return error;
 };
 
-module.exports = errorUtil;
+module.exports = resUtil;
