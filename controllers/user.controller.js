@@ -1,13 +1,14 @@
 const UserService = require('../services/user.service.js');
+const errorUtil = require('../utils/error.util.js');
 
 class UserController {
   userService = new UserService();
 
-  emailExists = async (req, res) => {
+  emailExists = async (req, res, next) => {
     try {
       const email = req.params.email;
       if (!email) {
-        res.status(411).json({ errMsg: '값 없음 : email' });
+        throw errorUtil(411, '값 없음 : email');
       }
       const emailExistsData = await this.userService.emailExists(email);
       if (!emailExistsData) {
@@ -16,8 +17,8 @@ class UserController {
         return res.status(201).json({ msg: '이메일 사용 불가능' });
       }
     } catch (err) {
-      console.error(err);
-      res.status(400).json({ errMsg: '전체 에러' });
+      err.failedMsg = '전체 에러';
+      next(err);
     }
   };
 
