@@ -18,6 +18,22 @@ class UserService {
       console.error(err);
     }
   };
+
+  signup = async (userData) => {
+    try {
+      return await this.userRepository.signup(userData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  withdrawal = async (user_id) => {
+    try {
+      return await this.userRepository.withdrawal(user_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
 module.exports = UserService;

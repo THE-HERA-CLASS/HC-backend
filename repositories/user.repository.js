@@ -20,6 +20,28 @@ class UserRepository {
       console.error(err);
     }
   };
+
+  signup = async (userData) => {
+    try {
+      return await Users.create({
+        email: userData.email,
+        nickname: userData.nickname,
+        password: userData.password,
+        image: userData.image,
+        major_id: userData.major_id,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  withdrawal = async (user_id) => {
+    try {
+      return await Users.destroy({ where: { user_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
 module.exports = UserRepository;
