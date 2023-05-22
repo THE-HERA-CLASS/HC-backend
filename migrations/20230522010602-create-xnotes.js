@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Xnotes", {
+    await queryInterface.createTable('Xnotes', {
       xnote_id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,28 +13,28 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
-          key: "user_id",
+          model: 'Users',
+          key: 'user_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       exam_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Exams",
-          key: "exam_id",
+          model: 'Exams',
+          key: 'exam_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       question_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Questions",
-          key: "question_id",
+          model: 'Questions',
+          key: 'question_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       answer: {
         allowNull: false,
@@ -47,16 +47,16 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Xnotes");
+    await queryInterface.dropTable('Xnotes');
   },
 };

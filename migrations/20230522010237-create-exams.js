@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Exams", {
+    await queryInterface.createTable('Exams', {
       exam_id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,10 +13,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Majors",
-          key: "major_id",
+          model: 'Majors',
+          key: 'major_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       major_name: {
         allowNull: false,
@@ -26,10 +26,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Certificates",
-          key: "certificate_id",
+          model: 'Certificates',
+          key: 'certificate_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       certificate_name: {
         allowNull: false,
@@ -43,10 +43,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Subjects",
-          key: "subject_id",
+          model: 'Subjects',
+          key: 'subject_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       subject_name: {
         allowNull: false,
@@ -56,10 +56,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "Examinfos",
-          key: "examinfo_id",
+          model: 'Examinfos',
+          key: 'examinfo_id',
         },
-        onDelete: "CASCADE",
+        onDelete: 'CASCADE',
       },
       examinfo_year: {
         allowNull: false,
@@ -72,16 +72,16 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: Sequelize.fn('now'),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Exams");
+    await queryInterface.dropTable('Exams');
   },
 };
