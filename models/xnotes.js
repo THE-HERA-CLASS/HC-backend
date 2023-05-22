@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Xnotes extends Model {
     /**
@@ -13,15 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Xnotes.init({
-    user_id: DataTypes.INTEGER,
-    exam_id: DataTypes.INTEGER,
-    question_id: DataTypes.INTEGER,
-    answer: DataTypes.STRING,
-    marking: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'Xnotes',
-  });
+  Xnotes.init(
+    {
+      user_id: DataTypes.INTEGER,
+      exam_id: DataTypes.INTEGER,
+      question_id: DataTypes.INTEGER,
+      answer: DataTypes.STRING,
+      marking: DataTypes.BOOLEAN,
+    },
+    {
+      sequelize,
+      modelName: 'Xnotes',
+    }
+  );
   return Xnotes;
 };
