@@ -7,9 +7,15 @@ class UserRepository {
 
   emailExists = async (email) => {
     try {
-      const data = await Users.findOne({ where: { email } });
-      console.log('repo data', data);
-      return data;
+      return await Users.findOne({ where: { email } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  nicknameExists = async (nickname) => {
+    try {
+      return await Users.findOne({ where: { nickname } });
     } catch (err) {
       console.error(err);
     }
