@@ -19,8 +19,17 @@ getMajors = async () => {
         console.err(err);
     }
   }
-  
 
+updateMajor = async (name, major_id) => {
+    try {
+      return await Majors.update(
+        { name : name },
+        { where: { major_id: major_id } } 
+      );
+    } catch (err) {
+      console.error(err);
+    }
+}
 };
 
 module.exports = ExaminfoRepository;

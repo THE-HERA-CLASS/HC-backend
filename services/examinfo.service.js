@@ -30,6 +30,13 @@ class ExaminfoService {
     }
   }
   
+  updateMajor = async (name, major_id) => {
+    try {
+      return await this.examinfoRepository.updateMajor(name, major_id);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   };
 
