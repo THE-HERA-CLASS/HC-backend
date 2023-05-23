@@ -38,6 +38,14 @@ class ExaminfoService {
     }
   }
 
+  dropMajor = async (major_id) => {
+    try {
+      return await this.examinfoRepository.dropMajor(major_id);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   };
 
 
