@@ -18,7 +18,19 @@ class ExaminfoController {
     }
   };
 
-  // getMajor
+  getMajors = async (req, res) => {
+    try {
+        // const { user_id } = res.locals.user;
+      
+
+        const majorData = await this.examinfoService.getMajors();
+        return res.status(200).json({ majorData });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({ errMsg: '전공 보기 실패'})
+    }
+  };
 
   // updateMajor
 
