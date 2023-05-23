@@ -1,9 +1,4 @@
 require('dotenv').config();
-
-// Redis를 위한 유틸 함수 작성
-// Redis에 Refresh Token을 저장할 것이기 때문에, 미리 Redis를 셋팅
-
-// Redis 클라이언트 생성 'redis'모듈을 사용하여 Redis클라이언트 생성
 class RedisClientRepository {
   constructor(redis) {
     this.redisClient = redis.createClient({
@@ -12,7 +7,7 @@ class RedisClientRepository {
     });
     // this.redisConnected = false;
   }
-  
+
   // Redis가 클라이언트와 제대로 연결이 되었는지 확인하고 초기화하는 메서드
   initialize = async () => {
     this.redisClient.on('connect', () => {

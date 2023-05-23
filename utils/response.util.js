@@ -1,8 +1,8 @@
-resUtil = (statusCode, errorMsg, failedMsg) => {
-  let error = new Error(errorMsg);
+resUtil = (statusCode, responseMsg, failedMsg) => {
+  let error = new Error(responseMsg);
 
   error.statusCode = statusCode;
-  error.errorMsg = errorMsg;
+  error.responseMsg = responseMsg;
   error.failedMsg = failedMsg;
 
   return error;
