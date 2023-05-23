@@ -30,6 +30,17 @@ updateMajor = async (name, major_id) => {
       console.error(err);
     }
 }
+
+dropMajor = async (major_id) => {
+    try {
+      return await Majors.destroy(
+        { where: { major_id: major_id } } 
+      );
+    } catch (err) {
+      console.error(err);
+    }
+}
+
 };
 
 module.exports = ExaminfoRepository;
