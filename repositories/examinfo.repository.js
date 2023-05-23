@@ -11,6 +11,16 @@ addMajor = async (name) => {
       console.error(err);
     }
 }
+
+getMajors = async () => {
+    try {
+      return await Majors.findAll({ });      
+    } catch (err) {
+        console.err(err);
+    }
+  }
+  
+
 };
 
 module.exports = ExaminfoRepository;

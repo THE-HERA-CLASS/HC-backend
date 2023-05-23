@@ -5,7 +5,7 @@ const ExaminfoController = require('../controllers/examinfo.controller.js');
 const examinfoController = new ExaminfoController();
 
 router.post('/major', examinfoController.addMajor); // 전공 추가
-// router.get('/major', examinfoController.getMajor); // 전공 보기
+router.get('/major', examinfoController.getMajors); // 전공 보기
 // router.put('/major/:major-id', examinfoController.updateMajor); // 전공 수정
 // router.delete('/major/:major-id', examinfoController.dropMajor); // 전공 삭제
 
