@@ -32,7 +32,25 @@ class ExaminfoController {
     }
   };
 
-  // updateMajor
+  updateMajor = async (req, res) => {
+    try {
+        // const { user_id } = res.locals.user;
+        const { major_id } = req.params;
+        const { name } = req.body;
+              
+        const updateResult = await this.examinfoService.updateMajor(name, major_id);
+        
+        if (updateResult) {
+          return res.status(200).json({ msg: '전공 수정 완료' });
+        } else {
+          return res.status(419).json({ errMsg: '전공 수정 실패'});
+        }
+
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({ errMsg: '전공 수정 실패'})
+    }
+  };
 
   // dropMajor
 
