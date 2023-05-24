@@ -10,7 +10,7 @@ router.put('/major/:major_id', examinfoController.updateMajor); // 전공 수정
 router.delete('/major/:major_id', examinfoController.dropMajor); // 전공 삭제
 
 router.post('/certificate', examinfoController.addCertificate); // 자격증 추가
-// router.get('/certificate', examinfoController.getCertificate); // 자격증 보기
+router.get('/certificate', examinfoController.getCertificate); // 자격증 보기
 // router.put('/certificate/:certificate_id', examinfoController.updateCertificate); // 자격증 수정
 // router.delete('/certificate/:certificate_id', examinfoController.dropCertificate); // 자격증 삭제
 

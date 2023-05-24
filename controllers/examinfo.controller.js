@@ -89,19 +89,19 @@ class ExaminfoController {
     }
   };
 
-//   getCertificate = async (req, res) => {
-//     try {
-//         // const { user_id } = res.locals.user;
+  getCertificate = async (req, res) => {
+    try {
+        // const { user_id } = res.locals.user;
       
 
-//         const certificateData = await this.examinfoService.getCertificate();
-//         return res.status(200).json({ certificateData });
+        const certificateData = await this.examinfoService.getCertificate();
+        return res.status(200).json({ certificateData });
 
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(400).json({ errMsg: '자격증 보기 실패'})
-//     }
-//   };
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({ errMsg: '자격증 보기 실패'})
+    }
+  };
 
 //   updateCertificate = async (req, res) => {
 //     try {
