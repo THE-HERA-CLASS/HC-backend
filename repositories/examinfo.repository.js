@@ -98,13 +98,13 @@ addSubject = async (certificate_id, name) => {
   }
 }
 
-// getCertificate = async () => {
-//   try {
-//     return await Certificates.findAll({ });      
-//   } catch (err) {
-//       console.err(err);
-//   }
-// }
+getSubject = async () => {
+  try {
+    return await Subjects.findAll({ });      
+  } catch (err) {
+      console.err(err);
+  }
+}
 
 // updateCertificate = async (certificate_id, name, division, ) => {
 //   try {
