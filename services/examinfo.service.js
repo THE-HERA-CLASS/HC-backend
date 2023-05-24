@@ -123,8 +123,6 @@ dropSubject = async (subject_id) => {
   }
 }
 
-
-
 };
 
 
