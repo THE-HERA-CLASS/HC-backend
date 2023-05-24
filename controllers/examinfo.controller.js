@@ -103,25 +103,25 @@ class ExaminfoController {
     }
   };
 
-//   updateCertificate = async (req, res) => {
-//     try {
-//         // const { user_id } = res.locals.user;
-//         const { major_id } = req.params;
-//         const { name } = req.body;
+  updateCertificate = async (req, res) => {
+    try {
+        // const { user_id } = res.locals.user;
+        const { certificate_id } = req.params;
+        const { name, division } = req.body;
               
-//         const updateResult = await this.examinfoService.updateCertificate(name, major_id);
+        const updateResult = await this.examinfoService.updateCertificate(certificate_id, name, division);
         
-//         if (updateResult) {
-//           return res.status(200).json({ msg: '자격증 수정 완료' });
-//         } else {
-//           return res.status(419).json({ errMsg: '자격증 수정 실패'});
-//         }
+        if (updateResult) {
+          return res.status(200).json({ msg: '자격증 수정 완료' });
+        } else {
+          return res.status(419).json({ errMsg: '자격증 수정 실패'});
+        }
 
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(400).json({ errMsg: '자격증 수정 실패'})
-//     }
-//   };
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({ errMsg: '자격증 수정 실패'})
+    }
+  };
 
 //   dropCertificate = async (req, res) => {
 //     try {
