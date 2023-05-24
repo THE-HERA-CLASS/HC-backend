@@ -63,7 +63,7 @@ getCertificate = async () => {
   }
 }
 
-updateCertificate = async (certificate_id, name, division, ) => {
+updateCertificate = async (certificate_id, name, division) => {
   try {
     return await Certificates.update(
       { name : name, division : division },
@@ -106,16 +106,16 @@ getSubject = async () => {
   }
 }
 
-// updateCertificate = async (certificate_id, name, division, ) => {
-//   try {
-//     return await Certificates.update(
-//       { name : name, division : division },
-//       { where: { certificate_id: certificate_id } }
-//     );
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
+updateSubject = async (subject_id, name) => {
+  try {
+    return await Subjects.update(
+      { name : name },
+      { where: { subject_id: subject_id } }
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 // dropCertificate = async (certificate_id) => {
 //   try {
