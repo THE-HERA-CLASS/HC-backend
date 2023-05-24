@@ -97,15 +97,15 @@ addSubject = async (certificate_id, name) => {
   }
 }
 
-// getCertificate = async () => {
-//   try {
-//     const certificateData = await this.examinfoRepository.getCertificate();
+getSubject = async () => {
+  try {
+    const subjectData = await this.examinfoRepository.getSubject();
 
-//     return certificateData;
-//   } catch (err) {
-//       console.err(err);
-//   }
-// }
+    return subjectData;
+  } catch (err) {
+      console.err(err);
+  }
+}
 
 // updateCertificate = async (certificate_id, name, division) => {
 //   try {

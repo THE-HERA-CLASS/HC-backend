@@ -158,19 +158,19 @@ addSubject = async (req, res) => {
   }
 };
 
-// getSubject = async (req, res) => {
-//   try {
-//       // const { user_id } = res.locals.user;
+getSubject = async (req, res) => {
+  try {
+      // const { user_id } = res.locals.user;
     
 
-//       const majorData = await this.examinfoService.getSubject();
-//       return res.status(200).json({ majorData });
+      const subjectData = await this.examinfoService.getSubject();
+      return res.status(200).json({ subjectData });
 
-//   } catch (error) {
-//       console.error(error);
-//       return res.status(400).json({ errMsg: '전공 보기 실패'})
-//   }
-// };
+  } catch (error) {
+      console.error(error);
+      return res.status(400).json({ errMsg: '과목 보기 실패'})
+  }
+};
 
 // updateSubject = async (req, res) => {
 //   try {
