@@ -141,22 +141,22 @@ class ExaminfoController {
     }    
   }; 
 
-// //[과목]=================================================================
+//[과목]=================================================================
 
-// addSubject = async (req, res) => {
-//   try {
-//       // const { user_id } = res.locals.user;
-//       const { name } = req.body;
+addSubject = async (req, res) => {
+  try {
+      // const { user_id } = res.locals.user;
+      const { certificate_id, name } = req.body;
 
             
-//       await this.examinfoService.addSubject(name);
-//       return res.status(200).json({ msg: '전공 추가 완료' });
+      await this.examinfoService.addSubject(certificate_id, name);
+      return res.status(200).json({ msg: '과목 추가 완료' });
 
-//   } catch (error) {
-//       console.error(error);
-//       return res.status(400).json({ errMsg: '전공 추가 실패'})
-//   }
-// };
+  } catch (error) {
+      console.error(error);
+      return res.status(400).json({ errMsg: '과목 추가 실패'})
+  }
+};
 
 // getSubject = async (req, res) => {
 //   try {
