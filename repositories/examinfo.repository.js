@@ -55,13 +55,13 @@ addCertificate = async (major_id, name, division) => {
   }
 }
 
-// getCertificate = async () => {
-//   try {
-//     return await Certificates.findAll({ });      
-//   } catch (err) {
-//       console.err(err);
-//   }
-// }
+getCertificate = async () => {
+  try {
+    return await Certificates.findAll({ });      
+  } catch (err) {
+      console.err(err);
+  }
+}
 
 // updateCertificate = async (name, major_id) => {
 //   try {
