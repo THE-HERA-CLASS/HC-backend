@@ -127,8 +127,6 @@ dropSubject = async (subject_id) => {
   }
 }
 
-
-
 };
 
 module.exports = ExaminfoRepository;
