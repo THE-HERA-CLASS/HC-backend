@@ -50,9 +50,9 @@ class ExaminfoService {
 
 
 //[자격증]=================================================================
-addCertificate = async (major_id, name, division) => {
+addCertificate = async (certificate_id, name, division) => {
   try {
-    return await this.examinfoRepository.addCertificate(major_id, name, division);
+    return await this.examinfoRepository.addCertificate(certificate_id, name, division);
   } catch (err) {
     console.error(err);
   }
@@ -68,13 +68,13 @@ getCertificate = async () => {
   }
 }
 
-// updateCertificate = async (name, major_id) => {
-//   try {
-//     return await this.examinfoRepository.updateCertificate(name, major_id);
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
+updateCertificate = async (certificate_id, name, division) => {
+  try {
+    return await this.examinfoRepository.updateCertificate(certificate_id, name, division);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 // dropCertificate = async (major_id) => {
 //   try {
