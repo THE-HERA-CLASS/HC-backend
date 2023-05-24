@@ -117,15 +117,15 @@ updateSubject = async (subject_id, name) => {
   }
 }
 
-// dropCertificate = async (certificate_id) => {
-//   try {
-//     return await Certificates.destroy(
-//       { where: { certificate_id: certificate_id } } 
-//     );
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
+dropSubject = async (subject_id) => {
+  try {
+    return await Subjects.destroy(
+      { where: { subject_id: subject_id } } 
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 
 

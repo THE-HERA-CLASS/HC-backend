@@ -192,23 +192,23 @@ updateSubject = async (req, res) => {
   }
 };
 
-// dropSubject = async (req, res) => {
-//   try {
-//       // const { user_id } = res.locals.user;
-//       const { major_id } = req.params;
+dropSubject = async (req, res) => {
+  try {
+      // const { user_id } = res.locals.user;
+      const { subject_id } = req.params;
             
-//       const dropResult = await this.examinfoService.dropSubject(major_id);
+      const dropResult = await this.examinfoService.dropSubject(subject_id);
       
-//       if (dropResult) {
-//         return res.status(200).json({ msg: '전공 삭제 완료' });
-//       } else {
-//         return res.status(419).json({ errMsg: '전공 삭제 실패'});
-//       }        
-//   } catch (error) {
-//       console.error(error);
-//       return res.status(400).json({ errMsg: '전공 삭제 실패'})
-//   }    
-// };
+      if (dropResult) {
+        return res.status(200).json({ msg: '과목 삭제 완료' });
+      } else {
+        return res.status(419).json({ errMsg: '과목 삭제 실패'});
+      }        
+  } catch (error) {
+      console.error(error);
+      return res.status(400).json({ errMsg: '과목 삭제 실패'})
+  }    
+};
   
 };
 
