@@ -85,6 +85,50 @@ dropCertificate = async (certificate_id) => {
 }
 
 
+
+//[과목]=================================================================
+addSubject = async (certificate_id, name) => {
+  try {
+    return await Subjects.create({
+      certificate_id,
+      name
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// getCertificate = async () => {
+//   try {
+//     return await Certificates.findAll({ });      
+//   } catch (err) {
+//       console.err(err);
+//   }
+// }
+
+// updateCertificate = async (certificate_id, name, division, ) => {
+//   try {
+//     return await Certificates.update(
+//       { name : name, division : division },
+//       { where: { certificate_id: certificate_id } }
+//     );
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+// dropCertificate = async (certificate_id) => {
+//   try {
+//     return await Certificates.destroy(
+//       { where: { certificate_id: certificate_id } } 
+//     );
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+
+
 };
 
 module.exports = ExaminfoRepository;
