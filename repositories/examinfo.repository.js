@@ -74,15 +74,15 @@ updateCertificate = async (certificate_id, name, division, ) => {
   }
 }
 
-// dropCertificate = async (major_id) => {
-//   try {
-//     return await Certificates.destroy(
-//       { where: { major_id: major_id } } 
-//     );
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
+dropCertificate = async (certificate_id) => {
+  try {
+    return await Certificates.destroy(
+      { where: { certificate_id: certificate_id } } 
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 
 };
