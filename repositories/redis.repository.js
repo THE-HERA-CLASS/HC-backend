@@ -27,9 +27,11 @@ class RedisClientRepository {
 
   // 특정 키에 대한 값을 Redis 데이터베이스에 설정하고, 그 키의 만료 시간을 설정하는 메서드
   setData = async (key, value, EXPIRE_TIME) => {
+    // key, value 값 type확인
+    console.log(` key값: ${key} (type: ${typeof key}), value값 : ${value} (type: ${typeof value})`);
     await this.initialize(); // initialize 호출, Redis 서버와의 연결 상태를 확인하고, 비연결상태일시 새로운 연결을 생성
-    await this.redisClient.v4.set(key, value, 'keepttl'); // keepttl 옵션은 이전에 설정된 TTL(Time To Live 즉, 데이터의 만료 시간)을 유지하는 옵션
-    await this.redisClient.v4.expire(key, EXPIRE_TIME); // EXPIRE_TIME: 만료시간
+    await this.redisClient.v4.set(String(key), value, 'keepttl'); // keepttl 옵션은 이전에 설정된 TTL(Time To Live 즉, 데이터의 만료 시간)을 유지하는 옵션
+    await this.redisClient.v4.expire(String(key), Number(EXPIRE_TIME)); // EXPIRE_TIME: 만료시간
   };
 
   // Redis 서버에서 특정 키 (Key)를 가져온다
