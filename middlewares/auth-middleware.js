@@ -9,6 +9,7 @@ const redisClientRepository = new RedisClientRepository(redis);
 // HTTP 요청으로부터 accessToken 과 refreshToken을 얻는 과정
 module.exports = async (req, res, next) => {
   try {
+    // const { accessToken } = req.headers
     let accessToken;
     let refreshToken;
     // 만약 req.cookies에 accessToken과 refreshToken이 존재한다면 각각의 토큰을 변수에 할당
@@ -92,10 +93,9 @@ module.exports = async (req, res, next) => {
       accessTokenValue = null; // accessToken을 초기화한다, 새로운 토큰으로 대체하기 위해
       accessTokenValue = newAccessTokenValue; // null로 비워진 accessToken을 새로 발급한 accessToken으로 대체
       // 새로 발급된 accessToken을 HTTP req.cookies에 accessToken이라는 이름으로 저장한다. 'Bearer'라는 문자열이 앞에 붙는 이유는 토큰 타입을 명시하기 위해
-      res.cookie('accessToken', `Bearer ${accessTokenValue}`);
+      res.cookie('accessToken', `${accessTokenValue}`);
       // 이미 가지고 있던 리프레시 토큰 refreshTokenValue를 HTTP req.cookies에 'refreshToken'이라는 이름으로 저장한다.
       // refreshToken accessToken이 만료될 경우 새로운 액세스 토큰을 발급받는 데 사용된다.
-      res.cookie('refreshToken', `Bearer ${refreshTokenValue}`);
     }
     // 위에서 선언된 변수 userData를 res.locals.user에 할당
     // userData는 클라이언트의 user_id, nickname, email, major_id 데이터를 가지고 있다
