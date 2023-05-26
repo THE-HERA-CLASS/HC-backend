@@ -55,10 +55,10 @@ class ExamService {
           let choice_4_value = other.substring(choice_4_index + 1, answer_start_index);
           choice_4_value = clearText(choice_4_value);
           const choice_array = [
-            { type: 'text', value: choice_1_value },
-            { type: 'text', value: choice_2_value },
-            { type: 'text', value: choice_3_value },
-            { type: 'text', value: choice_4_value },
+            { option: 1, type: 'text', value: choice_1_value },
+            { option: 2, type: 'text', value: choice_2_value },
+            { option: 3, type: 'text', value: choice_3_value },
+            { option: 4, type: 'text', value: choice_4_value },
           ];
           let answer_value = other.substring(answer_start_index + 5, solve_start_index);
           answer_value = clearText(answer_value);
@@ -86,10 +86,10 @@ class ExamService {
           let choice_4_value = other.substring(choice_4_index + 1, answer_start_index);
           choice_4_value = clearText(choice_4_value);
           const choice_array = [
-            { type: 'text', value: choice_1_value },
-            { type: 'text', value: choice_2_value },
-            { type: 'text', value: choice_3_value },
-            { type: 'text', value: choice_4_value },
+            { option: 1, type: 'text', value: choice_1_value },
+            { option: 2, type: 'text', value: choice_2_value },
+            { option: 3, type: 'text', value: choice_3_value },
+            { option: 4, type: 'text', value: choice_4_value },
           ];
           let answer_value = other.substring(answer_start_index + 5, solve_start_index);
           answer_value = clearText(answer_value);
