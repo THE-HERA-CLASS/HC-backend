@@ -18,6 +18,7 @@ class ExamService {
     question_array.forEach((item, index) => {
       const dot_index = item.indexOf('. ');
       const billiard_index = item.indexOf('※ ');
+
       if (dot_index > 0) {
         // 문제유형
         const sort_num = index + 1;
@@ -109,10 +110,37 @@ class ExamService {
         // 알림유형
         const sort_num = index + 1;
         const other = item.substring(billiard_index + 2, item.length);
-        question_object = {
-          sort_num,
-          question: other,
-        };
+        const example_start_index = other.indexOf('<br><br><br><br>');
+        const other_end_index = other.length;
+
+        if (example_start_index > 0) {
+          // 보기문 있는 유형
+          let question_value = other.substring(billiard_index, example_start_index);
+          question_value = clearText(question_value);
+          const example_init = other
+            .substring(example_start_index, other_end_index)
+            .split('<br><br><br><br>');
+          // example_init.pop(); // 배열 맨뒤 공백칸 제거
+          example_init.shift(); // 배열 맨앞 공백칸 제거
+          const example_array = example_init.map((row) => {
+            const clearRow = clearText(row);
+            return { type: 'text', value: clearRow };
+          });
+          question_object = {
+            sort_num,
+            question: question_value,
+            example: example_array,
+          };
+        } else {
+          // 보기문 없는 유형
+          let question_value = other;
+          question_value = clearText(question_value);
+          question_object = {
+            sort_num,
+            question: question_value,
+          };
+        }
+
         question_result.push(question_object);
       }
     });
