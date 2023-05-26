@@ -1,9 +1,10 @@
 const { Questions } = require('../models');
 
 class ExamRepository {
-  addQuestions = async (questionDatas) => {
+  addQuestions = async (exam_id, questionDatas) => {
     try {
       return await Questions.create({
+        exam_id,
         sort_num: questionDatas.sort_num,
         question_num: questionDatas.question_num,
         question: questionDatas.question,
