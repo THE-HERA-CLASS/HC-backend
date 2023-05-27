@@ -26,7 +26,7 @@ class ExaminfoController {
       
 
         const majorData = await this.examinfoService.getMajors();
-        return res.status(200).json({ majorData });
+        return res.status(200).json({ data: majorData });
 
     } catch (error) {
         console.error(error);
@@ -95,7 +95,7 @@ class ExaminfoController {
       
 
         const certificateData = await this.examinfoService.getCertificate();
-        return res.status(200).json({ certificateData });
+        return res.status(200).json({ data: certificateData });
 
     } catch (error) {
         console.error(error);
@@ -164,7 +164,7 @@ getSubject = async (req, res) => {
     
 
       const subjectData = await this.examinfoService.getSubject();
-      return res.status(200).json({ subjectData });
+      return res.status(200).json({ data: subjectData });
 
   } catch (error) {
       console.error(error);

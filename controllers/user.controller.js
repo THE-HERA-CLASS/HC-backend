@@ -52,16 +52,26 @@ class UserController {
         return res.status(411).json({ errMsg: '값 없음 : password' });
       if (!major_id)
         return res.status(411).json({ errMsg: '값 없음 : major_id' });
-      if (!email.includes('@'))
-        return res.status(412).json({ errMsg: '형식 에러 : email @ 없음' });
-      if (!/^[a-zA-Z0-9가-힣]+$/.test(nickname)) {
-        return res.status(412).json({ errMsg: '형식 에러 : nickname' });
+      if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$/.test(email)) {
+        return res
+          .status(412)
+          .json({ errMsg: '형식 에러: 올바른 이메일 형식이 아닙니다' });
+      }
+      if (!/^[\w가-힣]{2,10}$/.test(nickname)) {
+        return res.status(412).json({
+          errMsg:
+            '형식 에러: 닉네임은 2~10자의 영문, 한글, 숫자, 밑줄(_)만 허용됩니다',
+        });
       }
       if (
-        !/^[a-zA-Z0-9가-힣]+$/.test(password) ||
-        password.includes(nickname)
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,15}$/.test(
+          password
+        )
       ) {
-        return res.status(412).json({ errMsg: '형식 에러 : password' });
+        return res.status(412).json({
+          errMsg:
+            '형식 에러: 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~15자여야 합니다',
+        });
       }
       const userData = {
         email,
@@ -110,7 +120,7 @@ class UserController {
       }
       const getProfileData = await this.userService.getProfile(user_id);
       if (getProfileData) {
-        return res.status(200).json({ userData: getProfileData });
+        return res.status(200).json({ data: getProfileData });
       } else {
         return res.status(419).json({ errMsg: '회원정보 조회 실패' });
       }
