@@ -32,11 +32,10 @@ class LoginService {
       // refreshToken을 생성한다
       const refreshToken = jwt.createRefreshToken(user.user_id);
       // key: accessToken, value: user_id로 redis에 저장
-      const key = user.user_id; // refreshToken만 redis에 저장
+      const key = `refreshToken:${user.user_id}`; // refreshToken만 redis에 저장 refresh토큰이다 라는 것을 명시 이유?: redis에 refreshToken만 user_id를 key값으로 넣을 경우가 생길 상황이 생길 수 도있어서.
       console.log('키값은:', key);
       const value = refreshToken;
-      const EXPIRE_TIME = 1209600; // 14d
-      await this.redisClientRepository.setData(key, value, EXPIRE_TIME);
+      await this.redisClientRepository.setData(key, value, process.env.REFRESH_TOKEN_EXPIRE_TIME);
 
       // login 메서드에서 생성된 accessToken, refreshToken 반환
       return [accessToken, refreshToken];

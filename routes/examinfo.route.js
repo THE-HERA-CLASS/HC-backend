@@ -10,4 +10,3 @@ router.put('/major/:major_id', examinfoController.updateMajor); // 전공 수정
 router.delete('/major/:major_id', examinfoController.dropMajor); // 전공 삭제
 
 module.exports = router;
->>>>>>> 84e3cb82a699533c7d9de94d5632bb0080559fd9
