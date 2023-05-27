@@ -26,7 +26,6 @@ class ExamService {
         const answer_start_index = other.indexOf('--정답');
         const solve_start_index = other.indexOf('--해설');
         const other_end_index = other.length;
-        console.log(`문제유형 ${sort_num} ${question_num} ${example_start_index}`);
 
         if (example_start_index < 0) {
           // 보기문 없는 유형
@@ -106,7 +105,50 @@ class ExamService {
         }
       } else if (billiard_index > dot_index) {
         // 알림유형
-        console.log(`알림유형 ${sort_num}`);
+        const other = item.substring(dot_index + 1, item.length);
+        const example_start_index = item.indexOf('--보기문');
+        const other_end_index = other.length;
+
+        if (example_start_index < 0) {
+          // 보기문 없는 유형
+          const question_value = clearText(other.substring(2, other_end_index));
+          question_object = {
+            sort_num,
+            question: question_value,
+          };
+          question_result.push(question_object);
+        } else if (example_start_index > 0) {
+          // 보기문 있는 유형
+          const question_value = clearText(other.substring(2, example_start_index));
+          const example_init = clearText(other.substring(example_start_index + 5, other_end_index));
+          const example_init_array = example_init.split('--보기문');
+          const example_edit_array = example_init_array.map((item) => item.trim());
+
+          const example_value_array = example_edit_array.map((item) => {
+            if (item.indexOf('<img') === 0) {
+              const img_src_start_index = item.indexOf('base64,') + 7;
+              const img_src_end_index = item.indexOf('" />');
+              const img_src = item.substring(img_src_start_index, img_src_end_index);
+              // 보기그림 유형
+              return {
+                type: 'image',
+                value: img_src,
+              };
+            } else {
+              // 보기문 유형
+              return {
+                type: 'text',
+                value: item,
+              };
+            }
+          });
+          question_object = {
+            sort_num,
+            question: question_value,
+            example: example_value_array,
+          };
+          question_result.push(question_object);
+        }
       }
     });
 
