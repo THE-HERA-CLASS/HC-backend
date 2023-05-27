@@ -40,8 +40,11 @@
     "sequelize-cli": "^6.6.0"
   },
   "scripts": {
-      "build": "npm run build"
-  }
-  
-  
+      "dev": "nodemon",
+      "db:sync": "npx sequelize db:sync",
+      "db:migrate": "npx sequelize db:migrate",
+      "db:seed": "npx sequelize db:seed:all",
+      "test": "jest",
+      "prepare": "husky install"  
+  }  
 }
