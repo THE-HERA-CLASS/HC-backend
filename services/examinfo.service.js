@@ -3,6 +3,8 @@ const ExaminfoRepository = require('../repositories/examinfo.repository.js');
 class ExaminfoService {
   examinfoRepository = new ExaminfoRepository();
 
+//[전공]=================================================================    
+
   addMajor = async (name) => {
     try {
       return await this.examinfoRepository.addMajor(name);
@@ -46,7 +48,82 @@ class ExaminfoService {
     }
   }
 
-  };
+
+//[자격증]=================================================================
+
+addCertificate = async (certificate_id, name, division) => {
+  try {
+    return await this.examinfoRepository.addCertificate(certificate_id, name, division);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+getCertificate = async () => {
+  try {
+    const certificateData = await this.examinfoRepository.getCertificate();
+
+    return certificateData;
+  } catch (err) {
+      console.err(err);
+  }
+}
+
+updateCertificate = async (certificate_id, name, division) => {
+  try {
+    return await this.examinfoRepository.updateCertificate(certificate_id, name, division);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+dropCertificate = async (certificate_id) => {
+  try {
+    return await this.examinfoRepository.dropCertificate(certificate_id);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+
+//[과목]=================================================================
+
+addSubject = async (certificate_id, name) => {
+  try {
+    return await this.examinfoRepository.addSubject(certificate_id, name);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+getSubject = async () => {
+  try {
+    const subjectData = await this.examinfoRepository.getSubject();
+
+    return subjectData;
+  } catch (err) {
+      console.err(err);
+  }
+}
+
+updateSubject = async (subject_id, name) => {
+  try {
+    return await this.examinfoRepository.updateSubject(subject_id, name);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+dropSubject = async (subject_id) => {
+  try {
+    return await this.examinfoRepository.dropSubject(subject_id);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+};
 
 
 
