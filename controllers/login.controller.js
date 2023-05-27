@@ -32,7 +32,7 @@ class LoginController {
       major_id: user.major_id,
     };
     // cookie에 저장
-    res.cookie('accessToken', `${accessToken}`);
+    res.cookie('accessToken', `Bearer ${accessToken}`);
     return res
       .status(200)
       .json({ msg: '로그인 성공(refreshToken 확인용으로 표시 보안상 나중에 지우도록)', accessToken, refreshToken, userData });
