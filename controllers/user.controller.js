@@ -1,8 +1,11 @@
 const UserService = require('../services/user.service.js');
 const resUtil = require('../utils/response.util.js');
+const RedisRepository = require('../repositories/redis.repository');
+const redis = require('redis');
 
 class UserController {
   userService = new UserService();
+  redisRepository = new RedisRepository(redis);
 
   emailExists = async (req, res, next) => {
     try {
@@ -39,6 +42,36 @@ class UserController {
     } catch (err) {
       err.failedMsg = '전체 에러';
       next(err);
+    }
+  };
+
+  // 인증이메일 보내기
+  sendAuthMail = async (req, res, next) => {
+    try{
+      const  { email } = req.body;
+      let userNum = Math.random().toString().substring(2, 8);
+      await this.userService.sendAuthMail(email, userNum);
+
+      const EXPIRE_TIME = 600; // 인증번호 유효시간 5분
+      await this.redisRepository.setData(email, userNum, EXPIRE_TIME);
+
+      res.status(200).json({userNum: userNum});
+    }catch(error){
+      console.log(error);
+      return res.status(400).json({errMsg: '인증 이메일 발송에 오류가 발생했습니다. 다시 시도해주세요.'})
+    }
+  }
+
+  // 인증이메일번호 검증
+  verifyMail = async (req, res, next) => {
+    const { email, userCode } = req.body;
+    const getRedisNum = await this.redisRepository.getData(email);
+    if (userCode !== getRedisNum) {
+      return res.status(400).json({
+        errMsg: '인증코드가 일치하지 않습니다. 다시 시도해주세요.',
+      });
+    } else {
+      return res.status(200).json({ msg: '인증코드가 일치하였습니다.' });
     }
   };
 
