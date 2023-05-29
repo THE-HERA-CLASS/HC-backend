@@ -1,58 +1,58 @@
-name: deploy
+# name: deploy
 
-on:
-  push:
-    branches: [dev]
-  pull_request:
-    branches: [dev]
+# on:
+#   push:
+#     branches: [dev]
+#   pull_request:
+#     branches: [dev]
 
-jobs:
-  build:
-    runs-on: ubuntu-20.04
+# jobs:
+#   build:
+#     runs-on: ubuntu-20.04
 
-    strategy:
-      matrix:
-        node-version: [16]
+#     strategy:
+#       matrix:
+#         node-version: [16]
 
-    steps:
-      - name: Checkout source code.
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout source code.
+#         uses: actions/checkout@v2
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
+#       - name: Use Node.js 16
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: 16
 
-      - name: Check Npm -v
-        run: npm -v
+#       - name: Check Npm -v
+#         run: npm -v
 
-      - name: create env file
-        working-directory: ./
-        run: |
-          pwd
-          touch .env
-          echo HOST_PORT=${{ secrets.HOST_PORT }} >> .env
-          echo ACCESS_TOKEN_EXPIRE_TIME=${{ secrets.ACCESS_TOKEN_EXPIRE_TIME }} >> .env
-          echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
-          echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
-          echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
-          echo DB_HOST=${{ secrets.DB_HOST }} >> .env
-          echo DB_KEY=${{ secrets.DB_KEY }} >> .env
-          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
-          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
-          echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
-          echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
-          echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
-          echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
-          echo REDIS_USERNAME=${{ secrets.REDIS_USERNAME }} >> .env
-          echo REFRESH_TOKEN_EXPIRE_TIME=${{ secrets.REFRESH_TOKEN_EXPIRE_TIME }} >> .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          cat .env
+#       - name: create env file
+#         working-directory: ./
+#         run: |
+#           pwd
+#           touch .env
+#           echo HOST_PORT=${{ secrets.HOST_PORT }} >> .env
+#           echo ACCESS_TOKEN_EXPIRE_TIME=${{ secrets.ACCESS_TOKEN_EXPIRE_TIME }} >> .env
+#           echo AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
+#           echo AWS_REGION=${{ secrets.AWS_REGION }} >> .env
+#           echo AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
+#           echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+#           echo DB_KEY=${{ secrets.DB_KEY }} >> .env
+#           echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+#           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+#           echo DB_USERNAME=${{ secrets.DB_USERNAME }} >> .env
+#           echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+#           echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
+#           echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
+#           echo REDIS_USERNAME=${{ secrets.REDIS_USERNAME }} >> .env
+#           echo REFRESH_TOKEN_EXPIRE_TIME=${{ secrets.REFRESH_TOKEN_EXPIRE_TIME }} >> .env
+#           echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+#           cat .env
 
-      - name: Run npm install
-        working-directory: ./
-        run: npm install
+#       - name: Run npm install
+#         working-directory: ./
+#         run: npm install
 
-      - name: Build server files
-        working-directory: ./
-        run: npm run build
+#       - name: Build server files
+#         working-directory: ./
+#         run: npm run build
