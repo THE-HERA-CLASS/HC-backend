@@ -1,10 +1,13 @@
 const LoginService = require('../services/login.service.js');
-// const RedisClientRepository = require('../repositories/redis.repository.js');
-// const redisClient = new RedisClientRepository(redis);
+const jwt = require('../utils/jwt.js');
+const redis = require('redis');
+const RedisRepository = require('../repositories/redis.repository');
+
 const resUtil = require('../utils/response.util.js');
 
 class LoginController {
   loginService = new LoginService();
+  redisRepository = new RedisRepository(redis);
 
   login = async (req, res) => {
     const { email, password } = req.body;
@@ -32,49 +35,34 @@ class LoginController {
       major_id: user.major_id,
     };
     // cookie에 저장
-    res.cookie('accessToken', `${accessToken}`);
+    res.cookie('accessToken', `Bearer ${accessToken}`);
     return res
       .status(200)
       .json({ msg: '로그인 성공(refreshToken 확인용으로 표시 보안상 나중에 지우도록)', accessToken, refreshToken, userData });
   };
-
-  로그아웃
+  
   logout = async (req, res) => {
-    // const { refreshToken } = req.headers;
-    // const { refreshToken } = req.cookies;
+    try {
+      const user = res.locals.user; // 로그인한 사용자의 정보를 가져옴
+  
+      const key = `refreshToken:${user.user_id}`; // refreshToken을 삭제할 키 생성
+      const result = await this.loginService.logout(user); // 로그아웃 서비스 호출
+  
+      if (result === 1) {
+        // 로그아웃 성공
+        res.clearCookie('accessToken'); // accessToken 쿠키 삭제
+        return res.status(200).json({ message: '로그아웃이 성공적으로 처리되었습니다.' });
+      } else {
+        // 로그아웃 실패
+        return res.status(400).json({ message: '로그아웃을 실패했습니다.' });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ message: '로그아웃을 처리할 수 없습니다.' });
+    }
+  };  
 
-    let accessToken;
-    let refreshToken;
-    // cookie와 header에서 accessToken과 refreshToken을 찾아 변수에 할당
-    if (req.cookies.accessToken) {
-      accessToken = req.cookies.accessToken;
-      refreshToken = req.cookies.refreshToken;
-    } else if (req.headers.accessToken) {
-      accessToken = req.headers.accessToken;
-      refreshToken = req.headers.refreshToken;
-    } else {
-      accessToken = null;
-      refreshToken = null;
-    }
-    // refreshToken이 없거나 형식이 잘못된 경우 에러 처리
-    if (!refreshToken || !refreshToken.includes(' ')) {
-      return res
-        .status(411)
-        .json({ errMsg: 'Refresh token이 유효하지 않습니다.' });
-    }
-    // split함수로 refeshToken의 type과 value를 구분해서 변수에 저장
-    const [tokenType, tokenValue] = refreshToken.split(' ');
-    // res.clearCookie(); // 모든 쿠키삭제
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
-    //userService의 logout 메서드를 호출하여 Redis에서 tokenValue를 삭제하고 그 결과를 result에 저장한다.
-    const result = await this.loginService.logout(tokenValue);
-    if (result) {
-      return res.status(200).json({ msg: '로그아웃 되었습니다.' });
-    } else {
-      return res.status(400).json({ errMsg: '로그아웃 실패.' });
-    }
-  };
+  
 }
 
 module.exports = LoginController;
