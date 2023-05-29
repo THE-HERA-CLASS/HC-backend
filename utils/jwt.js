@@ -28,7 +28,7 @@ module.exports = {
   validateTokenType: (tokenType) => {
     try {
       return tokenType === 'Bearer' ? true : false;
-    } catch (e) {
+    } catch (error) {
       return false;
     }
   },
@@ -44,15 +44,15 @@ module.exports = {
     }
   },
 
-  // AccessToken에 암호화된 Payload 가져오기
-  getTokenPayload: (tokenValue) => {
+  // Token에 암호화된 Payload 가져오기
+  decodeToken: (tokenValue) => {
     try {
       // JWT에서 Payload를 가져옵니다.
       if (jwt.verify(tokenValue, SECRET_KEY)) {
         // JWT를 검증
         return jwt.decode(tokenValue); // 토큰에서 payload를 해독해서 반환
       }
-    } catch (e) {
+    } catch (error) {
       return null;
     }
   },
