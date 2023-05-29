@@ -1,18 +1,16 @@
-const RedisClientRepository = require('../repositories/redis.repository.js');
 const redis = require('redis');
 const jwt = require('../utils/jwt.js');
 const { Users } = require('../models');
 const UserRepository = require('../repositories/user.repository');
+const RedisRepository = require('../repositories/redis.repository.js');
 require('dotenv').config();
 
 class LoginService {
   userRepository = new UserRepository(Users);
-  redisClientRepository = new RedisClientRepository(redis);
+  redisRepository = new RedisRepository(redis);
 
   findUserWithEmail = async (email) => {
-    const findUserWithEmailData = await this.userRepository.findUserWithEmail(
-      email
-    );
+    const findUserWithEmailData = await this.userRepository.findUserWithEmail(email);
     console.log(findUserWithEmailData);
     return findUserWithEmailData;
   };
@@ -23,20 +21,19 @@ class LoginService {
       // 사용자의 데이터를 담은 accessToken를 생성
       const accessToken = jwt.createAccessToken(
         user.user_id,
+        user.nickname,
         user.email,
-        user.authority,
-        user.image,
         user.major_id,
-        user.nickname
+        user.authority,
+        user.image
       );
       // refreshToken을 생성한다
       const refreshToken = jwt.createRefreshToken(user.user_id);
       // key: accessToken, value: user_id로 redis에 저장
-      const key = user.user_id; // refreshToken만 redis에 저장
+      const key = `refreshToken:${user.user_id}`; // refreshToken만 redis에 저장 refresh토큰이다 라는 것을 명시 이유?: redis에 refreshToken만 user_id를 key값으로 넣을 경우가 생길 상황이 생길 수 도있어서.
       console.log('키값은:', key);
       const value = refreshToken;
-      const EXPIRE_TIME = 1209600; // 14d
-      await this.redisClientRepository.setData(key, value, EXPIRE_TIME);
+      await this.redisRepository.setData(key, value, process.env.REFRESH_TOKEN_EXPIRE_TIME);
 
       // login 메서드에서 생성된 accessToken, refreshToken 반환
       return [accessToken, refreshToken];
@@ -54,10 +51,12 @@ class LoginService {
   // local.user에 저장된 정보도 삭제 (middleware)
   logout = async (user) => {
     try {
-      const result = await this.redisClientRepository.delData(String(user.user_id));
+      const key = `refreshToken:${user.user_id}`;
+      const result = await this.redisRepository.deleteData(key);
       return result;
     } catch (err) {
       console.error(err);
+      throw err; // 예외를 다시 던져서 호출하는 쪽에서 처리하도록 함
     }
   };
 }
