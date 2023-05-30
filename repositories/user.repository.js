@@ -1,4 +1,4 @@
-const { Users } = require('../models/users');
+const { Users } = require('../models');
 
 class UserRepository {
   constructor(users) {
@@ -50,16 +50,7 @@ class UserRepository {
   getProfile = async (user_id) => {
     try {
       return await Users.findOne({
-        attributes: [
-          'user_id',
-          'email',
-          'nickname',
-          'image',
-          'authority',
-          'major_id',
-          'createdAt',
-          'updatedAt',
-        ],
+        attributes: ['user_id', 'email', 'nickname', 'image', 'authority', 'major_id', 'createdAt', 'updatedAt'],
         where: { user_id },
       });
     } catch (err) {
