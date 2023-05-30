@@ -1,4 +1,4 @@
-const aws = require('aws-sdk');
+const { S3 } = require('@aws-sdk/client-s3');
 const { request } = require('http');
 const multer = require('multer');
 const multerS3 = require('multer-s3-transform');
@@ -6,7 +6,7 @@ const path = require('path');
 require('dotenv').config(); // 환경변수 사용
 
 // S3클래스를 이용해서 S3 서비스에 대한 새로운 인스턴스 생성
-const s3 = new aws.S3({
+const s3 = new S3({
   region: process.env.AWS_REGION,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
