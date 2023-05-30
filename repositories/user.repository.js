@@ -1,10 +1,6 @@
 const { Users } = require('../models');
 
 class UserRepository {
-  findUserWithEmail = async (email) => {
-    return await Users.findOne({ where: { email } });
-  };
-
   emailExists = async (email) => {
     try {
       return await Users.findOne({ where: { email } });
