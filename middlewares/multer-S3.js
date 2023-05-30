@@ -1,30 +1,30 @@
-const aws = require("aws-sdk");
-const { request } = require("http");
-const multer = require("multer");
-const multerS3 = require("multer-s3-transform");
-const path = require("path");
-require("dotenv").config(); // 환경변수 사용
+const aws = require('aws-sdk');
+const { request } = require('http');
+const multer = require('multer');
+const multerS3 = require('multer-s3-transform');
+const path = require('path');
+require('dotenv').config(); // 환경변수 사용
 
 // S3클래스를 이용해서 S3 서비스에 대한 새로운 인스턴스 생성
 const s3 = new aws.S3({
-  region: process.env.S3_REGION,
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 // 허용할 파일 확장자
-const allowedExtensions = [".png", ".jpg", ".jpeg", ".bmp", ".gif"];
+const allowedExtensions = ['.png', '.jpg', '.jpeg', '.bmp', '.gif'];
 
 const upload_image = multer({
   storage: multerS3({
     s3: s3, // s3객체 S3와 상호작용한다
-    bucket: process.env.S3_BUCKET,
+    bucket: process.env.AWS_BUCKET,
     contentType: multerS3.AUTO_CONTENT_TYPE, // 업로드되는 파일의 MIME type을 자동으로 설정
-                                             // MIME type은 파일 확장자(.html, .jpge)와 비슷한 역할을 한다 운영체제에게 파일의 유형을 알려주는 역할
-                                             // 서버가 브라우저에게 html파일을 보낸다 하면 그 파일은 MIME type은 "text/html"을 응답 헤더에 포함되어 전송된다/
-                                             // 브라우저는 이 MIME type을 보고 파일을 어떻게 처리할지 결정한다. 
-                                             // 웹 전송에서 MIME type이 중요한 역할이고, 이를 통해 브라우저는 콘텐츠를 올바르게 해석하고 표시할 수 있다.
-    
+    // MIME type은 파일 확장자(.html, .jpge)와 비슷한 역할을 한다 운영체제에게 파일의 유형을 알려주는 역할
+    // 서버가 브라우저에게 html파일을 보낸다 하면 그 파일은 MIME type은 "text/html"을 응답 헤더에 포함되어 전송된다/
+    // 브라우저는 이 MIME type을 보고 파일을 어떻게 처리할지 결정한다.
+    // 웹 전송에서 MIME type이 중요한 역할이고, 이를 통해 브라우저는 콘텐츠를 올바르게 해석하고 표시할 수 있다.
+
     // S3에 저장될 때 사용할 파일명을 설정
     key: (req, file, callback) => {
       const today = new Date(); // 현재시간 정보를 파일명에 포함
@@ -33,12 +33,12 @@ const upload_image = multer({
       const currentDate = today.getDate(); // 일자
       const currentHour = today.getHours(); // 시
       const currentMinute = today.getMinutes(); // 분
-      const currentSecond = today.getSeconds(); // 초 
+      const currentSecond = today.getSeconds(); // 초
       // 앞에서 추출한 연도, 월, 일, 시, 분, 초를 문자열 형식으로 합친다 -> 파일명에 날짜와 시간 정보를 추가하는데 사용
       const date = `${currentYear}-${currentMonth}-${currentDate}-${currentHour}-${currentMinute}-${currentSecond}`;
-      
+
       // 램던 숫자를 저장한다 -> 각파일이 고유한 파일명을 가질수 있게
-      let randomNumber = ""; // 빈배열로 초기화
+      let randomNumber = ''; // 빈배열로 초기화
       // for문으로 0~9까지 랜덤 숫자를 생성하고 그걸로 문자열로 반환하여 randomNumber변수에 추가한다
       for (let i = 0; i < 4; i++) {
         randomNumber += String(Math.floor(Math.random() * 10));
@@ -50,10 +50,10 @@ const upload_image = multer({
       // 허용한 확장자인지 검증
       // 추출한 확장자가 미리 정해둔 확장자[".png", ".jpg", ".jpeg", ".bmp", ".gif"]에 없으면 error 반환
       if (!allowedExtensions.includes(extension)) {
-        return callback(new Error("확장자 에러")); //412
+        return callback(new Error('확장자 에러')); //412
       }
       // 파일이 업로드된 시간(date), 랜덤한 네 자리 숫자(randomNumber)를 결함하려 고유한이름을 가진 파일의 url를 생성
-      // 이 URL은 Amazon CloudFront 서비스의 URL 형식에 기반한다, 
+      // 이 URL은 Amazon CloudFront 서비스의 URL 형식에 기반한다,
       // 이 서비스는 사용자가 AWS 리소스(예: S3 버킷에 저장된 이미지)에 빠르게 액세스할 수 있도록 돕는다.
       const img_url = `https://theheraclass.s3.ap-northeast-2.amazonaws.com/img/${date}_${randomNumber}${extension}`;
 
@@ -69,7 +69,7 @@ const upload_image = multer({
       callback(null, `img/${date}_${randomNumber}${extension}`);
     },
     // AWS S3에서 액세스 제어 목록 (ACL)을 설정 이 경우 "public-read"는 파일이 공개적으로 읽을 수 있음을 의미 즉, 인터넷 상의 모든 사람이 해당 파일을 읽을 수 있다.
-    acl: "public-read",
+    acl: 'public-read',
   }),
   // 업로드 가능한 파일의 최대 크기를 제한한다 여기서 25MB로 설정, 이 한도를 초과하면 업로드를 거부
   limits: {

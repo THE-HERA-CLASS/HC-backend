@@ -55,7 +55,7 @@ class ExamRepository {
       }
       // AWS S3에 이미지를 업로드
       const uploadParams = {
-        Bucket: 'elasticbeanstalk-ap-northeast-2-126657489791',
+        Bucket: process.env.AWS_BUCKET,
         Key: `heraclass/${date}_${randomNumber}.${extension}`,
         Body: decodedImage,
         ACL: 'public-read',
