@@ -16,8 +16,6 @@ class ExamController {
       html = html.replace(/<\/p>/gi, '\n');
       const question_array = html.split('```').map((row) => row.trim());
       const result = await this.examService.addQuestions(exam_id, question_array);
-      console.log(result.addQuestionResult);
-      console.log(result.addQuestionData);
       res.status(200).json({ parsingData: result.addQuestionData });
     } catch (err) {
       console.error(err);
