@@ -56,10 +56,10 @@ class ExamRepository {
       // AWS S3에 이미지를 업로드
       const uploadParams = {
         Bucket: process.env.AWS_BUCKET,
-        Key: `heraclass/${date}_${randomNumber}.${extension}`,
+        Key: `${process.env.AWS_FOLDER_QUESTION}/${date}_${randomNumber}.${extension}`,
         Body: decodedImage,
         ACL: 'public-read',
-        ContentType: 'image/jpeg',
+        ContentType: `image/${extension}`,
       };
       const uploadResult = await s3.upload(uploadParams).promise();
       // 업로드된 이미지의 URL을 반환
