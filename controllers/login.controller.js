@@ -1,4 +1,5 @@
 const LoginService = require('../services/login.service.js');
+const UserService = require('../services/user.service.js')
 const jwt = require('../utils/jwt.js');
 const redis = require('redis');
 const RedisRepository = require('../repositories/redis.repository');
@@ -7,6 +8,7 @@ const resUtil = require('../utils/response.util.js');
 
 class LoginController {
   loginService = new LoginService();
+  userService = new UserService();
   redisRepository = new RedisRepository(redis);
 
   login = async (req, res) => {
@@ -18,7 +20,7 @@ class LoginController {
         .status(412)
         .json({ errMsg: '이메일 혹인 비밀번호를 확인해 주세요' });
     }
-    const user = await this.loginService.findUserWithEmail(email);
+    const user = await this.userService.emailExists(email);
     if (!user || user.password !== password) {
       return res.status(411).json({ errMsg: '등록되지 않은 사용자입니다.' });
     }

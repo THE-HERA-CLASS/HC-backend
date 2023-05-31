@@ -9,11 +9,6 @@ class LoginService {
   userRepository = new UserRepository(Users);
   redisRepository = new RedisRepository(redis);
 
-  findUserWithEmail = async (email) => {
-    const findUserWithEmailData = await this.userRepository.findUserWithEmail(email);
-    console.log(findUserWithEmailData);
-    return findUserWithEmailData;
-  };
 
   // 로그인
   login = async (user) => {
