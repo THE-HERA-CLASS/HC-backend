@@ -9,10 +9,6 @@ class LoginService {
   userRepository = new UserRepository(Users);
   redisRepository = new RedisRepository(redis);
 
-  findUserWithEmail = async (email) => {
-    return await this.userRepository.emailExists(email);
-  };
-
   login = async (user) => {
     try {
       const accessToken = jwt.createAccessToken(

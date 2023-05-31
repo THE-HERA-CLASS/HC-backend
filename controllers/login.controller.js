@@ -16,13 +16,14 @@ class LoginController {
     }
   };
 
+
   login = async (req, res) => {
     const { email, password } = req.body;
     try{
     if (!email || !password) {
       return res.status(411).json({ errMsg: '이메일 혹은 비밀번호를 확인해 주세요' });
     }
-    const user = await this.loginService.findUserWithEmail(email);
+    const user = await this.userService.emailExists(email);
     if (!user || user.password !== password) {
       return res.status(412).json({ errMsg: '등록되지 않은 사용자입니다.' });
     }
