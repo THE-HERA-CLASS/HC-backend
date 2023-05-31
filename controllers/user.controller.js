@@ -1,11 +1,10 @@
 const UserService = require('../services/user.service.js');
+const LoginService = require('../services/login.service.js');
 const resUtil = require('../utils/response.util.js');
-const RedisRepository = require('../repositories/redis.repository');
-const redis = require('redis');
 
 class UserController {
   userService = new UserService();
-  redisRepository = new RedisRepository(redis);
+  loginService = new LoginService();
 
   emailExists = async (req, res, next) => {
     try {
@@ -31,9 +30,7 @@ class UserController {
       if (!nickname) {
         throw resUtil(411, '값 없음 : nickname');
       }
-      const nicknameExistsData = await this.userService.nicknameExists(
-        nickname
-      );
+      const nicknameExistsData = await this.userService.nicknameExists(nickname);
       if (!nicknameExistsData) {
         throw resUtil(200, '닉네임 사용 가능');
       } else {
@@ -47,25 +44,25 @@ class UserController {
 
   // 인증이메일 보내기
   sendAuthMail = async (req, res, next) => {
-    try{
-      const  { email } = req.body;
+    try {
+      const { email } = req.body;
       let userNum = Math.random().toString().substring(2, 8);
       await this.userService.sendAuthMail(email, userNum);
 
       const EXPIRE_TIME = 600; // 인증번호 유효시간 5분
-      await this.redisRepository.setData(email, userNum, EXPIRE_TIME);
+      await this.loginService.redis_save_email_auth_number(email, userNum, EXPIRE_TIME);
 
-      res.status(200).json({userNum: userNum});
-    }catch(error){
+      res.status(200).json({ userNum: userNum });
+    } catch (error) {
       console.log(error);
-      return res.status(400).json({errMsg: '인증 이메일 발송에 오류가 발생했습니다. 다시 시도해주세요.'})
+      return res.status(400).json({ errMsg: '인증 이메일 발송에 오류가 발생했습니다. 다시 시도해주세요.' });
     }
-  }
+  };
 
   // 인증이메일번호 검증
   verifyMail = async (req, res, next) => {
     const { email, userCode } = req.body;
-    const getRedisNum = await this.redisRepository.getData(email);
+    const getRedisNum = await this.loginService.redis_find_email_auth_number(email);
     if (userCode !== getRedisNum) {
       return res.status(400).json({
         errMsg: '인증코드가 일치하지 않습니다. 다시 시도해주세요.',
@@ -79,31 +76,20 @@ class UserController {
     try {
       const { email, nickname, password, image, major_id } = req.body;
       if (!email) return res.status(411).json({ errMsg: '값 없음 : email' });
-      if (!nickname)
-        return res.status(411).json({ errMsg: '값 없음 : nickname' });
-      if (!password)
-        return res.status(411).json({ errMsg: '값 없음 : password' });
-      if (!major_id)
-        return res.status(411).json({ errMsg: '값 없음 : major_id' });
+      if (!nickname) return res.status(411).json({ errMsg: '값 없음 : nickname' });
+      if (!password) return res.status(411).json({ errMsg: '값 없음 : password' });
+      if (!major_id) return res.status(411).json({ errMsg: '값 없음 : major_id' });
       if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$/.test(email)) {
-        return res
-          .status(412)
-          .json({ errMsg: '형식 에러: 올바른 이메일 형식이 아닙니다' });
+        return res.status(412).json({ errMsg: '형식 에러: 올바른 이메일 형식이 아닙니다' });
       }
       if (!/^[\w가-힣]{2,10}$/.test(nickname)) {
         return res.status(412).json({
-          errMsg:
-            '형식 에러: 닉네임은 2~10자의 영문, 한글, 숫자, 밑줄(_)만 허용됩니다',
+          errMsg: '형식 에러: 닉네임은 2~10자의 영문, 한글, 숫자, 밑줄(_)만 허용됩니다',
         });
       }
-      if (
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,15}$/.test(
-          password
-        )
-      ) {
+      if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,15}$/.test(password)) {
         return res.status(412).json({
-          errMsg:
-            '형식 에러: 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~15자여야 합니다',
+          errMsg: '형식 에러: 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~15자여야 합니다',
         });
       }
       const userData = {
