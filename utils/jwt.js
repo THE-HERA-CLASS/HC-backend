@@ -17,7 +17,7 @@ module.exports = {
       expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
     });
   },
-
+  // token type
   validateTokenType: (tokenType) => {
     try {
       return tokenType === 'Bearer' ? true : false;
@@ -25,7 +25,7 @@ module.exports = {
       return false;
     }
   },
-
+  // token decode
   validateTokenValue: (tokenValue) => {
     try {
       console.log('SECRET_KEY: ', SECRET_KEY);

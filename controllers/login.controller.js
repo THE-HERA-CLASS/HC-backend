@@ -18,9 +18,9 @@ class LoginController {
 
   login = async (req, res) => {
     const { email, password } = req.body;
-
+    try{
     if (!email || !password) {
-      return res.status(411).json({ errMsg: '이메일 혹인 비밀번호를 확인해 주세요' });
+      return res.status(411).json({ errMsg: '이메일 혹은 비밀번호를 확인해 주세요' });
     }
     const user = await this.loginService.findUserWithEmail(email);
     if (!user || user.password !== password) {
@@ -34,6 +34,9 @@ class LoginController {
     return res.status(200).json({
       authorization: accessToken,
     });
+  }catch(error){
+    return res.status(400).json({ errMsg: '로그인에 실패하였습니다 다시 시도해 주십시오.'});
+  }
   };
 
   logout = async (req, res) => {
@@ -43,13 +46,13 @@ class LoginController {
 
       if (result === 1) {
         res.clearCookie('accesstoken');
-        return res.status(200).json({ message: '로그아웃이 성공적으로 처리되었습니다.' });
+        return res.status(200).json({ message: '로그아웃 되었습니다.' });
       } else {
         return res.status(419).json({ message: '로그아웃을 실패했습니다.' });
       }
     } catch (err) {
       console.error(err);
-      return res.status(400).json({ message: '로그아웃을 처리할 수 없습니다.' });
+      return res.status(400).json({ message: '로그아웃을 처리할 수 없습니다. 다시 시도해 주십시오.' });
     }
   };
 }

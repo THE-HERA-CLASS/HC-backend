@@ -46,6 +46,9 @@ class UserController {
   sendAuthMail = async (req, res, next) => {
     try {
       const { email } = req.body;
+      if(!email){
+        throw resUtil(411, '값 없음 : email');
+      }
       let userNum = Math.random().toString().substring(2, 8);
       await this.userService.sendAuthMail(email, userNum);
 
@@ -65,10 +68,10 @@ class UserController {
     const getRedisNum = await this.loginService.redis_find_email_auth_number(email);
     if (userCode !== getRedisNum) {
       return res.status(400).json({
-        errMsg: '인증코드가 일치하지 않습니다. 다시 시도해주세요.',
+        errMsg: '인증코드가 일치하지 않습니다.',
       });
     } else {
-      return res.status(200).json({ msg: '인증코드가 일치하였습니다.' });
+      return res.status(200).json({ msg: '사용자 이메일 인증에 성공하였습니다.' });
     }
   };
 
