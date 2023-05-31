@@ -1,6 +1,7 @@
 const { Questions } = require('../models');
-const { Upload } = require('@aws-sdk/lib-storage');
-const { S3 } = require('@aws-sdk/client-s3');
+const AWS = require('aws-sdk');
+// const { Upload } = require('@aws-sdk/lib-storage'); // V3
+// const { S3 } = require('@aws-sdk/client-s3'); // V3
 
 // const { promisify } = require('util');
 const fs = require('fs');
@@ -33,7 +34,7 @@ class ExamRepository {
   addImageS3 = async (base64Image, extension) => {
     try {
       // AWS-S3 설정
-      const s3 = new S3({
+      const s3 = new AWS.S3({
         region: process.env.AWS_REGION,
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -62,10 +63,11 @@ class ExamRepository {
         ACL: 'public-read',
         ContentType: `image/${extension}`,
       };
-      const uploadResult = await new Upload({
-        client: s3,
-        params: uploadParams,
-      }).done();
+      // const uploadResult = await new Upload({
+      //   client: s3,
+      //   params: uploadParams,
+      // }).done(); // V3
+      const uploadResult = await s3.upload(uploadParams).promise();
       // 업로드된 이미지의 URL을 반환
       const imageUrl = uploadResult.Location;
       return imageUrl;
