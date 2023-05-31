@@ -1,4 +1,5 @@
 const LoginService = require('../services/login.service.js');
+const UserService = require('../services/user.service.js')
 const jwt = require('../utils/jwt.js');
 const redis = require('redis');
 
@@ -6,6 +7,7 @@ const resUtil = require('../utils/response.util.js');
 
 class LoginController {
   loginService = new LoginService();
+  userService = new UserService();
 
   logintst = async (req, res, next) => {
     try {
