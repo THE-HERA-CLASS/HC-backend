@@ -28,11 +28,10 @@ module.exports = {
   // token decode
   validateTokenValue: (tokenValue) => {
     try {
-      console.log('SECRET_KEY: ', SECRET_KEY);
       return jwt.verify(tokenValue, SECRET_KEY);
     } catch (error) {
       console.error(error);
-      return false;
+      return null;
     }
   },
 };
