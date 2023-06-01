@@ -12,8 +12,8 @@ module.exports = {
     });
   },
 
-  createRefreshToken: () => {
-    return jwt.sign({}, SECRET_KEY, {
+  createRefreshToken: (user_id) => {
+    return jwt.sign({user_id}, SECRET_KEY, {
       expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
     });
   },
