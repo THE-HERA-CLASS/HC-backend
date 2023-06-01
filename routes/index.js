@@ -10,4 +10,5 @@ const searchRouter = require('./search.router.js');
 
 router.use('/', [userRouter, loginRouter, examinfoRouter, examRouter,imageRouter,searchRouter]);
 
+
 module.exports = router;

@@ -42,6 +42,10 @@ module.exports = async (req, res, next) => {
     res.locals.user = setUserData;
 
     // Redis에서 refreshToken을 가져와서 accessToken 재발급
+    // accessToken의 유효시간이 만료되면 다시 토큰 생성
+    // 브라우저는 만료되어도 토큰을 가지고있다
+    const refreshTokenKey = `refreshtoken:${user.user_id}`;
+    const refreshToken = await redisRepository.getData(refreshTokenKey);
     // const refreshTokenKey = `refreshtoken:${getUserData.user_id}`;
     // const refreshToken = await redisRepository.getData(refreshTokenKey);
 
