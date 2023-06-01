@@ -45,9 +45,10 @@ module.exports = async (req, res, next) => {
     }
 
     // 엑세스 토큰 값 만료 됬구나!
+    let newAccessToken;
     if (verifyAccessTokenValue.result === false) {
       // 새 엑세스 토큰 만들어줄게
-      const newAccessToken = jwt.createAccessToken(
+      newAccessToken = jwt.createAccessToken(
         verifyAccessTokenValue.user_id,
         verifyAccessTokenValue.nickname,
         verifyAccessTokenValue.email,
@@ -67,7 +68,7 @@ module.exports = async (req, res, next) => {
 
     // res.locals.user 유저정보 할당
     res.locals.user = {
-      accesstoken: req.cookies.accesstoken,
+      accesstoken: newAccessToken,
       result: verifyAccessTokenValue.result,
       user_id: verifyAccessTokenValue.user_id,
       nickname: verifyAccessTokenValue.nickname,
