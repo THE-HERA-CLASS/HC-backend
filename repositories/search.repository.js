@@ -18,8 +18,6 @@ class SearchRepository {
     }
   };
 }
-
-
 // searchExams = async (keyword) => {
 //     const searchData = await this.Exams.findAll({
 //       where: {
@@ -40,6 +38,7 @@ class SearchRepository {
 //     });
 //     return searchData;
 // };
+
 
 
 module.exports = SearchRepository;
