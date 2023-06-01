@@ -12,8 +12,8 @@ module.exports = {
     });
   },
 
-  createRefreshToken: (user_id) => {
-    return jwt.sign({user_id}, SECRET_KEY, {
+  createRefreshToken: () => {
+    return jwt.sign({}, SECRET_KEY, {
       expiresIn: REFRESH_TOKEN_EXPIRE_TIME,
     });
   },
@@ -28,10 +28,25 @@ module.exports = {
   // token decode
   validateTokenValue: (tokenValue) => {
     try {
-      return jwt.verify(tokenValue, SECRET_KEY);
+      return jwt.verify(tokenValue, SECRET_KEY, (error, decode) => {
+        if (error) {
+          const decodePayload = jwt.decode(tokenValue);
+          return { result: false, ...decodePayload };
+        } else {
+          return { result: true, ...decode };
+        }
+      });
     } catch (error) {
       console.error(error);
       return null;
+    }
+  },
+
+  decodeTokenValue: (tokenValue) => {
+    try {
+      return jwt.decode(tokenValue);
+    } catch (error) {
+      console.error(error);
     }
   },
 };
