@@ -18,34 +18,33 @@ class LoginController {
     }
   };
 
-
   login = async (req, res) => {
     const { email, password } = req.body;
-    try{
-    if (!email || !password) {
-      return res.status(411).json({ errMsg: '이메일 혹은 비밀번호를 확인해 주세요' });
+    try {
+      if (!email || !password) {
+        return res.status(411).json({ errMsg: '값 없음: 이메일/패스워드' });
+      }
+
+      const getUserData = await this.userService.emailExists(email);
+
+      if (!getUserData || getUserData.password !== password) {
+        return res.status(419).json({ errMsg: '등록되지 않은 사용자' });
+      }
+
+      // const accessToken= await this.loginService.login(getUserData);
+      // 테스트용
+      const [accessToken, refreshToken] = await this.loginService.login(getUserData);
+
+      res.cookie('accesstoken', `Bearer ${accessToken}`);
+
+      return res.status(200).json({
+        accesstoken: accessToken,
+        refreshtoken: refreshToken,
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ errMsg: '로그인 실패' });
     }
-
-    const getUserData = await this.userService.emailExists(email);
-
-    if (!getUserData || getUserData.password !== password) {
-      return res.status(412).json({ errMsg: '등록되지 않은 사용자입니다.' });
-    }
-
-    // const accessToken= await this.loginService.login(getUserData);
-    // 테스트용
-    const [accessToken, refreshToken] = await this.loginService.login(getUserData);
-
-
-    res.cookie('accesstoken', `Bearer ${accessToken}`);
-
-    return res.status(200).json({
-      accesstoken: accessToken,
-      refreshtoken: refreshToken,
-    });
-  }catch(error){
-    return res.status(400).json({ errMsg: '로그인에 실패하였습니다 다시 시도해 주십시오.'});
-  }
   };
 
   logout = async (req, res) => {
@@ -55,13 +54,13 @@ class LoginController {
 
       if (result === 1) {
         res.clearCookie('accesstoken');
-        return res.status(200).json({ message: '로그아웃 되었습니다.' });
+        return res.status(200).json({ message: '로그아웃 완료' });
       } else {
-        return res.status(419).json({ message: '로그아웃을 실패했습니다.' });
+        return res.status(419).json({ message: '로그아웃 실패' });
       }
     } catch (err) {
       console.error(err);
-      return res.status(400).json({ message: '로그아웃을 처리할 수 없습니다. 다시 시도해 주십시오.' });
+      return res.status(400).json({ message: '로그아웃 실패' });
     }
   };
 }
