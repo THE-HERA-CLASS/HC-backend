@@ -1,12 +1,9 @@
 const redis = require('redis');
 const jwt = require('../utils/jwt.js');
-const { Users } = require('../models');
-const UserRepository = require('../repositories/user.repository');
 const RedisRepository = require('../repositories/redis.repository.js');
 require('dotenv').config();
 
 class LoginService {
-  userRepository = new UserRepository(Users);
   redisRepository = new RedisRepository(redis);
 
   login = async (user) => {
@@ -26,11 +23,17 @@ class LoginService {
       const value = refreshToken;
       const expire_time = 86400;
 
+      const getData_before = await this.redisRepository.getData(key);
+
+      if (getData_before) {
+        await this.redisRepository.deleteData(key);
+      }
+
       await this.redisRepository.setData(key, value, expire_time);
 
       return accessToken;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   };

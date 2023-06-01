@@ -8,7 +8,7 @@ class UserController {
 
   emailExists = async (req, res, next) => {
     try {
-      const email = req.query.email;
+      const email = req.params.email;
       if (!email) {
         throw resUtil(411, '값 없음 : email');
       }
@@ -26,7 +26,7 @@ class UserController {
 
   nicknameExists = async (req, res, next) => {
     try {
-      const nickname = req.query.nickname;
+      const nickname = req.params.nickname;
       if (!nickname) {
         throw resUtil(411, '값 없음 : nickname');
       }
@@ -46,7 +46,7 @@ class UserController {
   sendAuthMail = async (req, res, next) => {
     try {
       const { email } = req.body;
-      if(!email){
+      if (!email) {
         throw resUtil(411, '값 없음 : email');
       }
       let userNum = Math.random().toString().substring(2, 8);
@@ -116,8 +116,7 @@ class UserController {
 
   withdrawal = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;  // 원래는 로그인 쿠키에서 가져와야하지만, 지금은 구현안되서 직접할당
-      const { user_id } = req.params;
+      const { user_id } = res.locals.user;
       if (!user_id) {
         res.status(411).json({ errMsg: '값 없음 : user_id' });
       }
@@ -135,8 +134,7 @@ class UserController {
 
   getProfile = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;  // 원래는 로그인 쿠키에서 가져와야하지만, 지금은 구현안되서 직접할당
-      const { user_id } = req.params;
+      const { user_id } = res.locals.user;
       if (!user_id) {
         res.status(411).json({ errMsg: '값 없음 : user_id' });
       }
@@ -154,8 +152,7 @@ class UserController {
 
   updateProfile = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;  // 원래는 로그인 쿠키에서 가져와야하지만, 지금은 구현안되서 직접할당
-      const { user_id } = req.params;
+      const { user_id } = res.locals.user;
       const userData = {
         user_id,
         email: req.body.email,

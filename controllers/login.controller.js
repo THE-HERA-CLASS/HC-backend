@@ -1,5 +1,5 @@
 const LoginService = require('../services/login.service.js');
-const UserService = require('../services/user.service.js')
+const UserService = require('../services/user.service.js');
 const jwt = require('../utils/jwt.js');
 const redis = require('redis');
 
@@ -25,17 +25,19 @@ class LoginController {
     if (!email || !password) {
       return res.status(411).json({ errMsg: '이메일 혹은 비밀번호를 확인해 주세요' });
     }
-    const user = await this.userService.emailExists(email);
-    if (!user || user.password !== password) {
+
+    const getUserData = await this.userService.emailExists(email);
+
+    if (!getUserData || getUserData.password !== password) {
       return res.status(412).json({ errMsg: '등록되지 않은 사용자입니다.' });
     }
 
-    const accessToken = await this.loginService.login(user);
+    const accessToken = await this.loginService.login(getUserData);
 
     res.cookie('accesstoken', `Bearer ${accessToken}`);
 
     return res.status(200).json({
-      authorization: accessToken,
+      accesstoken: accessToken,
     });
   }catch(error){
     return res.status(400).json({ errMsg: '로그인에 실패하였습니다 다시 시도해 주십시오.'});
