@@ -30,8 +30,10 @@ class LoginService {
       }
 
       await this.redisRepository.setData(key, value, expire_time);
+      // 테스트용으로 refreshToken도 반환
+      return [accessToken, refreshToken];
+      // return accessToken;
 
-      return accessToken;
     } catch (err) {
       console.error(err);
       throw err;
