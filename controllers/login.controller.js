@@ -32,12 +32,16 @@ class LoginController {
       return res.status(412).json({ errMsg: '등록되지 않은 사용자입니다.' });
     }
 
-    const accessToken = await this.loginService.login(getUserData);
+    // const accessToken= await this.loginService.login(getUserData);
+    // 테스트용
+    const [accessToken, refreshToken] = await this.loginService.login(getUserData);
+
 
     res.cookie('accesstoken', `Bearer ${accessToken}`);
 
     return res.status(200).json({
       accesstoken: accessToken,
+      refreshtoken: refreshToken,
     });
   }catch(error){
     return res.status(400).json({ errMsg: '로그인에 실패하였습니다 다시 시도해 주십시오.'});

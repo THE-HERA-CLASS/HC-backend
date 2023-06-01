@@ -30,7 +30,7 @@ class SearchService {
             };
           }
         })
-        .filter(Boolean)
+        // .filter(Boolean) // 0,false, NaN한 레코드 삭제
         .sort((a, b) => {
           // 먼저 year에 따라 정렬
           // year 2023 ~ 2020
