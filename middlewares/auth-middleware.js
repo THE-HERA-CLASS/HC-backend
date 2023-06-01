@@ -32,13 +32,13 @@ module.exports = async (req, res, next) => {
         const refreshTokenKey = `refreshtoken:${decodeToken.user_id}`; //decodeToken의 user_id: 현재로그인유저의 user_id
         // refreshTokenKey으로 해당 refreshToken을 가져온다
         const refreshToken = await redisRepository.getData(refreshTokenKey);
-        
+
         //refreshToken이 없다면?
         if (!refreshToken) {
           console.log(refreshToken);
           return res.status(411).json({ errMsg: 'Redis에 refreshtoken이 유효하지 않습니다.' });
         }
-    
+
         try {
           // refreshToken 복호화
           const decodedRefreshToken = jwt.validateTokenValue(refreshToken);
@@ -54,7 +54,7 @@ module.exports = async (req, res, next) => {
             userData.authority,
             userData.image
           );
-          
+
           res.cookie('accesstoken', `Bearer ${newAccessToken}`);
           // 재발급 accessToken 유효성검증
           decodeToken = jwt.validateTokenValue(newAccessToken);
@@ -63,12 +63,12 @@ module.exports = async (req, res, next) => {
         }
       }
     }
-        // 유저의 refreshtoken이 존재하는지
-        const refreshTokenKey = `refreshtoken:${userData.user_id}`;
-        const refreshToken = await redisRepository.getData(refreshTokenKey);
-        if (!refreshToken) {
-          return res.status(411).json({ errMsg: 'redis에 해당 사용자의 refreshtoken이 존재하지 않습니다' });
-        }
+    // 유저의 refreshtoken이 존재하는지
+    const refreshTokenKey = `refreshtoken:${userData.user_id}`;
+    const refreshToken = await redisRepository.getData(refreshTokenKey);
+    if (!refreshToken) {
+      return res.status(411).json({ errMsg: 'redis에 해당 사용자의 refreshtoken이 존재하지 않습니다' });
+    }
 
     // 재발급된 accessToken로 유저데이터 생성
     const email = decodeToken.email;

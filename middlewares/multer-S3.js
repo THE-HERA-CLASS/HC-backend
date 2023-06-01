@@ -18,9 +18,7 @@ const allowedExtensions = ['.png', '.jpg', '.jpeg', '.bmp', '.gif'];
 // 현재 날짜와 시간
 const getToDate = () => {
   const now = new Date();
-  return `${now.getFullYear()}-${
-    now.getMonth() + 1
-  }-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
+  return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
 };
 
 // 랜덤한 4자리 숫자
