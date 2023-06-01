@@ -8,6 +8,7 @@ const loginRouter = require('./login.route.js');
 const imageRouter = require('./image.router.js');
 const searchRouter = require('./search.router.js');
 
-router.use('/', [userRouter, loginRouter, examinfoRouter, examRouter, imageRouter, searchRouter]);
+router.use('/', [userRouter, loginRouter, examinfoRouter, examRouter,imageRouter,searchRouter]);
+
 
 module.exports = router;
