@@ -11,8 +11,9 @@ class SearchController {
       }
 
       const results = await this.searchService.searchExams(keyword);
-      return res.status(200).json(keyword);
+      return res.status(200).json(results);
     } catch (err) {
+      console.log(err);
       return res.status(400).json({ errMsg: '검색에 실패하였습니다. 다시 시도해주세요.' });
     }
   };
