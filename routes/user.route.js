@@ -6,8 +6,8 @@ const authMiddleware = require('../middlewares/auth-middleware.js');
 
 const userController = new UserController();
 
-router.get('/emailExists', userController.emailExists);
-router.get('/nicknameExists', userController.nicknameExists);
+router.get('/emailExists/:email', userController.emailExists);
+router.get('/nicknameExists/:nickname', userController.nicknameExists);
 router.post('/signup', userController.signup);
 router.delete('/withdrawal', authMiddleware, userController.withdrawal);
 router.get('/profile', authMiddleware, userController.getProfile);

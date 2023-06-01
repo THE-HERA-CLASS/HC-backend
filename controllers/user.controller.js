@@ -8,7 +8,7 @@ class UserController {
 
   emailExists = async (req, res, next) => {
     try {
-      const email = req.query.email;
+      const email = req.params.email;
       if (!email) {
         throw resUtil(411, '값 없음 : email');
       }
@@ -26,7 +26,7 @@ class UserController {
 
   nicknameExists = async (req, res, next) => {
     try {
-      const nickname = req.query.nickname;
+      const nickname = req.params.nickname;
       if (!nickname) {
         throw resUtil(411, '값 없음 : nickname');
       }
