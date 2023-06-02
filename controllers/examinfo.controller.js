@@ -3,7 +3,7 @@ const ExaminfoService = require('../services/examinfo.service.js');
 class ExaminfoController {
   examinfoService = new ExaminfoService();
 
-  //[전공]=================================================================
+  // ==================================== 전공 ====================================
 
   addMajor = async (req, res) => {
     try {
@@ -26,6 +26,21 @@ class ExaminfoController {
       return res.status(200).json({ data: majorData });
     } catch (error) {
       console.error(error);
+      return res.status(400).json({ errMsg: '전공 조회 실패' });
+    }
+  };
+
+  getMajorWithMajorId = async (req, res) => {
+    try {
+      const { major_id } = req.params;
+      const getMajorData = await this.examinfoService.getMajorWithMajorId(major_id);
+      if (getMajorData) {
+        return res.status(200).json({ data: getMajorData });
+      } else {
+        return res.status(419).json({ errMsg: '요청 전공 해당 전공 조회 실패' });
+      }
+    } catch (err) {
+      console.error(err);
       return res.status(400).json({ errMsg: '전공 조회 실패' });
     }
   };
@@ -67,7 +82,7 @@ class ExaminfoController {
     }
   };
 
-  //[자격증]=================================================================
+  // ==================================== 자격증 ====================================
 
   addCertificate = async (req, res) => {
     try {
@@ -146,7 +161,7 @@ class ExaminfoController {
     }
   };
 
-  //[과목]=================================================================
+  // ==================================== 과목 ====================================
 
   addSubject = async (req, res) => {
     try {
@@ -222,6 +237,29 @@ class ExaminfoController {
     } catch (error) {
       console.error(error);
       return res.status(400).json({ errMsg: '과목 삭제 실패' });
+    }
+  };
+
+  // ==================================== 시험지 ====================================
+  addExam = async (req, res) => {
+    try {
+      const { major_id, certificate_id, subject_id, year, round } = req.body;
+
+      if (!major_id || !certificate_id || !subject_id || !year || !round) {
+        return res.status(411).json({ errMsg: '값 없음: major_id/certificate_id/subject_id/year/grade' });
+      }
+
+      const addExam = await this.examinfoService.addExam(major_id, certificate_id, subject_id, year, round);
+      console.log(`addExam: ${addExam}`);
+
+      if (addExam) {
+        return res.status(200).json({ msg: '시험지 등록 완료', data: addExam });
+      } else {
+        return res.status(419).json({ errMsg: '시험지 등록 실패' });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ errMsg: '시험지 등록 실패' });
     }
   };
 }

@@ -1,7 +1,8 @@
-const { Majors, Certificates, Subjects } = require('../models');
+const { Majors, Certificates, Subjects, Exams } = require('../models');
 
 class ExaminfoRepository {
-  //[전공]=================================================================
+  // ==================================== 전공 ====================================
+
   addMajor = async (name) => {
     try {
       return await Majors.create({
@@ -17,6 +18,15 @@ class ExaminfoRepository {
       return await Majors.findAll({});
     } catch (err) {
       console.err(err);
+    }
+  };
+
+  getMajorWithMajorId = async (major_id) => {
+    try {
+      return await Majors.findOne({ where: { major_id } });
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
   };
 
@@ -36,7 +46,8 @@ class ExaminfoRepository {
     }
   };
 
-  //[자격증]=================================================================
+  // ==================================== 자격증 ====================================
+
   addCertificate = async (major_id, name, division) => {
     try {
       return await Certificates.create({
@@ -84,7 +95,8 @@ class ExaminfoRepository {
     }
   };
 
-  //[과목]=================================================================
+  // ==================================== 과목 ====================================
+
   addSubject = async (certificate_id, name) => {
     try {
       return await Subjects.create({
@@ -123,6 +135,34 @@ class ExaminfoRepository {
   dropSubject = async (subject_id) => {
     try {
       return await Subjects.destroy({ where: { subject_id: subject_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ==================================== 시험지 ====================================
+
+  addExam = async (major_id, certificate_id, subject_id, year, round) => {
+    try {
+      const getMajorData = await Majors.findOne({ where: { major_id } });
+      const major_name = getMajorData.name;
+      const getCertificateData = await Certificates.findOne({ where: { certificate_id } });
+      const certificate_name = getCertificateData.name;
+      const certificate_division = getCertificateData.division;
+      const getSubjectData = await Subjects.findOne({ where: { subject_id } });
+      const subject_name = getSubjectData.name;
+
+      return await Exams.create({
+        major_id,
+        major_name,
+        certificate_id,
+        certificate_name,
+        certificate_division,
+        subject_id,
+        subject_name,
+        year,
+        round,
+      });
     } catch (err) {
       console.error(err);
     }

@@ -3,7 +3,7 @@ const ExaminfoRepository = require('../repositories/examinfo.repository.js');
 class ExaminfoService {
   examinfoRepository = new ExaminfoRepository();
 
-  //[전공]=================================================================
+  // ==================================== 전공 ====================================
 
   addMajor = async (name) => {
     try {
@@ -32,6 +32,15 @@ class ExaminfoService {
     }
   };
 
+  getMajorWithMajorId = async (major_id) => {
+    try {
+      return await this.examinfoRepository.getMajorWithMajorId(major_id);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
   updateMajor = async (name, major_id) => {
     try {
       return await this.examinfoRepository.updateMajor(name, major_id);
@@ -48,7 +57,7 @@ class ExaminfoService {
     }
   };
 
-  //[자격증]=================================================================
+  // ==================================== 자격증 ====================================
 
   addCertificate = async (certificate_id, name, division) => {
     try {
@@ -92,7 +101,7 @@ class ExaminfoService {
     }
   };
 
-  //[과목]=================================================================
+  // ==================================== 과목 ====================================
 
   addSubject = async (certificate_id, name) => {
     try {
@@ -131,6 +140,16 @@ class ExaminfoService {
   dropSubject = async (subject_id) => {
     try {
       return await this.examinfoRepository.dropSubject(subject_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ==================================== 시험지 ====================================
+
+  addExam = async (major_id, certificate_id, subject_id, year, round) => {
+    try {
+      return await this.examinfoRepository.addExam(major_id, certificate_id, subject_id, year, round);
     } catch (err) {
       console.error(err);
     }

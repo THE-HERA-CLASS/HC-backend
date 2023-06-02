@@ -21,4 +21,7 @@ router.get('/subject/withCertificateId/:certificate_id', examinfoController.getS
 router.put('/subject/:subject_id', examinfoController.updateSubject);
 router.delete('/subject/:subject_id', examinfoController.dropSubject);
 
+router.post('/exam', examinfoController.addExam);
+// router.get('/exam', examinfoController.getExam);
+
 module.exports = router;
