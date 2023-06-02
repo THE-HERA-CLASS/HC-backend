@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger-output");
 
 require('dotenv').config();
 const port = process.env.HOST_PORT;
@@ -14,6 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api', router);
 app.use(errorHandler);
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.listen(port, () => {
   console.log(`Server open on port ${port}`);

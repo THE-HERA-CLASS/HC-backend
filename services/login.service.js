@@ -17,7 +17,7 @@ class LoginService {
         user.image
       );
 
-      const refreshToken = jwt.createRefreshToken(user.user_id);
+      const refreshToken = jwt.createRefreshToken();
 
       const key = `refreshtoken:${user.user_id}`;
       const value = refreshToken;
@@ -33,7 +33,6 @@ class LoginService {
       // 테스트용으로 refreshToken도 반환
       return [accessToken, refreshToken];
       // return accessToken;
-
     } catch (err) {
       console.error(err);
       throw err;
