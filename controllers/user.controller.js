@@ -65,6 +65,7 @@ class UserController {
   // 인증이메일번호 검증
   verifyMail = async (req, res, next) => {
     const { email, userCode } = req.body;
+    // const userCode  = req.body;
     const getRedisNum = await this.loginService.redis_find_email_auth_number(email);
     if (userCode !== getRedisNum) {
       return res.status(400).json({
