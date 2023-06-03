@@ -21,7 +21,7 @@ class ExaminfoRepository {
     }
   };
 
-  getMajorWithMajorId = async (major_id) => {
+  getOneMajor = async (major_id) => {
     try {
       return await Majors.findOne({ where: { major_id } });
     } catch (err) {
@@ -30,9 +30,9 @@ class ExaminfoRepository {
     }
   };
 
-  updateMajor = async (name, major_id) => {
+  updateMajor = async (major_id, name) => {
     try {
-      return await Majors.update({ name: name }, { where: { major_id: major_id } });
+      return await Majors.update({ name }, { where: { major_id } });
     } catch (err) {
       console.error(err);
     }
@@ -76,12 +76,17 @@ class ExaminfoRepository {
     }
   };
 
-  updateCertificate = async (certificate_id, name, division) => {
+  getCertificateWithCertificateId = async (certificate_id) => {
     try {
-      return await Certificates.update(
-        { name: name, division: division },
-        { where: { certificate_id: certificate_id } }
-      );
+      return await Certificates.findOne({ where: { certificate_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateCertificate = async (certificate_id, major_id, name, division) => {
+    try {
+      return await Certificates.update({ major_id, name, division }, { where: { certificate_id } });
     } catch (err) {
       console.error(err);
     }
@@ -124,9 +129,17 @@ class ExaminfoRepository {
     }
   };
 
-  updateSubject = async (subject_id, name) => {
+  getSubjectWithSubjectId = async (subject_id) => {
     try {
-      return await Subjects.update({ name: name }, { where: { subject_id: subject_id } });
+      return await Subjects.findOne({ where: { subject_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateSubject = async (subject_id, certificate_id, name) => {
+    try {
+      return await Subjects.update({ certificate_id, name }, { where: { subject_id } });
     } catch (err) {
       console.error(err);
     }
@@ -163,6 +176,80 @@ class ExaminfoRepository {
         year,
         round,
       });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExam = async () => {
+    try {
+      return await Exams.findAll({
+        order: [
+          ['major_id', 'ASC'],
+          ['certificate_id', 'ASC'],
+          ['subject_id', 'ASC'],
+          ['year', 'ASC'],
+          ['round', 'ASC'],
+        ],
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExamWithExamId = async (exam_id) => {
+    try {
+      return await Exams.findOne({ where: { exam_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateExam = async (examData) => {
+    try {
+      const { exam_id, major_id, certificate_id, subject_id, year, round } = examData;
+      let major_name, certificate_name, certificate_division, subject_name;
+
+      if (major_id) {
+        const getMajorData = await Majors.findOne({ where: { major_id } });
+        major_name = getMajorData.name;
+      }
+
+      if (certificate_id) {
+        const getCertificateData = await Certificates.findOne({ where: { certificate_id } });
+        certificate_name = getCertificateData.name;
+        certificate_division = getCertificateData.division;
+      }
+
+      if (subject_id) {
+        const getSubjectData = await Subjects.findOne({ where: { subject_id } });
+        subject_name = getSubjectData.name;
+      }
+
+      await Exams.update(
+        {
+          major_id,
+          major_name,
+          certificate_id,
+          certificate_name,
+          certificate_division,
+          subject_id,
+          subject_name,
+          year,
+          round,
+        },
+        { where: { exam_id } }
+      );
+
+      return await Exams.findAll({ where: { exam_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  deleteExam = async (exam_id) => {
+    try {
+      return await Exams.destroy({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }

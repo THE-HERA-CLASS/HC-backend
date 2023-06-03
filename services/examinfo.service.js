@@ -32,18 +32,18 @@ class ExaminfoService {
     }
   };
 
-  getMajorWithMajorId = async (major_id) => {
+  getOneMajor = async (major_id) => {
     try {
-      return await this.examinfoRepository.getMajorWithMajorId(major_id);
+      return await this.examinfoRepository.getOneMajor(major_id);
     } catch (err) {
       console.error(err);
       throw err;
     }
   };
 
-  updateMajor = async (name, major_id) => {
+  updateMajor = async (major_id, name) => {
     try {
-      return await this.examinfoRepository.updateMajor(name, major_id);
+      return await this.examinfoRepository.updateMajor(major_id, name);
     } catch (err) {
       console.error(err);
     }
@@ -85,9 +85,17 @@ class ExaminfoService {
     }
   };
 
-  updateCertificate = async (certificate_id, name, division) => {
+  getCertificateWithCertificateId = async (certificate_id) => {
     try {
-      return await this.examinfoRepository.updateCertificate(certificate_id, name, division);
+      return await this.examinfoRepository.getCertificateWithCertificateId(certificate_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateCertificate = async (certificate_id, major_id, name, division) => {
+    try {
+      return await this.examinfoRepository.updateCertificate(certificate_id, major_id, name, division);
     } catch (err) {
       console.error(err);
     }
@@ -129,9 +137,17 @@ class ExaminfoService {
     }
   };
 
-  updateSubject = async (subject_id, name) => {
+  getSubjectWithSubjectId = async (subject_id) => {
     try {
-      return await this.examinfoRepository.updateSubject(subject_id, name);
+      return await this.examinfoRepository.getSubjectWithSubjectId(subject_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateSubject = async (subject_id, certificate_id, name) => {
+    try {
+      return await this.examinfoRepository.updateSubject(subject_id, certificate_id, name);
     } catch (err) {
       console.error(err);
     }
@@ -150,6 +166,38 @@ class ExaminfoService {
   addExam = async (major_id, certificate_id, subject_id, year, round) => {
     try {
       return await this.examinfoRepository.addExam(major_id, certificate_id, subject_id, year, round);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExam = async () => {
+    try {
+      return await this.examinfoRepository.getExam();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExamWithExamId = async (exam_id) => {
+    try {
+      return await this.examinfoRepository.getExamWithExamId(exam_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateExam = async (examData) => {
+    try {
+      return await this.examinfoRepository.updateExam(examData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  deleteExam = async (exam_id) => {
+    try {
+      return await this.examinfoRepository.deleteExam(exam_id);
     } catch (err) {
       console.error(err);
     }
