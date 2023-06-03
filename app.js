@@ -1,4 +1,4 @@
-const https = require('https');
+// const https = require('https');
 const express = require('express');
 const app = express();
 const swaggerUi = require('swagger-ui-express');
@@ -19,10 +19,10 @@ app.use('/api', router);
 app.use(errorHandler);
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-// app.listen(port, () => {
-//   console.log(`Server open on port ${port}`);
-// });
-
-https.createServer(app).listen(port, () => {
+app.listen(port, () => {
   console.log(`Server open on port ${port}`);
 });
+
+// https.createServer(app).listen(port, () => {
+//   console.log(`Server open on port ${port}`);
+// });
