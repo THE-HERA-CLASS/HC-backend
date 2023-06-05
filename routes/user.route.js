@@ -15,6 +15,6 @@ router.put('/profile', authMiddleware, userController.updateProfile);
 
 // 이메일 인증
 router.post('/sendAuthMail', userController.sendAuthMail);
-router.get('/verifyMail', userController.verifyMail);
+router.post('/verifyMail', userController.verifyMail);
 
 module.exports = router;
