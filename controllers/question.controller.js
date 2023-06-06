@@ -118,7 +118,7 @@ class QuestionController {
     try {
       let { exam_id } = req.params;
 
-      if (!exam_id) return res.status(411).json({ errMsg: '값 없음: question_num' });
+      if (!exam_id) return res.status(411).json({ errMsg: '값 없음: exam_id' });
 
       if (Number(exam_id)) {
         exam_id = Number(exam_id);
