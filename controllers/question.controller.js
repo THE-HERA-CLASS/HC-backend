@@ -30,12 +30,6 @@ class QuestionController {
 
       if (!exam_id) return res.status(411).json({ errMsg: '값 없음: exam_id' });
       if (!sort_num) return res.status(411).json({ errMsg: '값 없음: sort_num' });
-      if (!question_num) return res.status(411).json({ errMsg: '값 없음: question_num' });
-      if (!question) return res.status(411).json({ errMsg: '값 없음: question' });
-      if (!example) return res.status(411).json({ errMsg: '값 없음: example' });
-      if (!choice) return res.status(411).json({ errMsg: '값 없음: choice' });
-      if (!answer) return res.status(411).json({ errMsg: '값 없음: answer' });
-      if (!solve) return res.status(411).json({ errMsg: '값 없음: solve' });
 
       if (Number(exam_id)) {
         exam_id = Number(exam_id);
