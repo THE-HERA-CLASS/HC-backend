@@ -152,7 +152,7 @@ class QuestionController {
 
       const getQuestionData = await this.questionService.getQuestionWithQuestionId(question_id);
 
-      if (!getQuestionData) return res.status(412).json({ errMsg: `question_id: ${question_id} 문제 없음` });
+      if (!getQuestionData) return res.status(416).json({ errMsg: `question_id: ${question_id} 문제 없음` });
 
       let { exam_id, sort_num, question_num, question, example, choice, answer, solve } = req.body;
 
