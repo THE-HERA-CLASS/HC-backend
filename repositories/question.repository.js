@@ -10,8 +10,8 @@ const fs = require('fs');
 // const multerS3 = require('multer-s3');
 require('dotenv').config();
 
-class ExamRepository {
-  addQuestions = async (exam_id, question_datas) => {
+class QuestionRepository {
+  addQuestionsWord = async (exam_id, question_datas) => {
     try {
       // DB Create
       question_datas.forEach((question) => {
@@ -76,6 +76,78 @@ class ExamRepository {
       throw err; // 오류 처리 후 다시 throw
     }
   };
+
+  addQuestion = async (questionData) => {
+    const { exam_id, sort_num, question_num, question, example, choice, answer, solve } = questionData;
+    try {
+      return await Questions.create({
+        exam_id,
+        sort_num,
+        question_num,
+        question,
+        example,
+        choice,
+        answer,
+        solve,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getQuestions = async () => {
+    try {
+      return await Questions.findAll({});
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getQuestionWithQuestionId = async (question_id) => {
+    try {
+      return await Questions.findOne({ where: { question_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getQuestionWithExamId = async (exam_id) => {
+    try {
+      return await Questions.findAll({ where: { exam_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateQuestion = async (questionData) => {
+    try {
+      const updateQuestionData = await Questions.update(
+        {
+          exam_id: questionData.exam_id,
+          sort_num: questionData.sort_num,
+          question_num: questionData.question_num,
+          question: questionData.question,
+          example: questionData.example,
+          choice: questionData.choice,
+          answer: questionData.answer,
+          solve: questionData.solve,
+        },
+        { where: { question_id: questionData.question_id } }
+      );
+      const updateResult = await Questions.findOne({ where: { question_id: questionData.question_id } });
+      return updateResult;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  deleteQuestion = async (question_id) => {
+    try {
+      return await Questions.destroy({ where: { question_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
-module.exports = ExamRepository;
+module.exports = QuestionRepository;

@@ -1,11 +1,11 @@
-const ExamRepository = require('../repositories/question.repository.js');
+const QuestionRepository = require('../repositories/question.repository.js');
 
 // let question_datas = [];
 
-class ExamService {
-  examRepository = new ExamRepository();
+class QuestionService {
+  questionRepository = new QuestionRepository();
 
-  addQuestions = async (exam_id, question_array) => {
+  addQuestionsWord = async (exam_id, question_array) => {
     const clearText = async (text) => text.replace(/^\s+|\s+$/g, '');
 
     const s3_url = async (value) => {
@@ -15,7 +15,7 @@ class ExamService {
         const img_src_end_index = value.indexOf('" />');
         const img_extension = value.substring(img_extension_start_index, img_src_start_index - 8);
         const img_src = value.substring(img_src_start_index, img_src_end_index);
-        const img_s3_url = await this.examRepository.addImageS3(img_src, img_extension);
+        const img_s3_url = await this.questionRepository.addImageS3(img_src, img_extension);
         return {
           type: 'image',
           value: img_s3_url,
@@ -47,7 +47,7 @@ class ExamService {
           if (example_start_index < 0) {
             // 보기문 없음
             const question_value = await clearText(text.substring(2, text_end_index));
-            question_init_object = { sort_num: index + 1, question: question_value };
+            question_init_object = { exam_id, sort_num: index + 1, question: question_value };
             // question_init_array.push(question_value);
           } else {
             // 보기문 있음
@@ -64,7 +64,7 @@ class ExamService {
                   const img_src_end_index = example.indexOf('" />');
                   const img_extension = example.substring(img_extension_start_index, img_src_start_index - 8);
                   const img_src = example.substring(img_src_start_index, img_src_end_index);
-                  const img_s3_url = await this.examRepository.addImageS3(img_src, img_extension);
+                  const img_s3_url = await this.questionRepository.addImageS3(img_src, img_extension);
                   return {
                     type: 'image',
                     value: img_s3_url,
@@ -77,7 +77,7 @@ class ExamService {
                 }
               })
             );
-            question_init_object = { sort_num: index + 1, question: question_value, example: example_value };
+            question_init_object = { exam_id, sort_num: index + 1, question: question_value, example: example_value };
           }
         } else {
           // 문제유형
@@ -86,6 +86,7 @@ class ExamService {
             const question_number_value = await clearText(text.substring(0, text.indexOf('. ')));
             const question_value = await clearText(text.substring(2, choice_1_index));
             question_init_object = {
+              exam_id,
               sort_num: index + 1,
               question_num: Number(question_number_value),
               question: question_value,
@@ -106,7 +107,7 @@ class ExamService {
                   const img_src_end_index = example.indexOf('" />');
                   const img_extension = example.substring(img_extension_start_index, img_src_start_index - 8);
                   const img_src = example.substring(img_src_start_index, img_src_end_index);
-                  const img_s3_url = await this.examRepository.addImageS3(img_src, img_extension);
+                  const img_s3_url = await this.questionRepository.addImageS3(img_src, img_extension);
                   return {
                     type: 'image',
                     value: img_s3_url,
@@ -120,6 +121,7 @@ class ExamService {
               })
             );
             question_init_object = {
+              exam_id,
               sort_num: index + 1,
               question_num: Number(question_number_value),
               question: question_value,
@@ -165,12 +167,95 @@ class ExamService {
         return question_init_object;
       })
     );
-    const addQuestionResult = await this.examRepository.addQuestions(exam_id, question_data_array);
+    const addQuestionResult = await this.questionRepository.addQuestionsWord(exam_id, question_data_array);
+    console.log('addQuestionResult', addQuestionResult);
     return {
       addQuestionResult,
       addQuestionData: question_data_array,
     };
   };
+
+  addQuestion = async (questionData) => {
+    try {
+      return await this.questionRepository.addQuestion(questionData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getQuestions = async () => {
+    try {
+      const getQuestionsData = await this.questionRepository.getQuestions();
+      return getQuestionsData.map((data) => {
+        return {
+          exam_id: data.exam_id,
+          sort_num: data.sort_num,
+          question_num: data.question_num,
+          question: data.question,
+          example: JSON.parse(data.example),
+          choice: JSON.parse(data.choice),
+          answer: data.answer,
+          solve: data.solve,
+        };
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getQuestionWithQuestionId = async (question_id) => {
+    try {
+      const getQuestionData = await this.questionRepository.getQuestionWithQuestionId(question_id);
+      return {
+        exam_id: getQuestionData.exam_id,
+        sort_num: getQuestionData.sort_num,
+        question_num: getQuestionData.question_num,
+        question: getQuestionData.question,
+        example: JSON.parse(getQuestionData.example),
+        choice: JSON.parse(getQuestionData.choice),
+        answer: getQuestionData.answer,
+        solve: getQuestionData.solve,
+      };
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getQuestionWithExamId = async (exam_id) => {
+    try {
+      const getQuestionData = await this.questionRepository.getQuestionWithExamId(exam_id);
+      return getQuestionData.map((data) => {
+        return {
+          exam_id: data.exam_id,
+          sort_num: data.sort_num,
+          question_num: data.question_num,
+          question: data.question,
+          example: JSON.parse(data.example),
+          choice: JSON.parse(data.choice),
+          answer: data.answer,
+          solve: data.solve,
+        };
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  updateQuestion = async (questionData) => {
+    try {
+      return await this.questionRepository.updateQuestion(questionData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  deleteQuestion = async (question_id) => {
+    try {
+      return await this.questionRepository.deleteQuestion(question_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
-module.exports = ExamService;
+module.exports = QuestionService;
