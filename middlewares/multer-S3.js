@@ -18,7 +18,9 @@ const allowedExtensions = ['.png', '.jpg', '.jpeg', '.bmp', '.gif'];
 // 현재 날짜와 시간
 const getToDate = () => {
   const now = new Date();
-  return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
+  return `${now.getFullYear()}-${
+    now.getMonth() + 1
+  }-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
 };
 
 // 랜덤한 4자리 숫자
@@ -48,7 +50,7 @@ const upload_image = multer({
         return callback(new Error('확장자 에러')); //412
       }
       // 파일이 업로드된 시간(date), 랜덤한 네 자리 숫자(randomNumber)를 결함하려 고유한이름을 가진 파일의 url를 생성
-      const img_url = `https://theheraclass.s3.ap-northeast-2.amazonaws.com/img/${today}_${randomNum}${extension}`;
+      const img_url = `https://${process.env.AWS_BUCKET}.s3.ap-northeast-2.amazonaws.com/img/${today}_${randomNum}${extension}`;
 
       // 생성된 img_url을 req.img_url에 배열 형태로 담음
       req.img_url = req.img_url || [];
