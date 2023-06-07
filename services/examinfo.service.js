@@ -179,6 +179,15 @@ class ExaminfoService {
     }
   };
 
+  getExamId = async (examData) => {
+    try {
+      const getExamData = await this.examinfoRepository.getExamId(examData);
+      return getExamData.exam_id;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   getExamWithExamId = async (exam_id) => {
     try {
       return await this.examinfoRepository.getExamWithExamId(exam_id);

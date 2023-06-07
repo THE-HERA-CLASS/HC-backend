@@ -1,4 +1,5 @@
 const { Majors, Certificates, Subjects, Exams } = require('../models');
+const { Op } = require('sequelize');
 
 class ExaminfoRepository {
   // ==================================== 전공 ====================================
@@ -191,6 +192,24 @@ class ExaminfoRepository {
           ['year', 'ASC'],
           ['round', 'ASC'],
         ],
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExamId = async (examData) => {
+    try {
+      return await Exams.findOne({
+        where: {
+          [Op.and]: [
+            { major_id: examData.major_id },
+            { certificate_id: examData.certificate_id },
+            { subject_id: examData.subject_id },
+            { year: examData.year },
+            { round: examData.round },
+          ],
+        },
       });
     } catch (err) {
       console.error(err);
