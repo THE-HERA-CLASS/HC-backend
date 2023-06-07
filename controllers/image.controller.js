@@ -1,15 +1,10 @@
-const resUtil = require('../utils/response.util.js');
-
 class ImageController {
-  upload_image = async (req, res, next) => {
-    const imageUrl = req.img_url; // 이미지 URL 가져오기
+  upload_image = async (req, res) => {
+    const imageUrl = req.img_url;
     if (imageUrl) {
-      // 이미지 URL이 존재하면
-      return res.status(200).json({ Data: imageUrl }); // 이미지 URL 반환해보리기~
-      // throw resUtil(200, { Data: imageUrl });
+      return res.status(200).json({ data: imageUrl });
     } else {
-      // 이미지 URL이 없으면
-      throw resUtil(400, '이미지 업로드 실패');
+      return res.status(400).json({ errMsg: '이미지 업로드 실패' });
     }
   };
 }
