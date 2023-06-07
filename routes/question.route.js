@@ -9,6 +9,7 @@ const storage = multer.memoryStorage(); // 메모리에서 파일 처리
 const upload = multer({ storage: storage });
 
 router.post('/question_file', upload.single('file'), questionController.addQuestionsWord);
+router.post('/question_editor', questionController.addQuestionsEditor);
 router.post('/question', questionController.addQuestion);
 router.get('/question', questionController.getQuestions);
 router.get('/question/:question_id', questionController.getQuestionWithQuestionId);

@@ -175,6 +175,14 @@ class QuestionService {
     };
   };
 
+  addQuestionsEditor = async (data) => {
+    const addQuestionResult = await this.textRepository.addQuestionsEditor(data);
+    return {
+      addQuestionResult,
+      addQuestionData: data,
+    };
+  };
+
   addQuestion = async (questionData) => {
     try {
       return await this.questionRepository.addQuestion(questionData);

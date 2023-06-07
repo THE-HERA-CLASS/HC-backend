@@ -11,10 +11,30 @@ const fs = require('fs');
 require('dotenv').config();
 
 class QuestionRepository {
-  addQuestionsWord = async (exam_id, question_datas) => {
+  addQuestionsWord = async (question_datas) => {
     try {
       // DB Create
       question_datas.forEach((question) => {
+        return Questions.create({
+          exam_id: question.exam_id,
+          sort_num: question.sort_num,
+          question_num: question.question_num,
+          question: question.question,
+          example: JSON.stringify(question.example),
+          choice: JSON.stringify(question.choice),
+          answer: question.answer,
+          solve: question.solve,
+        });
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  addQuestionsEditor = async (exam_id, data) => {
+    try {
+      // DB Create
+      await data.forEach((question) => {
         return Questions.create({
           exam_id,
           sort_num: question.sort_num,
