@@ -340,13 +340,19 @@ class ExaminfoController {
   // ==================================== 시험지 ====================================
   addExam = async (req, res) => {
     try {
-      const { major_id, certificate_id, subject_id, year, round } = req.body;
+      let { major_id, certificate_id, subject_id, year, round } = req.body;
 
       if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
       if (!year) return res.status(411).json({ errMsg: '값 없음: year' });
       if (!round) return res.status(411).json({ errMsg: '값 없음: grade' });
+
+      major_id = Number(major_id);
+      certificate_id = Number(certificate_id);
+      subject_id = Number(subject_id);
+      year = Number(year);
+      round = Number(round);
 
       const addExam = await this.examinfoService.addExam(major_id, certificate_id, subject_id, year, round);
 
@@ -372,6 +378,43 @@ class ExaminfoController {
     } catch (err) {
       console.error(err);
       return res.status(400).json({ errMsg: '전체 에러' });
+    }
+  };
+
+  getExamId = async (req, res) => {
+    try {
+      let { major_id, certificate_id, subject_id, year, round } = req.body;
+
+      if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
+      if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
+      if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
+      if (!year) return res.status(411).json({ errMsg: '값 없음: year' });
+      if (!round) return res.status(411).json({ errMsg: '값 없음: grade' });
+
+      major_id = Number(major_id);
+      certificate_id = Number(certificate_id);
+      subject_id = Number(subject_id);
+      year = Number(year);
+      round = Number(round);
+
+      const examData = {
+        major_id,
+        certificate_id,
+        subject_id,
+        year,
+        round,
+      };
+
+      const getExamIdNumber = await this.examinfoService.getExamId(examData);
+
+      if (getExamIdNumber) {
+        return res.status(200).json({ exam_id: getExamIdNumber });
+      } else {
+        return res.status(419).json({ errMsg: '시험지 없음' });
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ errMsg: 'exam_id 조회 실패' });
     }
   };
 
