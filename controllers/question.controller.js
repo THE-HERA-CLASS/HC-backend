@@ -27,6 +27,7 @@ class QuestionController {
   addQuestionsEditor = async (req, res) => {
     try {
       let { data } = req.body;
+      if (!data) return res.status(411).json({ errMsg: '값 없음: data' });
       const result = await this.textService.addQuestionsEditor(data);
       return res.status(200).json({ data: result.addQuestionData });
     } catch (err) {
