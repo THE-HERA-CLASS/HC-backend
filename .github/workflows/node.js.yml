@@ -13,7 +13,7 @@ env:
   PROJECT_NAME: theheraclass
   BUCKET_NAME: terrarossa
   CODE_DEPLOY_APP_NAME: code
-  DEPLOYMENT_GROUP_NAME: 배포그룹명 채워야 됨.    
+  DEPLOYMENT_GROUP_NAME: codecode    
 
 jobs:
   build:
