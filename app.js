@@ -12,14 +12,12 @@ const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
-// app.use(cors());
-app.use(
-  cors({
-    origin: '*',
-    credentials: true,
-    // cors options
-  })
-);
+app.use(cors({
+  origin: 'https://the-hera-class.com',
+  credentials: true
+}));
+
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', router);
