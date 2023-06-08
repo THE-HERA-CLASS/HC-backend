@@ -12,7 +12,6 @@ const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
-app.use(cors());
 app.use(
   cors({
     origin: '*', // 허용하려는 도메인
