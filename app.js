@@ -13,7 +13,7 @@ const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
 app.use(cors({
-  origin: 'localhost:3000',
+  origin: 'https://the-hera-class.com',
   credentials: true
 }));
 
