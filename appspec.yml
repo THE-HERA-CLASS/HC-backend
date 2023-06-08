@@ -1,17 +1,17 @@
-version: 0.0
-os: linux
-files:
-  - source: /
-    destination: /home/ubuntu/temp/
-permissions:
-  - object: /home/ubuntu/HC-backend/
-    owner: ubuntu
-    group: ubuntu
-hooks:
-  BeforInstall:
-    - location: scripts/karyl.sh
-      runas: ubuntu
+# version: 0.0
+# os: linux
+# files:
+#   - source: /
+#     destination: /home/ubuntu/temp/
+# permissions:
+#   - object: /home/ubuntu/HC-backend/
+#     owner: ubuntu
+#     group: ubuntu
+# hooks:
+#   BeforInstall:
+#     - location: scripts/karyl.sh
+#       runas: ubuntu
 
-  AfterInstall:
-    - location: scripts/deploy.sh
-      runas: ubuntu
+#   AfterInstall:
+#     - location: scripts/deploy.sh
+#       runas: ubuntu
