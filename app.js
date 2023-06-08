@@ -15,7 +15,7 @@ var cors = require('cors');
 // app.use(cors());
 app.use(
   cors({
-    origin: 'https://the-hera-class.com',
+    origin: '*',
     credentials: true,
     // cors options
   })
