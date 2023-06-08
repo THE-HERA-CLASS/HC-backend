@@ -15,7 +15,7 @@ var cors = require('cors');
 app.use(cors());
 app.use(
   cors({
-    origin: 'https://the-hera-class.com', // 허용하려는 도메인
+    origin: '*', // 허용하려는 도메인
     credentials: true,
   })
 );
