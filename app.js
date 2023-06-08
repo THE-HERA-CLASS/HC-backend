@@ -12,14 +12,14 @@ const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
-// app.use(cors());
+app.use(cors());
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://api.the-hera-class.com', // 허용하려는 도메인
     credentials: true,
-    // cors options
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', router);
