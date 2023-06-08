@@ -167,7 +167,7 @@ class QuestionService {
         return question_init_object;
       })
     );
-    const addQuestionResult = await this.questionRepository.addQuestionsWord(exam_id, question_data_array);
+    const addQuestionResult = await this.questionRepository.addQuestionsWord(question_data_array);
     console.log('addQuestionResult', addQuestionResult);
     return {
       addQuestionResult,
@@ -176,7 +176,7 @@ class QuestionService {
   };
 
   addQuestionsEditor = async (data) => {
-    const addQuestionResult = await this.textRepository.addQuestionsEditor(data);
+    const addQuestionResult = await this.questionRepository.addQuestionsEditor(data);
     return {
       addQuestionResult,
       addQuestionData: data,
