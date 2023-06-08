@@ -15,7 +15,7 @@ var cors = require('cors');
 // app.use(cors());
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://the-hera-class.com',
     credentials: true,
     // cors options
   })
