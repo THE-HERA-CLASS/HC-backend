@@ -1,55 +1,55 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+# name: Node.js CI
 
-on:
-  push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+# on:
+#   push:
+#     branches: [ "dev" ]
+#   pull_request:
+#     branches: [ "dev" ]
     
-# env:
-#   PROJECT_NAME: theheraclass
-#   BUCKET_NAME: terrarossa
-#   CODE_DEPLOY_APP_NAME: code
-#   DEPLOYMENT_GROUP_NAME: codecode    
+# # env:
+# #   PROJECT_NAME: theheraclass
+# #   BUCKET_NAME: terrarossa
+# #   CODE_DEPLOY_APP_NAME: code
+# #   DEPLOYMENT_GROUP_NAME: codecode    
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [ 16.x ]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+#     strategy:
+#       matrix:
+#         node-version: [ 16.x ]
+#         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-#     - run: npm test
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: 'npm'
+#     - run: npm ci
+#     - run: npm run build --if-present
+# #     - run: npm test
 
-#     - name: Make Zip File
-#       run: zip -qq -r ./70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip ./*
-#       shell: bash
+# #     - name: Make Zip File
+# #       run: zip -qq -r ./70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip ./*
+# #       shell: bash
        
-#     - name: Configure AWS credentials
-#       uses: aws-actions/configure-aws-credentials@v1
-#       with: 
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           aws-region: ap-northeast-2
+# #     - name: Configure AWS credentials
+# #       uses: aws-actions/configure-aws-credentials@v1
+# #       with: 
+# #           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+# #           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+# #           aws-region: ap-northeast-2
           
-#     - name: upload to S3
-#       run: aws s3 cp --region ap-northeast-2 ./70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip s3://$BUCKET_NAME/$PROJECT_NAME/70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip
+# #     - name: upload to S3
+# #       run: aws s3 cp --region ap-northeast-2 ./70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip s3://$BUCKET_NAME/$PROJECT_NAME/70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip
 
-#     - name: Deploy to CodeDeploy
-#       run: |
-#          aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,key=$PROJECT_NAME/70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip,bundleType=zip
+# #     - name: Deploy to CodeDeploy
+# #       run: |
+# #          aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,key=$PROJECT_NAME/70d3c129-6376-4fb9-ab45-ee978ee73cd8.zip,bundleType=zip
