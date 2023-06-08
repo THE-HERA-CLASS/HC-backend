@@ -9,11 +9,11 @@ on:
   pull_request:
     branches: [ "dev" ]
     
-env:
-  PROJECT_NAME: theheraclass
-  BUCKET_NAME: terrarossa
-  CODE_DEPLOY_APP_NAME: code
-  DEPLOYMENT_GROUP_NAME: codecode    
+# env:
+#   PROJECT_NAME: theheraclass
+#   BUCKET_NAME: terrarossa
+#   CODE_DEPLOY_APP_NAME: code
+#   DEPLOYMENT_GROUP_NAME: codecode    
 
 jobs:
   build:
