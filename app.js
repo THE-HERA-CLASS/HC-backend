@@ -23,7 +23,7 @@ app.use(
 );
 
 
-app.use(express.static('build'));
+// app.use(express.static('build'));
 
 app.use(express.json());
 app.use(cookieParser());
