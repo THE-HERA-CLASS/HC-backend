@@ -13,13 +13,17 @@ const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
-app.use(cors({
-  origin: 'http://43.200.172.74',
-  credentials: true
-}));
 
-// app.use(express.static("build"));
+app.use(
+  cors({
+    // origin: 'http://43.200.172.74',
+    origin: '*',
+    credentials: true,
+  })
+);
 
+
+app.use(express.static('build'));
 
 app.use(express.json());
 app.use(cookieParser());
