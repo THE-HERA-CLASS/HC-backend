@@ -16,7 +16,7 @@ var cors = require('cors');
 
 app.use(
   cors({
-    // origin: 'http://43.200.172.74',
+    // origin: 'https://43.200.172.74',
     origin: '*',
     credentials: true,
   })
