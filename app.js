@@ -16,8 +16,7 @@ var cors = require('cors');
 
 app.use(
   cors({
-    // origin: 'https://43.200.172.74',
-    origin: '*',
+    origin: 'https://the-hera-class.com',
     credentials: true,
   })
 );
