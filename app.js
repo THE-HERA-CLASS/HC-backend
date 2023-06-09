@@ -14,7 +14,7 @@ const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
 app.use(cors({
-  origin: 'http://3.35.218.47',
+  origin: 'http://43.200.172.74',
   credentials: true
 }));
 
