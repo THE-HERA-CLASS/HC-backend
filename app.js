@@ -18,7 +18,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.static("build"));
+// app.use(express.static("build"));
 
 
 app.use(express.json());
