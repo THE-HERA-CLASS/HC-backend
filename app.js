@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const swaggerUi = require('swagger-ui-express');
+
 const swaggerFile = require('./swagger-output');
 
 require('dotenv').config();
@@ -12,13 +13,16 @@ const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
-app.use(cors({
-  origin: 'https://the-hera-class.com',
-  credentials: true
-}));
 
-app.use(express.static("build"));
+app.use(
+  cors({
+    origin: 'https://the-hera-class.com',
+    credentials: true,
+  })
+);
 
+
+// app.use(express.static('build'));
 
 app.use(express.json());
 app.use(cookieParser());
