@@ -1,17 +1,18 @@
-# version: 0.0
-# os: linux
-# files:
-#   - source: /
-#     destination: /home/ubuntu/temp/
-# permissions:
-#   - object: /home/ubuntu/HC-backend/
-#     owner: ubuntu
-#     group: ubuntu
-# hooks:
-#   BeforInstall:
-#     - location: scripts/karyl.sh
-#       runas: ubuntu
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/HC-backend
+    overwrite: yes
 
-#   AfterInstall:
-#     - location: scripts/deploy.sh
-#       runas: ubuntu
+permissions:
+  - object: /home/ubuntu/HC-backend
+    pattern: '**'
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  AfterInstall:
+    - location: scripts/deploy.sh
+      timeout: 300
+      runas: ubuntu
