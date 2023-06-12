@@ -15,10 +15,10 @@ var cors = require('cors');
 
 
 app.use(
-  cors(
+  cors({
      origin: 'localhost:3000',
     credentials: true,
-  )
+  })
 );
 
 
