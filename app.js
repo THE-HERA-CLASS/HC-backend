@@ -15,7 +15,10 @@ var cors = require('cors');
 
 
 app.use(
-  cors()
+  cors(
+     origin: 'https://hera-class.com',
+    credentials: true,
+  )
 );
 
 
