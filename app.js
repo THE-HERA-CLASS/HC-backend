@@ -16,12 +16,10 @@ var cors = require('cors');
 
 app.use(
   cors({
-    // origin: 'http://43.200.172.74',
-    origin: '*',
+    origin: ['https://hera-class.com', 'http://localhost:3000'],
     credentials: true,
   })
 );
-
 
 // app.use(express.static('build'));
 
