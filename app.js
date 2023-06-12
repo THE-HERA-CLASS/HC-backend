@@ -14,12 +14,12 @@ const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
 
-app.use(
-  cors({
-    origin: ['https://hera-class.com', 'http://localhost:3000'],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ['https://hera-class.com', 'http://localhost:3000'],
+//     credentials: true,
+//   })
+// );
 
 // app.use(express.static('build'));
 
