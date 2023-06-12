@@ -13,7 +13,7 @@ env:
   PROJECT_NAME: theheraclass
   BUCKET_NAME: terrarossa
   CODE_DEPLOY_APP_NAME: code
-  DEPLOYMENT_GROUP_NAME: codecode
+  DEPLOYMENT_GROUP_NAME: mycd
 
 jobs:
   build:
@@ -53,5 +53,5 @@ jobs:
       run: aws deploy create-deployment
           --application-name code
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name codecode
+          --deployment-group-name mycd
           --s3-location bucket=terrarossa,bundleType=zip,key=deploy/kcm.zip
