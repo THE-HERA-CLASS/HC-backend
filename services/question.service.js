@@ -264,6 +264,22 @@ class QuestionService {
       console.error(err);
     }
   };
+
+  plusQuestionBookmark = async (question_id) => {
+    try {
+      return await this.questionRepository.plusQuestionBookmark(question_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  minusQuestionBookmark = async (question_id) => {
+    try {
+      return await this.questionRepository.minusQuestionBookmark(question_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
 module.exports = QuestionService;

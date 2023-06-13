@@ -5,12 +5,14 @@ const AWS = require('aws-sdk');
 
 // const { promisify } = require('util');
 const fs = require('fs');
+const questions = require('../models/questions');
 // const writeFileAsync = promisify(fs.writeFile);
 // const multer = require('multer');
 // const multerS3 = require('multer-s3');
 require('dotenv').config();
 
 class QuestionRepository {
+
   addQuestionsWord = async (question_datas) => {
     try {
       // DB Create
@@ -169,5 +171,13 @@ class QuestionRepository {
     }
   };
 }
+
+plusQuestionBookmark = async (question_id) => {
+await Questions.increment("bookmark_count", {where: {question_id:question_id}});
+}
+
+minusQuestionBookmark = async (question_id) => {
+  await Questions.decrement("bookmark_count", {where: {question_id:question_id}});
+  }
 
 module.exports = QuestionRepository;

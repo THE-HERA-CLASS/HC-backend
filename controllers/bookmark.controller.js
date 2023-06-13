@@ -1,7 +1,32 @@
-const BookmarksService = require('../services/bookmark.service.js');
+const BookmarkService = require('../services/bookmark.service.js');
+const QuestionService = require('../services/question.service.js');
 
 class BookmarksController {
-  bookmarksService = new BookmarksService();
+  bookmarksService = new BookmarkService();
+  questionService = new QuestionService();
+
+  createBookmark = async (req, res) => {
+    try {
+      const { user_id } = res.locals.user;
+      const { question_id } = req.params;
+
+      const createBookmarkData = await this.bookmarksService.findOneBookmark(question_id, user_id);
+      // 이미 북마크 되어있다면
+      if (createBookmarkData) {
+        await this.bookmarksService.deleteBookmark(question_id, user_id);
+        await this.questionService.minusQuestionBookmark(question_id);
+        res.status(200).json({ msg: '북마크가 취소되었습니다.' });
+      } else {
+        // 북마크 등록
+        await this.bookmarksService.createBookmark(question_id, user_id);
+        await this.questionService.minusQuestionBookmark(question_id);
+        res.status(200).json({ msg: '북마크에 등록되었습니다.' });
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({ errMsg: '북마크 등록에 실패하였습니다.' });
+    }
+  };
 }
 
 module.exports = BookmarksController;
