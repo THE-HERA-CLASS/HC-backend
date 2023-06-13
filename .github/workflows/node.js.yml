@@ -50,11 +50,11 @@ jobs:
         aws-region: ap-northeast-2
 
     - name: S3에 압축된 서버 코드를 업로드
-      run: aws s3 cp --region ap-northeast-2 ./hc.zip s3://hc-deploy-bk/deploy/
+      run: aws s3 cp --region ap-northeast-2 ./hc-deploy-bk.zip s3://hc-deploy-bk/deploy/
 
     - name: AWS codeDeploy로 배포를 시작
       run: aws deploy create-deployment
           --application-name hc-codedeploy
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name hc-codedeploy
-          --s3-location bucket=hc-deploy-bk,bundleType=zip,key=deploy/hc.zip
+          --s3-location bucket=hc-deploy-bk,bundleType=zip,key=deploy/hc-deploy-bk.zip
