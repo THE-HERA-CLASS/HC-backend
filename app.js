@@ -13,7 +13,7 @@ const router = require('./routes');
 const errorHandler = require('./middlewares/errorHandler.js');
 var cors = require('cors');
 
-// 로컬과 프론트엔드도메인 둘다 혀용하는중입니다
+// 로컬과 프론트엔드도메인 둘다 허용함
 app.use(
   cors({
     origin: ['https://hera-class.com', 'http://localhost:3000'],
