@@ -196,6 +196,14 @@ class ExaminfoService {
     }
   };
 
+  getExamWithSubjectId = async (subject_id) => {
+    try {
+      return await this.examinfoRepository.getExamWithSubjectId(subject_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   updateExam = async (examData) => {
     try {
       return await this.examinfoRepository.updateExam(examData);

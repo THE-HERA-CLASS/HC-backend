@@ -218,7 +218,25 @@ class ExaminfoRepository {
 
   getExamWithExamId = async (exam_id) => {
     try {
-      return await Exams.findOne({ where: { exam_id } });
+      return await Exams.findAll({ where: { exam_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExamWithSubjectId = async (subject_id) => {
+    try {
+      return await Exams.findAll({
+        order: [
+          ['major_id', 'ASC'],
+          ['certificate_id', 'ASC'],
+          ['subject_id', 'ASC'],
+          ['year', 'ASC'],
+          ['round', 'ASC'],
+        ],
+        where: { subject_id },
+      });
+      // return await Exams.findOne({ where: { subject_id } });
     } catch (err) {
       console.error(err);
     }
