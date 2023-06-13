@@ -236,7 +236,23 @@ class ExaminfoRepository {
         ],
         where: { subject_id },
       });
-      // return await Exams.findOne({ where: { subject_id } });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getExamWithCertificateId = async (certificate_id) => {
+    try {
+      return await Exams.findAll({
+        order: [
+          ['major_id', 'ASC'],
+          ['certificate_id', 'ASC'],
+          ['subject_id', 'ASC'],
+          ['year', 'ASC'],
+          ['round', 'ASC'],
+        ],
+        where: { certificate_id },
+      });
     } catch (err) {
       console.error(err);
     }

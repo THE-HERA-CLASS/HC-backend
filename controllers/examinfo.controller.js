@@ -450,6 +450,22 @@ class ExaminfoController {
     }
   };
 
+  getExamWithCertificateId = async (req, res) => {
+    try {
+      const { certificate_id } = req.params;
+      if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
+      const findExam = await this.examinfoService.getExamWithCertificateId(certificate_id);
+      if (findExam) {
+        return res.status(200).json({ data: findExam });
+      } else {
+        return res.status(419).json({ errMsg: '요청 시험지 조회 실패' });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ errMsg: '전체 에러' });
+    }
+  };
+
   updateExam = async (req, res) => {
     try {
       const { exam_id } = req.params;

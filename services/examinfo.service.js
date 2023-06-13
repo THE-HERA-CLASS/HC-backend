@@ -204,6 +204,14 @@ class ExaminfoService {
     }
   };
 
+  getExamWithCertificateId = async (certificate_id) => {
+    try {
+      return await this.examinfoRepository.getExamWithCertificateId(certificate_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   updateExam = async (examData) => {
     try {
       return await this.examinfoRepository.updateExam(examData);

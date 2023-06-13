@@ -29,6 +29,7 @@ router.get('/exam', examinfoController.getExam);
 router.post('/exam/getExamId', examinfoController.getExamId);
 router.get('/exam/:exam_id', examinfoController.getExamWithExamId);
 router.get('/exam/subject/:subject_id', examinfoController.getExamWithSubjectId);
+router.get('/exam/certificate/:certificate_id', examinfoController.getExamWithCertificateId);
 router.put('/exam/:exam_id', examinfoController.updateExam);
 router.delete('/exam/:exam_id', examinfoController.deleteExam);
 
