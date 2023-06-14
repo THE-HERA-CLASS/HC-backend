@@ -1,0 +1,23 @@
+name: chatGPT Code Review
+
+# Say Hello World to Everyone~!!
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: anc95/ChatGPT-CodeReview@dev
+        env:
+          CR_GITHUB_TOKEN: ${{ secrets.CR_GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LANGUAGE: Korean
