@@ -84,7 +84,7 @@ class QuestionService {
           if (example_start_index < 0) {
             // 보기문 없음
             const question_number_value = await clearText(text.substring(0, text.indexOf('. ')));
-            const question_value = await clearText(text.substring(2, choice_1_index));
+            const question_value = await clearText(text.substring(text.indexOf('. ') + 2, choice_1_index));
             question_init_object = {
               exam_id,
               sort_num: index + 1,
@@ -94,7 +94,7 @@ class QuestionService {
           } else {
             // 보기문 있음
             const question_number_value = await clearText(text.substring(0, text.indexOf('. ')));
-            const question_value = await clearText(text.substring(2, example_start_index));
+            const question_value = await clearText(text.substring(text.indexOf('. ') + 2, example_start_index));
             let example_value = await clearText(text.substring(example_start_index, choice_1_index));
             const example_value_split = example_value.split('--보기문\n');
             example_value_split.shift();

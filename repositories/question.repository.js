@@ -12,7 +12,6 @@ const questions = require('../models/questions');
 require('dotenv').config();
 
 class QuestionRepository {
-
   addQuestionsWord = async (question_datas) => {
     try {
       // DB Create
@@ -119,7 +118,12 @@ class QuestionRepository {
 
   getQuestions = async () => {
     try {
-      return await Questions.findAll({});
+      return await Questions.findAll({
+        order: [
+          ['exam_id', 'ASC'],
+          ['sort_num', 'ASC'],
+        ],
+      });
     } catch (err) {
       console.error(err);
     }
@@ -135,7 +139,7 @@ class QuestionRepository {
 
   getQuestionWithExamId = async (exam_id) => {
     try {
-      return await Questions.findAll({ where: { exam_id } });
+      return await Questions.findAll({ where: { exam_id }, order: [['sort_num', 'ASC']] });
     } catch (err) {
       console.error(err);
     }
@@ -173,11 +177,11 @@ class QuestionRepository {
 }
 
 plusQuestionBookmark = async (question_id) => {
-await Questions.increment("bookmark_count", {where: {question_id:question_id}});
-}
+  await Questions.increment('bookmark_count', { where: { question_id: question_id } });
+};
 
 minusQuestionBookmark = async (question_id) => {
-  await Questions.decrement("bookmark_count", {where: {question_id:question_id}});
-  }
+  await Questions.decrement('bookmark_count', { where: { question_id: question_id } });
+};
 
 module.exports = QuestionRepository;
