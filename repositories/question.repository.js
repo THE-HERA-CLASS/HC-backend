@@ -172,12 +172,6 @@ class QuestionRepository {
   };
 }
 
-plusQuestionBookmark = async (question_id) => {
-await Questions.increment("bookmark_count", {where: {question_id:question_id}});
-}
 
-minusQuestionBookmark = async (question_id) => {
-  await Questions.decrement("bookmark_count", {where: {question_id:question_id}});
-  }
 
 module.exports = QuestionRepository;

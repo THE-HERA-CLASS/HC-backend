@@ -11,15 +11,31 @@ class BookmarkService {
   };
 
   // 북마크 등록
-  createBookmark = async (question_id, user_id) => {
-    const createBookmark = await this.BookmarksRepository.createBookmark(question_id, user_id);
-    return createBookmark;
+  updateBookmark = async (question_id, user_id) => {
+    const updateBookmark = await this.BookmarksRepository.updateBookmark(question_id, user_id);
+    return updateBookmark;
   };
 
   // 북마크 등록취소
   deleteBookmark = async (question_id, user_id) => {
     const deleteBookmark = await this.BookmarksRepository.deleteBookmark(question_id, user_id);
     return deleteBookmark;
+  };
+  // bookmark_count up
+  plusQuestionBookmark = async (question_id) => {
+    try {
+      return await this.BookmarksRepository.plusQuestionBookmark(question_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  // bookmark_count down
+  minusQuestionBookmark = async (question_id) => {
+    try {
+      return await this.BookmarksRepository.minusQuestionBookmark(question_id);
+    } catch (err) {
+      console.error(err);
+    }
   };
 }
 

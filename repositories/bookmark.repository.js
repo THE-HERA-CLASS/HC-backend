@@ -1,8 +1,8 @@
-const{ Bookmarks, Questions }= require('../models');
+const { Bookmarks, Questions } = require('../models');
 
 class BookmarksRepository {
   // 북마크 생성
-  createBookmark = async (question_id, user_id) => {
+  updateBookmark = async (question_id, user_id) => {
     // 해당 문제의 exam_id 가져오기 위해
     const question = await Questions.findOne({
       where: { question_id: question_id },
@@ -12,12 +12,12 @@ class BookmarksRepository {
       //console.error('문제를 찾을 수 없습니다.');
       throw new Error('문제를 찾을 수 없습니다.'); // 이렇게 해야지 다음 로직을 수행안함
     }
-    const createBookmarkData = await Bookmarks.create({
+    const updateBookmarkData = await Bookmarks.create({
       question_id,
       user_id,
       exam_id: question.exam_id,
     });
-    return createBookmarkData;
+    return updateBookmarkData;
   };
 
   // 북마크 확인
@@ -34,6 +34,14 @@ class BookmarksRepository {
       where: { question_id, user_id },
     });
     return deleteBookmarkData;
+  };
+
+  plusQuestionBookmark = async (question_id) => {
+    await Questions.increment('bookmark_count', { where: { question_id: question_id } });
+  };
+
+  minusQuestionBookmark = async (question_id) => {
+    await Questions.decrement('bookmark_count', { where: { question_id: question_id } });
   };
 }
 
