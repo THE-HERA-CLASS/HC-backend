@@ -2,4 +2,4 @@
 
 # 서비스 아키텍처
 
-https://user-images.githubusercontent.com/125367831/246047095-2f7fb53b-d7c7-48b8-8104-97ec0f182138.jpg
+![헤라클래스-아키텍처-3차-디자이너](https://github.com/THE-HERA-CLASS/HC-backend/assets/125367831/2f7fb53b-d7c7-48b8-8104-97ec0f182138)
