@@ -3,25 +3,15 @@ const { Op } = require('sequelize');
 
 class XnotesRepository {
   submitAnswer = async (reXnoteData) => {
-    const { user_id, exam_id, question_id, answer, marking } = reXnoteData;
-
-    return await Xnotes.create({
-      user_id,
-      exam_id,
-      question_id,
-      answer,
-      marking,
-    });
-  };
-
-  userAnswerExists = async (reXnoteData) => {
     try {
-      const { user_id, question_id } = reXnoteData;
+      const { user_id, exam_id, question_id, answer, marking } = reXnoteData;
 
-      return await Xnotes.findOne({
-        where: {
-          [Op.and]: [{ user_id: user_id }, { question_id: question_id }],
-        },
+      return await Xnotes.create({
+        user_id,
+        exam_id,
+        question_id,
+        answer,
+        marking,
       });
     } catch (err) {
       console.error(err);
@@ -44,6 +34,20 @@ class XnotesRepository {
           },
         }
       );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  userAnswerExists = async (reXnoteData) => {
+    try {
+      const { user_id, question_id } = reXnoteData;
+
+      return await Xnotes.findOne({
+        where: {
+          [Op.and]: [{ user_id: user_id }, { question_id: question_id }],
+        },
+      });
     } catch (err) {
       console.error(err);
     }
