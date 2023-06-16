@@ -172,7 +172,7 @@ class ExaminfoRepository {
       const getSubjectData = await this.subjectsModel.findOne({ where: { subject_id } });
       const subject_name = getSubjectData.name;
 
-      return await this.majorsModel.create({
+      return await this.examsModel.create({
         major_id,
         major_name,
         certificate_id,
@@ -190,7 +190,7 @@ class ExaminfoRepository {
 
   getExam = async () => {
     try {
-      return await this.majorsModel.findAll({
+      return await this.examsModel.findAll({
         order: [
           ['major_id', 'ASC'],
           ['certificate_id', 'ASC'],
@@ -206,7 +206,7 @@ class ExaminfoRepository {
 
   getExamId = async (examData) => {
     try {
-      return await this.majorsModel.findOne({
+      return await this.examsModel.findOne({
         where: {
           [Op.and]: [
             { major_id: examData.major_id },
@@ -224,7 +224,7 @@ class ExaminfoRepository {
 
   getExamWithExamId = async (exam_id) => {
     try {
-      return await this.majorsModel.findAll({ where: { exam_id } });
+      return await this.examsModel.findAll({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }
@@ -232,7 +232,7 @@ class ExaminfoRepository {
 
   getExamWithSubjectId = async (subject_id) => {
     try {
-      return await this.majorsModel.findAll({
+      return await this.examsModel.findAll({
         order: [
           ['major_id', 'ASC'],
           ['certificate_id', 'ASC'],
@@ -249,7 +249,7 @@ class ExaminfoRepository {
 
   getExamWithCertificateId = async (certificate_id) => {
     try {
-      return await this.majorsModel.findAll({
+      return await this.examsModel.findAll({
         order: [
           ['major_id', 'ASC'],
           ['certificate_id', 'ASC'],
@@ -285,7 +285,7 @@ class ExaminfoRepository {
         subject_name = getSubjectData.name;
       }
 
-      await this.majorsModel.update(
+      await this.examsModel.update(
         {
           major_id,
           major_name,
@@ -300,7 +300,7 @@ class ExaminfoRepository {
         { where: { exam_id } }
       );
 
-      return await this.majorsModel.findAll({ where: { exam_id } });
+      return await this.examsModel.findAll({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }
@@ -308,7 +308,7 @@ class ExaminfoRepository {
 
   deleteExam = async (exam_id) => {
     try {
-      return await this.majorsModel.destroy({ where: { exam_id } });
+      return await this.examsModel.destroy({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }

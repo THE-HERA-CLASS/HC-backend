@@ -15,8 +15,7 @@ class XnotesService {
 
         const getQuestionData = await this.questionsRepository.getQuestionWithQuestionId(question_id);
         const answer_origin = getQuestionData.answer;
-        // const marking = answer_origin === answer ? true : false; // 맞으면 true, 틀리면 false
-        const marking = true;
+        const marking = answer_origin === answer ? true : false; // 맞으면 true, 틀리면 false
         const reXnoteData = {
           user_id,
           exam_id,
