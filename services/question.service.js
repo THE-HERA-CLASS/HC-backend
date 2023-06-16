@@ -1,9 +1,8 @@
-const QuestionRepository = require('../repositories/question.repository.js');
-
-// let question_datas = [];
+const QuestionsRepository = require('../repositories/question.repository.js');
+const { Questions } = require('../models/index.js');
 
 class QuestionService {
-  questionRepository = new QuestionRepository();
+  questionsRepository = new QuestionsRepository(Questions);
 
   addQuestionsWord = async (exam_id, question_array) => {
     const clearText = async (text) => text.replace(/^\s+|\s+$/g, '');
@@ -15,7 +14,7 @@ class QuestionService {
         const img_src_end_index = value.indexOf('" />');
         const img_extension = value.substring(img_extension_start_index, img_src_start_index - 8);
         const img_src = value.substring(img_src_start_index, img_src_end_index);
-        const img_s3_url = await this.questionRepository.addImageS3(img_src, img_extension);
+        const img_s3_url = await this.questionsRepository.addImageS3(img_src, img_extension);
         return {
           type: 'image',
           value: img_s3_url,
@@ -64,7 +63,7 @@ class QuestionService {
                   const img_src_end_index = example.indexOf('" />');
                   const img_extension = example.substring(img_extension_start_index, img_src_start_index - 8);
                   const img_src = example.substring(img_src_start_index, img_src_end_index);
-                  const img_s3_url = await this.questionRepository.addImageS3(img_src, img_extension);
+                  const img_s3_url = await this.questionsRepository.addImageS3(img_src, img_extension);
                   return {
                     type: 'image',
                     value: img_s3_url,
@@ -107,7 +106,7 @@ class QuestionService {
                   const img_src_end_index = example.indexOf('" />');
                   const img_extension = example.substring(img_extension_start_index, img_src_start_index - 8);
                   const img_src = example.substring(img_src_start_index, img_src_end_index);
-                  const img_s3_url = await this.questionRepository.addImageS3(img_src, img_extension);
+                  const img_s3_url = await this.questionsRepository.addImageS3(img_src, img_extension);
                   return {
                     type: 'image',
                     value: img_s3_url,
@@ -167,7 +166,7 @@ class QuestionService {
         return question_init_object;
       })
     );
-    const addQuestionResult = await this.questionRepository.addQuestionsWord(question_data_array);
+    const addQuestionResult = await this.questionsRepository.addQuestionsWord(question_data_array);
     console.log('addQuestionResult', addQuestionResult);
     return {
       addQuestionResult,
@@ -176,7 +175,7 @@ class QuestionService {
   };
 
   addQuestionsEditor = async (data) => {
-    const addQuestionResult = await this.questionRepository.addQuestionsEditor(data);
+    const addQuestionResult = await this.questionsRepository.addQuestionsEditor(data);
     return {
       addQuestionResult,
       addQuestionData: data,
@@ -185,7 +184,7 @@ class QuestionService {
 
   addQuestion = async (questionData) => {
     try {
-      return await this.questionRepository.addQuestion(questionData);
+      return await this.questionsRepository.addQuestion(questionData);
     } catch (err) {
       console.error(err);
     }
@@ -193,7 +192,7 @@ class QuestionService {
 
   getQuestions = async () => {
     try {
-      const getQuestionsData = await this.questionRepository.getQuestions();
+      const getQuestionsData = await this.questionsRepository.getQuestions();
       return getQuestionsData.map((data) => {
         return {
           question_id: data.question_id,
@@ -214,7 +213,7 @@ class QuestionService {
 
   getQuestionWithQuestionId = async (question_id) => {
     try {
-      const getQuestionData = await this.questionRepository.getQuestionWithQuestionId(question_id);
+      const getQuestionData = await this.questionsRepository.getQuestionWithQuestionId(question_id);
       return {
         question_id: getQuestionData.question_id,
         exam_id: getQuestionData.exam_id,
@@ -233,7 +232,7 @@ class QuestionService {
 
   getQuestionWithExamId = async (exam_id) => {
     try {
-      const getQuestionData = await this.questionRepository.getQuestionWithExamId(exam_id);
+      const getQuestionData = await this.questionsRepository.getQuestionWithExamId(exam_id);
       return getQuestionData.map((data) => {
         return {
           question_id: data.question_id,
@@ -254,7 +253,7 @@ class QuestionService {
 
   updateQuestion = async (questionData) => {
     try {
-      return await this.questionRepository.updateQuestion(questionData);
+      return await this.questionsRepository.updateQuestion(questionData);
     } catch (err) {
       console.error(err);
     }
@@ -262,7 +261,7 @@ class QuestionService {
 
   deleteQuestion = async (question_id) => {
     try {
-      return await this.questionRepository.deleteQuestion(question_id);
+      return await this.questionsRepository.deleteQuestion(question_id);
     } catch (err) {
       console.error(err);
     }

@@ -1,22 +1,16 @@
-const { Questions } = require('../models');
 const AWS = require('aws-sdk');
-// const { Upload } = require('@aws-sdk/lib-storage'); // V3
-// const { S3 } = require('@aws-sdk/client-s3'); // V3
-
-// const { promisify } = require('util');
-const fs = require('fs');
-const questions = require('../models/questions');
-// const writeFileAsync = promisify(fs.writeFile);
-// const multer = require('multer');
-// const multerS3 = require('multer-s3');
 require('dotenv').config();
 
 class QuestionRepository {
+  constructor(QuestionsModel) {
+    this.questionsModel = QuestionsModel;
+  }
+
   addQuestionsWord = async (question_datas) => {
     try {
       // DB Create
       question_datas.forEach((question) => {
-        return Questions.create({
+        return this.questionsModel.create({
           exam_id: question.exam_id,
           sort_num: question.sort_num,
           question_num: question.question_num,
@@ -36,7 +30,7 @@ class QuestionRepository {
     try {
       // DB Create
       await data.forEach((question) => {
-        return Questions.create({
+        return this.questionsModel.create({
           exam_id: question.exam_id,
           sort_num: question.sort_num,
           question_num: question.question_num,
@@ -101,7 +95,7 @@ class QuestionRepository {
   addQuestion = async (questionData) => {
     const { exam_id, sort_num, question_num, question, example, choice, answer, solve } = questionData;
     try {
-      return await Questions.create({
+      return await this.questionsModel.create({
         exam_id,
         sort_num,
         question_num,
@@ -118,7 +112,7 @@ class QuestionRepository {
 
   getQuestions = async () => {
     try {
-      return await Questions.findAll({
+      return await this.questionsModel.findAll({
         order: [
           ['exam_id', 'ASC'],
           ['sort_num', 'ASC'],
@@ -131,7 +125,7 @@ class QuestionRepository {
 
   getQuestionWithQuestionId = async (question_id) => {
     try {
-      return await Questions.findOne({ where: { question_id } });
+      return await this.questionsModel.findOne({ where: { question_id } });
     } catch (err) {
       console.error(err);
     }
@@ -139,7 +133,7 @@ class QuestionRepository {
 
   getQuestionWithExamId = async (exam_id) => {
     try {
-      return await Questions.findAll({
+      return await this.questionsModel.findAll({
         where: { exam_id },
         order: [
           ['exam_id', 'ASC'],
@@ -153,7 +147,7 @@ class QuestionRepository {
 
   updateQuestion = async (questionData) => {
     try {
-      const updateQuestionData = await Questions.update(
+      const updateQuestionData = await this.questionsModel.update(
         {
           exam_id: questionData.exam_id,
           sort_num: questionData.sort_num,
@@ -166,7 +160,7 @@ class QuestionRepository {
         },
         { where: { question_id: questionData.question_id } }
       );
-      const updateResult = await Questions.findOne({ where: { question_id: questionData.question_id } });
+      const updateResult = await this.questionsModel.findOne({ where: { question_id: questionData.question_id } });
       return updateResult;
     } catch (err) {
       console.error(err);
@@ -175,7 +169,7 @@ class QuestionRepository {
 
   deleteQuestion = async (question_id) => {
     try {
-      return await Questions.destroy({ where: { question_id } });
+      return await this.questionsModel.destroy({ where: { question_id } });
     } catch (err) {
       console.error(err);
     }
@@ -183,11 +177,11 @@ class QuestionRepository {
 }
 
 plusQuestionBookmark = async (question_id) => {
-  await Questions.increment('bookmark_count', { where: { question_id: question_id } });
+  await this.questionsModel.increment('bookmark_count', { where: { question_id: question_id } });
 };
 
 minusQuestionBookmark = async (question_id) => {
-  await Questions.decrement('bookmark_count', { where: { question_id: question_id } });
+  await this.questionsModel.decrement('bookmark_count', { where: { question_id: question_id } });
 };
 
 module.exports = QuestionRepository;

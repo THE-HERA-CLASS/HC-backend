@@ -1,12 +1,18 @@
-const { Majors, Certificates, Subjects, Exams } = require('../models');
 const { Op } = require('sequelize');
 
 class ExaminfoRepository {
+  constructor(MajorsModel, CertificatesModel, SubjectsModel, ExamsModel) {
+    this.majorsModel = MajorsModel;
+    this.certificatesModel = CertificatesModel;
+    this.subjectsModel = SubjectsModel;
+    this.examsModel = ExamsModel;
+  }
+
   // ==================================== 전공 ====================================
 
   addMajor = async (name) => {
     try {
-      return await Majors.create({
+      return await this.majorsModel.create({
         name,
       });
     } catch (err) {
@@ -16,7 +22,7 @@ class ExaminfoRepository {
 
   getMajors = async () => {
     try {
-      return await Majors.findAll({});
+      return await this.majorsModel.findAll({});
     } catch (err) {
       console.err(err);
     }
@@ -24,7 +30,7 @@ class ExaminfoRepository {
 
   getOneMajor = async (major_id) => {
     try {
-      return await Majors.findOne({ where: { major_id } });
+      return await this.majorsModel.findOne({ where: { major_id } });
     } catch (err) {
       console.error(err);
       throw err;
@@ -33,7 +39,7 @@ class ExaminfoRepository {
 
   updateMajor = async (major_id, name) => {
     try {
-      return await Majors.update({ name }, { where: { major_id } });
+      return await this.majorsModel.update({ name }, { where: { major_id } });
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +47,7 @@ class ExaminfoRepository {
 
   dropMajor = async (major_id) => {
     try {
-      return await Majors.destroy({ where: { major_id: major_id } });
+      return await this.majorsModel.destroy({ where: { major_id: major_id } });
     } catch (err) {
       console.error(err);
     }
@@ -51,7 +57,7 @@ class ExaminfoRepository {
 
   addCertificate = async (major_id, name, division) => {
     try {
-      return await Certificates.create({
+      return await this.certificatesModel.create({
         major_id,
         name,
         division,
@@ -63,7 +69,7 @@ class ExaminfoRepository {
 
   getCertificate = async () => {
     try {
-      return await Certificates.findAll({});
+      return await this.certificatesModel.findAll({});
     } catch (err) {
       console.err(err);
     }
@@ -71,7 +77,7 @@ class ExaminfoRepository {
 
   getCertificateWithMajorId = async (major_id) => {
     try {
-      return await Certificates.findAll({ where: { major_id } });
+      return await this.certificatesModel.findAll({ where: { major_id } });
     } catch (err) {
       console.error(err);
     }
@@ -79,7 +85,7 @@ class ExaminfoRepository {
 
   getCertificateWithCertificateId = async (certificate_id) => {
     try {
-      return await Certificates.findOne({ where: { certificate_id } });
+      return await this.certificatesModel.findOne({ where: { certificate_id } });
     } catch (err) {
       console.error(err);
     }
@@ -87,7 +93,7 @@ class ExaminfoRepository {
 
   updateCertificate = async (certificate_id, major_id, name, division) => {
     try {
-      return await Certificates.update({ major_id, name, division }, { where: { certificate_id } });
+      return await this.certificatesModel.update({ major_id, name, division }, { where: { certificate_id } });
     } catch (err) {
       console.error(err);
     }
@@ -95,7 +101,7 @@ class ExaminfoRepository {
 
   dropCertificate = async (certificate_id) => {
     try {
-      return await Certificates.destroy({ where: { certificate_id: certificate_id } });
+      return await this.certificatesModel.destroy({ where: { certificate_id: certificate_id } });
     } catch (err) {
       console.error(err);
     }
@@ -105,7 +111,7 @@ class ExaminfoRepository {
 
   addSubject = async (certificate_id, name) => {
     try {
-      return await Subjects.create({
+      return await this.subjectsModel.create({
         certificate_id,
         name,
       });
@@ -116,7 +122,7 @@ class ExaminfoRepository {
 
   getSubject = async () => {
     try {
-      return await Subjects.findAll({});
+      return await this.subjectsModel.findAll({});
     } catch (err) {
       console.err(err);
     }
@@ -124,7 +130,7 @@ class ExaminfoRepository {
 
   getSubjectWithCertificateId = async (certificate_id) => {
     try {
-      return await Subjects.findAll({ where: { certificate_id } });
+      return await this.subjectsModel.findAll({ where: { certificate_id } });
     } catch (err) {
       console.error(err);
     }
@@ -132,7 +138,7 @@ class ExaminfoRepository {
 
   getSubjectWithSubjectId = async (subject_id) => {
     try {
-      return await Subjects.findOne({ where: { subject_id } });
+      return await this.subjectsModel.findOne({ where: { subject_id } });
     } catch (err) {
       console.error(err);
     }
@@ -140,7 +146,7 @@ class ExaminfoRepository {
 
   updateSubject = async (subject_id, certificate_id, name) => {
     try {
-      return await Subjects.update({ certificate_id, name }, { where: { subject_id } });
+      return await this.subjectsModel.update({ certificate_id, name }, { where: { subject_id } });
     } catch (err) {
       console.error(err);
     }
@@ -148,7 +154,7 @@ class ExaminfoRepository {
 
   dropSubject = async (subject_id) => {
     try {
-      return await Subjects.destroy({ where: { subject_id: subject_id } });
+      return await this.subjectsModel.destroy({ where: { subject_id: subject_id } });
     } catch (err) {
       console.error(err);
     }
@@ -158,15 +164,15 @@ class ExaminfoRepository {
 
   addExam = async (major_id, certificate_id, subject_id, year, round) => {
     try {
-      const getMajorData = await Majors.findOne({ where: { major_id } });
+      const getMajorData = await this.majorsModel.findOne({ where: { major_id } });
       const major_name = getMajorData.name;
-      const getCertificateData = await Certificates.findOne({ where: { certificate_id } });
+      const getCertificateData = await this.certificatesModel.findOne({ where: { certificate_id } });
       const certificate_name = getCertificateData.name;
       const certificate_division = getCertificateData.division;
-      const getSubjectData = await Subjects.findOne({ where: { subject_id } });
+      const getSubjectData = await this.subjectsModel.findOne({ where: { subject_id } });
       const subject_name = getSubjectData.name;
 
-      return await Exams.create({
+      return await this.majorsModel.create({
         major_id,
         major_name,
         certificate_id,
@@ -184,7 +190,7 @@ class ExaminfoRepository {
 
   getExam = async () => {
     try {
-      return await Exams.findAll({
+      return await this.majorsModel.findAll({
         order: [
           ['major_id', 'ASC'],
           ['certificate_id', 'ASC'],
@@ -200,7 +206,7 @@ class ExaminfoRepository {
 
   getExamId = async (examData) => {
     try {
-      return await Exams.findOne({
+      return await this.majorsModel.findOne({
         where: {
           [Op.and]: [
             { major_id: examData.major_id },
@@ -218,7 +224,7 @@ class ExaminfoRepository {
 
   getExamWithExamId = async (exam_id) => {
     try {
-      return await Exams.findAll({ where: { exam_id } });
+      return await this.majorsModel.findAll({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }
@@ -226,7 +232,7 @@ class ExaminfoRepository {
 
   getExamWithSubjectId = async (subject_id) => {
     try {
-      return await Exams.findAll({
+      return await this.majorsModel.findAll({
         order: [
           ['major_id', 'ASC'],
           ['certificate_id', 'ASC'],
@@ -243,7 +249,7 @@ class ExaminfoRepository {
 
   getExamWithCertificateId = async (certificate_id) => {
     try {
-      return await Exams.findAll({
+      return await this.majorsModel.findAll({
         order: [
           ['major_id', 'ASC'],
           ['certificate_id', 'ASC'],
@@ -264,22 +270,22 @@ class ExaminfoRepository {
       let major_name, certificate_name, certificate_division, subject_name;
 
       if (major_id) {
-        const getMajorData = await Majors.findOne({ where: { major_id } });
+        const getMajorData = await this.majorsModel.findOne({ where: { major_id } });
         major_name = getMajorData.name;
       }
 
       if (certificate_id) {
-        const getCertificateData = await Certificates.findOne({ where: { certificate_id } });
+        const getCertificateData = await this.certificatesModel.findOne({ where: { certificate_id } });
         certificate_name = getCertificateData.name;
         certificate_division = getCertificateData.division;
       }
 
       if (subject_id) {
-        const getSubjectData = await Subjects.findOne({ where: { subject_id } });
+        const getSubjectData = await this.subjectsModel.findOne({ where: { subject_id } });
         subject_name = getSubjectData.name;
       }
 
-      await Exams.update(
+      await this.majorsModel.update(
         {
           major_id,
           major_name,
@@ -294,7 +300,7 @@ class ExaminfoRepository {
         { where: { exam_id } }
       );
 
-      return await Exams.findAll({ where: { exam_id } });
+      return await this.majorsModel.findAll({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }
@@ -302,7 +308,7 @@ class ExaminfoRepository {
 
   deleteExam = async (exam_id) => {
     try {
-      return await Exams.destroy({ where: { exam_id } });
+      return await this.majorsModel.destroy({ where: { exam_id } });
     } catch (err) {
       console.error(err);
     }

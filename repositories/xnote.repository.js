@@ -1,12 +1,14 @@
-const { Xnotes } = require('../models');
 const { Op } = require('sequelize');
 
 class XnotesRepository {
+  constructor(XnotesModel) {
+    this.xnotesModel = XnotesModel;
+  }
   submitAnswer = async (reXnoteData) => {
     try {
       const { user_id, exam_id, question_id, answer, marking } = reXnoteData;
 
-      return await Xnotes.create({
+      return await this.xnotesModel.create({
         user_id,
         exam_id,
         question_id,
@@ -22,7 +24,7 @@ class XnotesRepository {
     try {
       const { user_id, exam_id, question_id, answer, marking } = reXnoteData;
 
-      return await Xnotes.update(
+      return await this.xnotesModel.update(
         {
           answer,
           marking,
@@ -42,7 +44,7 @@ class XnotesRepository {
     try {
       const { user_id, question_id } = reXnoteData;
 
-      return await Xnotes.findOne({
+      return await this.xnotesModel.findOne({
         where: {
           [Op.and]: [{ user_id: user_id }, { question_id: question_id }],
         },
@@ -54,7 +56,7 @@ class XnotesRepository {
 
   getAnswerWithExamId = async (user_id, exam_id) => {
     try {
-      return await Xnotes.findAll({
+      return await this.xnotesModel.findAll({
         where: {
           [Op.and]: [{ user_id: user_id }, { exam_id: exam_id }],
         },

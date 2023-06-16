@@ -1,8 +1,8 @@
 const BookmarkRepository = require('../repositories/bookmark.repository');
-const { Bookmarks } = require('../models');
+const { Bookmarks, Questions } = require('../models/index.js');
 
 class BookmarkService {
-  BookmarksRepository = new BookmarkRepository(Bookmarks);
+  BookmarksRepository = new BookmarkRepository(Bookmarks, Questions);
 
   // 북마크 확인
   findOneBookmark = async (question_id, user_id) => {

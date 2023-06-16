@@ -1,9 +1,10 @@
 const XnotesRepository = require('../repositories/xnote.repository.js');
 const QuestionsRepository = require('../repositories/question.repository.js');
+const { Xnotes, Questions } = require('../models/index.js');
 
 class XnotesService {
-  xnotesRepository = new XnotesRepository();
-  questionsRepository = new QuestionsRepository();
+  xnotesRepository = new XnotesRepository(Xnotes);
+  questionsRepository = new QuestionsRepository(Questions);
 
   submitAnswer = async (user_id, exam_id, data) => {
     let returnCount = 0;
