@@ -36,6 +36,14 @@ class XnotesService {
       console.error(err);
     }
   };
+
+  getAnswerWithExamId = async (user_id, exam_id) => {
+    try {
+      return await this.xnotesRepository.getAnswerWithExamId(user_id, exam_id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
 module.exports = XnotesService;

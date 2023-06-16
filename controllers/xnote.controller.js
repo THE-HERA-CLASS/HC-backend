@@ -40,6 +40,36 @@ class XnotesController {
       return res.status(400).json({ errMsg: '답안 제출 실패' });
     }
   };
+
+  getAnswerWithExamId = async (req, res) => {
+    try {
+      const { user_id } = res.locals.user;
+      let { exam_id } = req.params;
+
+      if (!user_id) return res.status(411).json({ errMsg: '값 없음: user_id' });
+      if (!exam_id) return res.status(411).json({ errMsg: '값 없음: exam_id' });
+
+      if (Number(exam_id)) {
+        exam_id = Number(exam_id);
+      } else {
+        return res.status(412).json({ errMsg: '형식 에러: exam_id 숫자만' });
+      }
+
+      const examExists = await this.examinfoService.getExamWithExamId(exam_id);
+      if (!examExists) return res.status(416).json({ errMsg: `데이터 없음: exam_id: ${exam_id} 시험지` });
+
+      const getAnswerData = await this.xnotesService.getAnswerWithExamId(user_id, exam_id);
+
+      if (getAnswerData) {
+        return res.status(200).json({ data: getAnswerData });
+      } else {
+        return res.status(419).json({ errMsg: '답안 조회 실패' });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({ errMsg: '답안 조회 실패' });
+    }
+  };
 }
 
 module.exports = XnotesController;

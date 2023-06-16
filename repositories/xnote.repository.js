@@ -30,7 +30,6 @@ class XnotesRepository {
         {
           where: {
             [Op.and]: [{ user_id: user_id }, { exam_id: exam_id }, { question_id: question_id }],
-            // [Op.and]: { user_id, exam_id, question_id },
           },
         }
       );
@@ -46,6 +45,18 @@ class XnotesRepository {
       return await Xnotes.findOne({
         where: {
           [Op.and]: [{ user_id: user_id }, { question_id: question_id }],
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getAnswerWithExamId = async (user_id, exam_id) => {
+    try {
+      return await Xnotes.findAll({
+        where: {
+          [Op.and]: [{ user_id: user_id }, { exam_id: exam_id }],
         },
       });
     } catch (err) {
