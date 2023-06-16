@@ -196,6 +196,7 @@ class QuestionService {
       const getQuestionsData = await this.questionRepository.getQuestions();
       return getQuestionsData.map((data) => {
         return {
+          question_id: data.question_id,
           exam_id: data.exam_id,
           sort_num: data.sort_num,
           question_num: data.question_num,
@@ -215,6 +216,7 @@ class QuestionService {
     try {
       const getQuestionData = await this.questionRepository.getQuestionWithQuestionId(question_id);
       return {
+        question_id: getQuestionData.question_id,
         exam_id: getQuestionData.exam_id,
         sort_num: getQuestionData.sort_num,
         question_num: getQuestionData.question_num,
@@ -234,6 +236,7 @@ class QuestionService {
       const getQuestionData = await this.questionRepository.getQuestionWithExamId(exam_id);
       return getQuestionData.map((data) => {
         return {
+          question_id: data.question_id,
           exam_id: data.exam_id,
           sort_num: data.sort_num,
           question_num: data.question_num,
@@ -264,7 +267,6 @@ class QuestionService {
       console.error(err);
     }
   };
-
 }
 
 module.exports = QuestionService;

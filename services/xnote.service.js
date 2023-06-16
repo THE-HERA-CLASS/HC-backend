@@ -14,7 +14,8 @@ class XnotesService {
 
         const getQuestionData = await this.questionsRepository.getQuestionWithQuestionId(question_id);
         const answer_origin = getQuestionData.answer;
-        const marking = answer_origin === answer ? 1 : 0; // 맞으면 1, 틀리면 0
+        // const marking = answer_origin === answer ? true : false; // 맞으면 true, 틀리면 false
+        const marking = true;
         const reXnoteData = {
           user_id,
           exam_id,
@@ -30,7 +31,6 @@ class XnotesService {
         }
         returnCount++;
       }
-      console.log(`returnCount: ${returnCount}`);
       return returnCount;
     } catch (err) {
       console.error(err);

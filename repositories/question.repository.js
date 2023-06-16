@@ -139,7 +139,13 @@ class QuestionRepository {
 
   getQuestionWithExamId = async (exam_id) => {
     try {
-      return await Questions.findAll({ where: { exam_id }, order: [['sort_num', 'ASC']] });
+      return await Questions.findAll({
+        where: { exam_id },
+        order: [
+          ['exam_id', 'ASC'],
+          ['sort_num', 'ASC'],
+        ],
+      });
     } catch (err) {
       console.error(err);
     }
