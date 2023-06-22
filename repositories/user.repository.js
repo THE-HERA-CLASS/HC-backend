@@ -31,6 +31,30 @@ class UserRepository {
     }
   };
 
+  findPassword = async (email) => {
+    try {
+      return await Users.findOne({
+        attributes: ['password'],
+        where: { email },
+      });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+  
+  findEmail = async (nickname) => {
+    try{
+      return await Users.findOne({
+        attributes: ['email'],
+        where: {nickname},
+      });
+    }catch(err){
+      console.log(err);
+      throw err;
+    }
+  }
+
   withdrawal = async (user_id) => {
     try {
       return await Users.destroy({ where: { user_id } });

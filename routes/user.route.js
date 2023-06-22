@@ -17,4 +17,6 @@ router.put('/profile', authMiddleware, userController.updateProfile);
 router.post('/sendAuthMail', userController.sendAuthMail);
 router.post('/verifyMail', userController.verifyMail);
 
+router.get('/findPassword', userController.findPassword);
+router.get('/findEmail', userController.findEmail);
 module.exports = router;

@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
+      sns_id: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
       email: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -53,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'C',
       },
       major_id: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
       },
       createdAt: {
