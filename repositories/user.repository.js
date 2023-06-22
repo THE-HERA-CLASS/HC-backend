@@ -1,9 +1,11 @@
-const { Users } = require('../models');
-
 class UserRepository {
+  constructor(UsersModel) {
+    this.usersModel = UsersModel;
+  }
+
   emailExists = async (email) => {
     try {
-      return await Users.findOne({ where: { email } });
+      return await this.usersModel.findOne({ where: { email } });
     } catch (err) {
       console.error(err);
     }
@@ -11,7 +13,7 @@ class UserRepository {
 
   nicknameExists = async (nickname) => {
     try {
-      return await Users.findOne({ where: { nickname } });
+      return await this.usersModel.findOne({ where: { nickname } });
     } catch (err) {
       console.error(err);
     }
@@ -19,7 +21,7 @@ class UserRepository {
 
   signup = async (userData) => {
     try {
-      return await Users.create({
+      return await this.usersModel.create({
         email: userData.email,
         nickname: userData.nickname,
         password: userData.password,
@@ -57,7 +59,7 @@ class UserRepository {
 
   withdrawal = async (user_id) => {
     try {
-      return await Users.destroy({ where: { user_id } });
+      return await this.usersModel.destroy({ where: { user_id } });
     } catch (err) {
       console.error(err);
     }
@@ -65,7 +67,7 @@ class UserRepository {
 
   getProfile = async (user_id) => {
     try {
-      return await Users.findOne({
+      return await this.usersModel.findOne({
         attributes: ['user_id', 'email', 'nickname', 'image', 'authority', 'major_id', 'createdAt', 'updatedAt'],
         where: { user_id },
       });
@@ -76,7 +78,7 @@ class UserRepository {
 
   updateProfile = async (userData) => {
     try {
-      return await Users.update(
+      return await this.usersModel.update(
         {
           email: userData.email,
           nickname: userData.nickname,

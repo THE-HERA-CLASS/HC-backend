@@ -1,7 +1,8 @@
 const ExaminfoRepository = require('../repositories/examinfo.repository.js');
+const { Majors, Certificates, Subjects, Exams } = require('../models/index.js');
 
 class ExaminfoService {
-  examinfoRepository = new ExaminfoRepository();
+  examinfoRepository = new ExaminfoRepository(Majors, Certificates, Subjects, Exams);
 
   // ==================================== 전공 ====================================
 

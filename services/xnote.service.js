@@ -1,34 +1,45 @@
 const XnotesRepository = require('../repositories/xnote.repository.js');
 const QuestionsRepository = require('../repositories/question.repository.js');
+const { Xnotes, Questions } = require('../models/index.js');
 
 class XnotesService {
-  xnotesRepository = new XnotesRepository();
-  questionsRepository = new QuestionsRepository();
+  xnotesRepository = new XnotesRepository(Xnotes);
+  questionsRepository = new QuestionsRepository(Questions);
 
-  submitAnswer = async (XnoteData) => {
+  submitAnswer = async (user_id, exam_id, data) => {
+    let returnCount = 0;
     try {
-      const { user_id, exam_id, question_id, answer } = XnoteData;
+      for (const row of data) {
+        const question_id = row.question_id;
+        const answer = row.answer;
 
-      const getQuestionData = await this.questionsRepository.getQuestionWithQuestionId(question_id);
-      const answer_origin = getQuestionData.answer;
-
-      const marking = answer_origin === answer ? 1 : 0; // 맞으면 1, 틀리면 0
-
-      const reXnoteData = {
-        user_id,
-        exam_id,
-        question_id,
-        answer,
-        marking,
-      };
-
-      const userAnswerExists = await this.xnotesRepository.userAnswerExists(reXnoteData);
-
-      if (!userAnswerExists) {
-        return await this.xnotesRepository.submitAnswer(reXnoteData);
-      } else {
-        return await this.xnotesRepository.updateUserAnswer(reXnoteData);
+        const getQuestionData = await this.questionsRepository.getQuestionWithQuestionId(question_id);
+        const answer_origin = getQuestionData.answer;
+        const marking = answer_origin === answer ? true : false; // 맞으면 true, 틀리면 false
+        const reXnoteData = {
+          user_id,
+          exam_id,
+          question_id,
+          answer,
+          marking,
+        };
+        const userAnswerExists = await this.xnotesRepository.userAnswerExists(reXnoteData);
+        if (!userAnswerExists) {
+          await this.xnotesRepository.submitAnswer(reXnoteData);
+        } else {
+          await this.xnotesRepository.updateUserAnswer(reXnoteData);
+        }
+        returnCount++;
       }
+      return returnCount;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  getAnswerWithExamId = async (user_id, exam_id) => {
+    try {
+      return await this.xnotesRepository.getAnswerWithExamId(user_id, exam_id);
     } catch (err) {
       console.error(err);
     }

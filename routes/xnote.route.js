@@ -7,5 +7,6 @@ const authMiddleware = require('../middlewares/auth-middleware.js');
 const xnotesController = new XnotesController();
 
 router.post('/submitAnswer', authMiddleware, xnotesController.submitAnswer);
+router.get('/getAnswerWithExamId/:exam_id', authMiddleware, xnotesController.getAnswerWithExamId);
 
 module.exports = router;

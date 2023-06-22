@@ -64,6 +64,11 @@ class ExaminfoController {
       if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
       if (!name) return res.status(411).json({ errMsg: '값 없음: name' });
 
+      const getMajorData = await this.examinfoService.getOneMajor(major_id);
+      if (!getMajorData) {
+        return res.status(416).json({ errMsg: '요청한 전공 조회 실패' });
+      }
+
       const updateMajor = await this.examinfoService.updateMajor(major_id, name);
 
       if (updateMajor) {
@@ -81,6 +86,11 @@ class ExaminfoController {
     try {
       // const { user_id } = res.locals.user;
       const { major_id } = req.params;
+
+      const getMajorData = await this.examinfoService.getOneMajor(major_id);
+      if (!getMajorData) {
+        return res.status(416).json({ errMsg: '요청한 전공 조회 실패' });
+      }
 
       const dropResult = await this.examinfoService.dropMajor(major_id);
 
@@ -145,7 +155,7 @@ class ExaminfoController {
       const getCertificatesData = await this.examinfoService.getCertificateWithMajorId(major_id);
 
       if (getCertificatesData.length === 0) {
-        return res.status(419).json({ errMsg: '요청 전공 자격증 조회 실패' });
+        return res.status(416).json({ errMsg: '요청 전공 자격증 조회 실패' });
       } else {
         return res.status(200).json({ data: getCertificatesData });
       }
@@ -185,6 +195,11 @@ class ExaminfoController {
       if (!name) return res.status(411).json({ errMsg: '값 없음: name' });
       if (!division) return res.status(411).json({ errMsg: '값 없음: division' });
 
+      const getCertificatesData = await this.examinfoService.getCertificateWithCertificateId(certificate_id);
+      if (!getCertificatesData) {
+        return res.status(416).json({ errMsg: '요청 자격증 조회 실패' });
+      }
+
       const updateResult = await this.examinfoService.updateCertificate(certificate_id, major_id, name, division);
 
       if (updateResult) {
@@ -204,6 +219,11 @@ class ExaminfoController {
       const { certificate_id } = req.params;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
+
+      const getCertificatesData = await this.examinfoService.getCertificateWithCertificateId(certificate_id);
+      if (!getCertificatesData) {
+        return res.status(416).json({ errMsg: '요청 자격증 조회 실패' });
+      }
 
       const dropResult = await this.examinfoService.dropCertificate(certificate_id);
 

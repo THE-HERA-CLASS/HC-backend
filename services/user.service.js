@@ -1,17 +1,17 @@
-const UserRepository = require('../repositories/user.repository.js');
+const UsersRepository = require('../repositories/user.repository.js');
+const { Users } = require('../models/index.js');
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
 var appDir = path.dirname(require.main.filename);
 require('dotenv').config();
 
-
 class UserService {
-  userRepository = new UserRepository();
+  usersRepository = new UsersRepository(Users);
 
   emailExists = async (email) => {
     try {
-      return await this.userRepository.emailExists(email);
+      return await this.usersRepository.emailExists(email);
     } catch (err) {
       console.error(err);
     }
@@ -19,7 +19,7 @@ class UserService {
 
   nicknameExists = async (nickname) => {
     try {
-      return await this.userRepository.nicknameExists(nickname);
+      return await this.usersRepository.nicknameExists(nickname);
     } catch (err) {
       console.error(err);
     }
@@ -27,7 +27,7 @@ class UserService {
 
   signup = async (userData) => {
     try {
-      return await this.userRepository.signup(userData);
+      return await this.usersRepository.signup(userData);
     } catch (err) {
       console.error(err);
     }
@@ -35,7 +35,7 @@ class UserService {
 
   withdrawal = async (user_id) => {
     try {
-      return await this.userRepository.withdrawal(user_id);
+      return await this.usersRepository.withdrawal(user_id);
     } catch (err) {
       console.error(err);
     }
@@ -59,7 +59,7 @@ class UserService {
 
   getProfile = async (user_id) => {
     try {
-      return await this.userRepository.getProfile(user_id);
+      return await this.usersRepository.getProfile(user_id);
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +67,7 @@ class UserService {
 
   updateProfile = async (userData) => {
     try {
-      return await this.userRepository.updateProfile(userData);
+      return await this.usersRepository.updateProfile(userData);
     } catch (err) {
       console.error(err);
     }
@@ -115,10 +115,12 @@ class UserService {
       };
 
       // 전송결과
-      await new Promise((resolve, reject) => { // promise객체를 생성 resolve,reject는 각각 성공,실패했을 때를 처리하기 위한 콜백 함수이다.
+      await new Promise((resolve, reject) => {
+        // promise객체를 생성 resolve,reject는 각각 성공,실패했을 때를 처리하기 위한 콜백 함수이다.
         // sandMail메서드를 호출해서 이메일을 보낸다 1번째 인자로 위에서 선언된 mailOptions를 전달하고, 2번째 인자로 콜백함수를 전달
         transporter.sendMail(mailOptions, function (error, info) {
-          if (error) { // 콜백 함수 내부에서 먼저 error객체를 체크
+          if (error) {
+            // 콜백 함수 내부에서 먼저 error객체를 체크
             console.error(error);
             reject(error); // Promise의 reject함수를 호출해서 에러를 반환
           } else {
