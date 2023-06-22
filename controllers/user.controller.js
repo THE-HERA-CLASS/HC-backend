@@ -83,7 +83,7 @@ class UserController {
       if (!nickname) return res.status(411).json({ errMsg: '값 없음 : nickname' });
       if (!password) return res.status(411).json({ errMsg: '값 없음 : password' });
       if (!major_id) return res.status(411).json({ errMsg: '값 없음 : major_id' });
-      if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+(\.[a-zA-Z]+)?$/.test(email)) {
+      if (!/^[a-zA-Z0-9]+(?:[.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[.][a-zA-Z0-9]+)*(?:[.][a-zA-Z]+)?$/.test(email)) {
         return res.status(412).json({ errMsg: '형식 에러: 올바른 이메일 형식이 아닙니다' });
       }
       if (!/^[\w가-힣]{2,10}$/.test(nickname)) {
