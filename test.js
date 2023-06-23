@@ -1,64 +1,95 @@
-// BST에서 각 노드를 표현하는 클래스
-class Node {
-  constructor(data, left = null, right = null) {
-    this.data = data;   // 노드의 데이터
-    this.left = left;   // 노드의 왼쪽 자식
-    this.right = right; // 노드의 오른쪽 자식
-  }
-}
+const UserService = require('../services/user.service');
+const axios = require('axios');
+const redisClient = require('../utils/redis.js');
+require('dotenv').config();
 
-// BST를 표현하는 클래스
-class BinarySearchTree {
-  constructor() {
-    this.root = null;   // 루트 노드를 초기값 null로 설정
-  }
-  // createBSTHelper 메소드를 호출하여 이진 탐색 트리를 생성하고,
-  // 생성된 트리의 루트 노드를 this.root에 저장한다
-  // 이 메소드에 전달되는 인자 arr는 이진 탐색 트리를 생성할 배열이다.
-  createBST(arr) {
-    this.root = this.createBSTHelper(arr, 0, arr.length - 1);
-  }
-  // arr: 이진 탐색 트리를 생성할 배열
-  // start: 배열에서 이진 탐색 트리를 생성할 범위의 시작 인덱스
-  // end: 배열에서 이진 탐색 트리를 생성할 범위의 끝 인덱스
-  createBSTHelper(arr, start, end) {
-    // 재귀 호출의 종료 조건
-    // start가 end보다 크다는 것은 서브트리를 생성할 요소가 배열에 더 이상 없다는 것을 의미하므로,
-    // 이 경우에는 null을 반환하여 재귀 호출을 종료한다.
-    // 이 null 값은 노드가 자식을 가지지 않을 때 해당 자식 노드의 값으로 설정된다.
-    if (start > end) {
-      return null;
-    }
-    //배열의 중간 인덱스를 계산한다 이 중간 인덱스는 이진 탐색 트리의 루트 노드가 될 요소의 인덱스이다.
-    let mid = Math.floor((start + end) / 2);
-    let node = new Node(arr[mid]);
+class UserController {
+  userService = new UserService();
 
-    node.left = this.createBSTHelper(arr, start, mid - 1);
-    node.right = this.createBSTHelper(arr, mid + 1, end);
+  kakaologin = async (req, res) => {
+    const { code } = req.body; // 카카오로그인 요청 후 받은 인가 코드
+    try {
+      // axios.post 메서드로 kakao api에 post요청을 보냄
+      const res1 = await axios.post(
+        'https://kauth.kakao.com/oauth/token', // 요청 URL
+        {},
+        {
+          // 요청 헤더
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+          },
+          params: {
+            grant_type: 'authorization_code',
+            client_id: process.env.KAKAO_SECRET_KEY,
+            code: code, // 엎서 body로 받은 인가code
+            redirect_uri: 'http://localhost:3000/kakao/callback', // 사용자 인증 후 리디렉션될 URL
+          },
+        }
+      );
 
-    return node;
-  }
+      // Access token을 이용해 정보 가져오기
+      // axios.post 메서드로 kakao api에 post요청을 보냄
+      const res2 = await axios.post(
+        //요청 URL은 https://kapi.kakao.com/v2/user/me
+        'https://kapi.kakao.com/v2/user/me',
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            Authorization: 'Bearer ' + res1.data.access_token,
+          },
+        }
+      );
+      const data = res2.data;
+      const email = data.kakao_account.email;
+      const user = await this.userService.emailExists(email);
 
-  printTree(node = this.root, indent = "") {
-    if (node !== null) {
-      console.log(`${indent}Node ${node.data}:`);
-      if (node.left !== null) {
-        console.log(`${indent}  Left: ${node.left.data}`);
-        this.printTree(node.left, indent + "    ");
+      if (!user) {
+        const name = data.properties.nickname;
+
+        await this.userService.signup(email, name);
+        const userData = await this.userService.login(data.kakao_account.email);
+
+        res.cookie('authorization', `${userData.accessObject.type} ${userData.accessObject.token}`);
+
+        res.cookie('refreshToken', `${userData.refreshObject.token}`);
+
+        res.cookie('user', `${userData.user_id}`);
+
+        res.status(200).json({
+          authorization: `${userData.accessObject.type} ${userData.accessObject.token}`,
+          refreshToken: `${userData.refreshObject.token}`,
+          user: `${userData.user_id}`,
+          message: '회원가입 되었습니다!',
+        });
       } else {
-        console.log(`${indent}  Left: null`);
-      }
-      if (node.right !== null) {
-        console.log(`${indent}  Right: ${node.right.data}`);
-        this.printTree(node.right, indent + "    ");
-      } else {
-        console.log(`${indent}  Right: null`);
-      }
-    }
-  }
-}
+        const userData = await this.userService.login(data.kakao_account.email);
 
-const bst = new BinarySearchTree();
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-bst.createBST(arr);
-bst.printTree();
+        res.cookie('authorization', `${userData.accessObject.type} ${userData.accessObject.token}`, {
+          sameSite: 'none',
+          secure: true,
+        });
+
+        res.cookie('refreshToken', `${userData.refreshObject.token}`, {
+          sameSite: 'none',
+          secure: true,
+        });
+
+        res.cookie('user', `${userData.user_id}`, {
+          sameSite: 'none',
+          secure: true,
+        });
+
+        res.status(200).json({
+          authorization: `${userData.accessObject.type} ${userData.accessObject.token}`,
+          refreshToken: `${userData.refreshObject.token}`,
+          user: `${userData.user_id}`,
+          message: '로그인 되었습니다!',
+        });
+      }
+    } catch (error) {
+      error.failedApi = '유저 소셜 로그인';
+      throw error;
+    }
+  };
+}

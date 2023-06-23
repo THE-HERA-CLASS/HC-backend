@@ -174,6 +174,38 @@ class UserController {
       res.status(400).json({ errMsg: '전체 에러' });
     }
   };
+
+  findPassword = async(req, res) => {
+    try{
+      const {email} = req.body;
+      const findPasswordData = await this.userService.findPassword(email);
+      if(findPasswordData){
+        return res.status(200).json({data:findPasswordData})
+      }else{
+        return res.status(419).json({errMsg: '해당 이메일로 가입된 회원이 없습니다.'})
+      }
+    }catch(err){
+      console.error(err);
+      res.status(400).json({errMsg:'전체에러'});
+    }
+  }
+
+  findEmail = async(req,res)=> {
+    try{
+      const{nickname} = req.body;
+      const findEmailData = await this.userService.findEmail(nickname);
+      if(findEmailData){
+        return res.status(200).json({data:findEmailData})
+      }else{
+        return res.status(419).json({errMsg: '해당 닉네임으로 가입된 회원이 없습니다.'})
+      }
+    }catch(err){
+      console.error(err);
+      res.status(400).json({errMsg:'전체에러'});
+    }
+  }
+
+  
 }
 
 module.exports = UserController;
