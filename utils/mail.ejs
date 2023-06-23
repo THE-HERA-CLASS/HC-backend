@@ -1,12 +1,15 @@
 <html>
-  <body>
-    <div>
-      <p style="color: black">Hera-Class 회원가입 인증 메일입니다</p>
-      <p style="color: black">
+  <body style="font-family: Arial, sans-serif; margin:0; padding:0; background-color:#f4f4f4;">
+    <div style="max-width:600px; margin:0 auto; padding:20px; background-color:#fff; border:1px solid #ddd; border-radius:5px;">
+      <h1 style="color: #444; text-align: center;">Hera-Class 회원가입 인증 메일입니다</h1>
+      <p style="color: #333; font-size: 16px;">
         아래의 인증번호를 입력하여, 회원가입을 진행해 주세요.
       </p>
-      <p style="color: black">인증번호의 유효기간은 5분 입니다 ^^ .</p>
-      <h2><%= userCode %></h2>
+      <p style="color: #333; font-size: 16px;">인증번호의 유효기간은 5분 입니다.</p>
+      <div style="background-color:#eee; padding:20px; text-align:center; margin:20px 0; border-radius:5px;">
+        <h2 style="margin:0; color:#333;"><%= userCode %></h2>
+      </div>
+      <p style="color: #aaa; font-size: 12px; text-align: center;">이 메일은 자동으로 생성되었으며, 회신하실 수 없습니다.</p>
     </div>
   </body>
 </html>
