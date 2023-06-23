@@ -1,5 +1,3 @@
-const { Op } = require('sequelize');
-
 class SearchRepository {
   constructor(ExamsModel) {
     this.examsModel = ExamsModel;

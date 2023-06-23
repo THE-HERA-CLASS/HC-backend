@@ -35,7 +35,7 @@ class UserRepository {
 
   findPassword = async (email) => {
     try {
-      return await Users.findOne({
+      return await this.usersModel.findOne({
         attributes: ['password'],
         where: { email },
       });
@@ -47,7 +47,7 @@ class UserRepository {
   
   findEmail = async (nickname) => {
     try{
-      return await Users.findOne({
+      return await this.usersModel.findOne({
         attributes: ['email'],
         where: {nickname},
       });

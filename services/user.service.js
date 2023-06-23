@@ -43,7 +43,7 @@ class UserService {
 
   findPassword = async(email) => {
     try{
-      return await this.userRepository.findPassword(email);
+      return await this.usersRepository.findPassword(email);
     }catch(err){
       console.error(err);
     }
@@ -51,7 +51,7 @@ class UserService {
 
   findEmail = async(nickname) => {
     try{
-      return await this.userRepository.findEmail(nickname);
+      return await this.usersRepository.findEmail(nickname);
     }catch(err ){
       console.error(err);
     }
