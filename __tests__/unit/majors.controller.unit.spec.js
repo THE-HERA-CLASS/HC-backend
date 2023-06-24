@@ -9,6 +9,7 @@ let mockExaminfoService = {
 }
 
 let mockRequest = {
+    params: { major_id: 1 },
     body: jest.fn(),
 }
 
@@ -99,6 +100,112 @@ describe('Examinfo Controller Unit Test', () => {
         // 3. 너가 예상하는 결과대로 나오냐?
         expect(mockResponse.json).toHaveBeenCalledWith({ data: getMajorsReturnValues });
     })
+
+    test('Major getOneMajor Unit Test', async () => {
+        const getOneMajorRequestParams = {
+            major_id: 1
+        }
+
+        mockRequest.params = getOneMajorRequestParams;
+
+        const getOneMajorReturnValue = {
+            "major_id": 1,
+            "name": "컴퓨터공학"
+        }
+    
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return getOneMajorReturnValue
+        })
+
+        await examinfoController.getOneMajor(mockRequest, mockResponse);
+
+        // 1. 서비스쪽에 getOneMajor 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(getOneMajorRequestParams.major_id);
+
+        // 2. 최종 상태값이 200이냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+        // 3. 너가 예상하는 결과대로 나오냐?
+        expect(mockResponse.json).toHaveBeenCalledWith({ data: getOneMajorReturnValue });
+    })
+
+    test('Major getOneMajor Unit Test: major_id = null', async () => {
+        mockRequest.params = {};
+
+        await examinfoController.getOneMajor(mockRequest, mockResponse);
+
+        // 1. 요청 상태값이 411이냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(411);
+
+        // 2. 에러문구가 우리가 예상하는게 맞냐?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' })
+    })
+
+    // test('Major updateMajor Unit Test', async () => {
+    //     const updateMajorRequestParams = {
+    //         major_id: 1
+    //     }
+    
+    //     const updateMajorRequestBody = {
+    //         name: '컴퓨터공학'
+    //     }
+
+    //     mockRequest.params = updateMajorRequestParams;
+    //     mockRequest.body = updateMajorRequestBody;
+
+    //     const updateMajorReturnValue = { msg: '전공 수정 완료' }
+    
+    //     mockExaminfoService.updateMajor = jest.fn(() => {
+    //         return updateMajorReturnValue
+    //     })
+
+    //     await examinfoController.updateMajor(mockRequest, mockResponse);
+
+    //     // 1. 서비스쪽에 메서드 요청 1번만 하느냐? 매개변수들 잘 전달하느냐?
+    //     expect(mockExaminfoService.updateMajor).toHaveBeenCalledTimes(1);
+    //     expect(mockExaminfoService.updateMajor).toHaveBeenCalledWith(updateMajorRequestParams.major_id, updateMajorRequestBody.name);
+
+    //     // 2. 최종 상태값이 200이냐?
+    //     expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    //     expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    //     // 3. 너가 예상하는 결과대로 나오냐?
+    //     expect(mockResponse.json).toHaveBeenCalledWith(updateMajorReturnValue);
+    // })
+
+    test('Major dropMajor Unit Test', async () => {
+        // const dropMajorRequestParams = {
+        //     major_id: 1
+        // }
+
+        // mockRequest.params = { major_id: 1 }
+
+        const dropMajorReturnValue = { msg: '전공 삭제 완료' }
+    
+        mockExaminfoService.dropMajor = jest.fn(() => {
+            return dropMajorReturnValue
+        })
+
+        await examinfoController.dropMajor(mockRequest, mockResponse);
+
+        // 1. 서비스쪽에 getOneMajor 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        expect(mockExaminfoService.dropMajor).toHaveBeenCalledTimes(1);
+        // expect(mockExaminfoService.dropMajor).toHaveBeenCalledWith(1);
+
+        // 2. 최종 상태값이 200이냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+        // 3. 너가 예상하는 결과대로 나오냐?
+        expect(mockResponse.json).toHaveBeenCalledWith(dropMajorReturnValue);
+    })
+
+    // test('Major addMajor Unit Test', async () => {
+
+    // })
 
     // test('Major addMajor Unit Test', async () => {
 
