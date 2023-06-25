@@ -58,7 +58,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.status).toHaveBeenCalledWith(200);
     })
 
-    test('Unit Test / Controller / Examinfo - Major / addMajor : failed : name null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / addMajor : failed / name = null', async () => {
         mockRequest.body = {};
 
         await examinfoController.addMajor(mockRequest, mockResponse);
@@ -130,7 +130,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith({ data: getOneMajorReturnValue });
     })
 
-    test('Unit Test / Controller / Examinfo - Major / getOneMajor : Failed : major_id = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / getOneMajor : Failed / major_id = null', async () => {
         mockRequest.params = {};
 
         await examinfoController.getOneMajor(mockRequest, mockResponse);
@@ -188,7 +188,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith(updateMajorReturnValue);
     })
 
-    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed : major_id = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / major_id = null', async () => {
         mockRequest.params = {};
         mockRequest.body = { name: '컴퓨터공학'}
         await examinfoController.updateMajor(mockRequest, mockResponse);
@@ -198,7 +198,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' });
     })
 
-    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed : name = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / name = null', async () => {
         mockRequest.params = {major_id: 1};
         mockRequest.body = {};
         await examinfoController.updateMajor(mockRequest, mockResponse);
@@ -208,7 +208,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: name' });
     })
 
-    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed : getOneMajor = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / getOneMajor = null', async () => {
         mockRequest.params = {major_id: 1};
         mockRequest.body = { name: '컴퓨터공학'}
         const getOneMajorReturnValue = 0
@@ -262,7 +262,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith(dropMajorReturnValue);
     })
 
-    test('Unit Test / Controller / Examinfo - Major / dropMajor : Failed getOneMajor = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / dropMajor : Failed / getOneMajor = null', async () => {
         mockRequest.params = {};
         await examinfoController.dropMajor(mockRequest, mockResponse);
         // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
