@@ -215,13 +215,14 @@ describe('Examinfo Controller Unit Test', () => {
         expect(mockResponse.json).toHaveBeenCalledWith(dropMajorReturnValue);
     })
 
-    // test('Major addMajor Unit Test', async () => {
-
-    // })
-
-    // test('Major addMajor Unit Test', async () => {
-
-    // })
+    test('Major dropMajor Unit Test : failed getOneMajor', async () => {
+        mockRequest.params = {};
+        await examinfoController.dropMajor(mockRequest, mockResponse);
+        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(416);
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '요청한 전공 조회 실패' });
+    })
 
     // test('Major addMajor Unit Test', async () => {
 
