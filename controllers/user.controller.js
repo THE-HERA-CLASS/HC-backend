@@ -189,7 +189,7 @@ class UserController {
       }
     } catch (err) {
       console.error(err);
-      res.status(400).json({ errMsg: '전체에러' });
+      res.status(400).json({ errMsg: '전체 에러' });
     }
   };
 
@@ -204,7 +204,7 @@ class UserController {
       }
     } catch (err) {
       console.error(err);
-      res.status(400).json({ errMsg: '전체에러' });
+      res.status(400).json({ errMsg: '전체 에러' });
     }
   };
 }
