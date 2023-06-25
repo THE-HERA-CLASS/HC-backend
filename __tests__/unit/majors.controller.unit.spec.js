@@ -9,7 +9,6 @@ let mockExaminfoService = {
 }
 
 let mockRequest = {
-    params: { major_id: 1 },
     body: jest.fn(),
 }
 
@@ -177,13 +176,22 @@ describe('Examinfo Controller Unit Test', () => {
     // })
 
     test('Major dropMajor Unit Test', async () => {
-        // const dropMajorRequestParams = {
-        //     major_id: 1
-        // }
+        const dropMajorRequestParams = {
+            major_id: 1
+        };
 
-        // mockRequest.params = { major_id: 1 }
+        mockRequest.params = dropMajorRequestParams;
 
-        const dropMajorReturnValue = { msg: '전공 삭제 완료' }
+        const getOneMajorReturnValue = {
+            "major_id": 1,
+            "name": "컴퓨터공학"
+        }
+
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return getOneMajorReturnValue
+        });
+
+        const dropMajorReturnValue = { msg: '전공 삭제 완료' };
     
         mockExaminfoService.dropMajor = jest.fn(() => {
             return dropMajorReturnValue
@@ -191,9 +199,13 @@ describe('Examinfo Controller Unit Test', () => {
 
         await examinfoController.dropMajor(mockRequest, mockResponse);
 
-        // 1. 서비스쪽에 getOneMajor 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        // 0. getOneMajor 1번 호출?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(dropMajorRequestParams.major_id);
+
+        // 1. 서비스쪽에 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
         expect(mockExaminfoService.dropMajor).toHaveBeenCalledTimes(1);
-        // expect(mockExaminfoService.dropMajor).toHaveBeenCalledWith(1);
+        expect(mockExaminfoService.dropMajor).toHaveBeenCalledWith(dropMajorRequestParams.major_id);
 
         // 2. 최종 상태값이 200이냐?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
