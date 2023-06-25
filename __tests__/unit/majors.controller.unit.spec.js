@@ -143,37 +143,84 @@ describe('Examinfo Controller Unit Test', () => {
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' })
     })
 
-    // test('Major updateMajor Unit Test', async () => {
-    //     const updateMajorRequestParams = {
-    //         major_id: 1
-    //     }
+    test('Major updateMajor Unit Test', async () => {
+        const updateMajorRequestParams = {
+            major_id: 1,
+        };
+
+        const updatemajorRequestBody = {
+            name: '컴퓨터공학'
+        }
+
+        mockRequest.params = updateMajorRequestParams;
+        mockRequest.body = updatemajorRequestBody;
+
+        const getOneMajorReturnValue = {
+            "major_id": 1,
+            "name": "컴퓨터공학"
+        }
+
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return getOneMajorReturnValue
+        });
+
+        const updateMajorReturnValue = { msg: '전공 수정 완료' };
     
-    //     const updateMajorRequestBody = {
-    //         name: '컴퓨터공학'
-    //     }
+        mockExaminfoService.updateMajor = jest.fn(() => {
+            return updateMajorReturnValue
+        })
 
-    //     mockRequest.params = updateMajorRequestParams;
-    //     mockRequest.body = updateMajorRequestBody;
+        await examinfoController.updateMajor(mockRequest, mockResponse);
 
-    //     const updateMajorReturnValue = { msg: '전공 수정 완료' }
-    
-    //     mockExaminfoService.updateMajor = jest.fn(() => {
-    //         return updateMajorReturnValue
-    //     })
+        // 0. getOneMajor 1번 호출?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(updateMajorRequestParams.major_id);
 
-    //     await examinfoController.updateMajor(mockRequest, mockResponse);
+        // 1. 서비스쪽에 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        expect(mockExaminfoService.updateMajor).toHaveBeenCalledTimes(1);
+        expect(mockExaminfoService.updateMajor).toHaveBeenCalledWith(updateMajorRequestParams.major_id, updatemajorRequestBody.name);
 
-    //     // 1. 서비스쪽에 메서드 요청 1번만 하느냐? 매개변수들 잘 전달하느냐?
-    //     expect(mockExaminfoService.updateMajor).toHaveBeenCalledTimes(1);
-    //     expect(mockExaminfoService.updateMajor).toHaveBeenCalledWith(updateMajorRequestParams.major_id, updateMajorRequestBody.name);
+        // 2. 최종 상태값이 200이냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(200);
 
-    //     // 2. 최종 상태값이 200이냐?
-    //     expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    //     expect(mockResponse.status).toHaveBeenCalledWith(200);
+        // 3. 너가 예상하는 결과대로 나오냐?
+        expect(mockResponse.json).toHaveBeenCalledWith(updateMajorReturnValue);
+    })
 
-    //     // 3. 너가 예상하는 결과대로 나오냐?
-    //     expect(mockResponse.json).toHaveBeenCalledWith(updateMajorReturnValue);
-    // })
+    test('Major updateMajor Unit Test : failed : major_id = null', async () => {
+        mockRequest.params = {};
+        mockRequest.body = { name: '컴퓨터공학'}
+        await examinfoController.updateMajor(mockRequest, mockResponse);
+        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(411);
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' });
+    })
+
+    test('Major updateMajor Unit Test : failed : name = null', async () => {
+        mockRequest.params = {major_id: 1};
+        mockRequest.body = {};
+        await examinfoController.updateMajor(mockRequest, mockResponse);
+        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(411);
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: name' });
+    })
+
+    test('Major updateMajor Unit Test : failed : getOneMajor = null', async () => {
+        mockRequest.params = {major_id: 1};
+        mockRequest.body = { name: '컴퓨터공학'}
+        const getOneMajorReturnValue = 0
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return getOneMajorReturnValue
+        });
+        await examinfoController.updateMajor(mockRequest, mockResponse);
+        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        expect(mockResponse.status).toHaveBeenCalledWith(416);
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '요청한 전공 조회 실패' });
+    })
 
     test('Major dropMajor Unit Test', async () => {
         const dropMajorRequestParams = {
@@ -223,9 +270,5 @@ describe('Examinfo Controller Unit Test', () => {
         expect(mockResponse.status).toHaveBeenCalledWith(416);
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '요청한 전공 조회 실패' });
     })
-
-    // test('Major addMajor Unit Test', async () => {
-
-    // })
 
 })
