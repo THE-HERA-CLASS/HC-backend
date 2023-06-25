@@ -41,22 +41,6 @@ class UserService {
     }
   };
 
-  findPassword = async(email) => {
-    try{
-      return await this.usersRepository.findPassword(email);
-    }catch(err){
-      console.error(err);
-    }
-  }
-
-  findEmail = async(nickname) => {
-    try{
-      return await this.usersRepository.findEmail(nickname);
-    }catch(err ){
-      console.error(err);
-    }
-  }
-
   getProfile = async (user_id) => {
     try {
       return await this.usersRepository.getProfile(user_id);
@@ -72,6 +56,22 @@ class UserService {
       console.error(err);
     }
   };
+
+  findPassword = async(email) => {
+    try{
+      return await this.usersRepository.findPassword(email);
+    }catch(err){
+      console.error(err);
+    }
+  }
+
+  findEmail = async(nickname) => {
+    try{
+      return await this.usersRepository.findEmail(nickname);
+    }catch(err ){
+      console.error(err);
+    }
+  }
 
   sendAuthMail = async (email, userNum) => {
     try {
