@@ -10,13 +10,16 @@ class UserController {
     try {
       const email = req.params.email;
       if (!email) {
-        throw resUtil(411, '값 없음 : email');
+        // throw resUtil(411, '값 없음 : email');
+        return res.status(411).json({ errMsg: '값 없음 : email' });
       }
       const emailExistsData = await this.userService.emailExists(email);
       if (!emailExistsData) {
-        throw resUtil(200, '이메일 사용 가능');
+        // throw resUtil(200, '이메일 사용 가능');
+        return res.status(200).json({ msg: '이메일 사용 가능' });
       } else {
-        throw resUtil(201, '이메일 사용 불가능');
+        // throw resUtil(201, '이메일 사용 불가능');
+        return res.status(201).json({ errMsg: '이메일 사용 불가능' });
       }
     } catch (err) {
       err.failedMsg = '전체 에러';
