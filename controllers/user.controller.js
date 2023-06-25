@@ -31,13 +31,16 @@ class UserController {
     try {
       const nickname = req.params.nickname;
       if (!nickname) {
-        throw resUtil(411, '값 없음 : nickname');
+        // throw resUtil(411, '값 없음 : nickname');
+        return res.status(411).json({ errMsg: '값 없음 : nickname' });
       }
       const nicknameExistsData = await this.userService.nicknameExists(nickname);
       if (!nicknameExistsData) {
-        throw resUtil(200, '닉네임 사용 가능');
+        // throw resUtil(200, '닉네임 사용 가능');
+        return res.status(200).json({ msg: '닉네임 사용 가능' })
       } else {
-        throw resUtil(201, '닉네임 사용 불가능');
+        // throw resUtil(201, '닉네임 사용 불가능');
+        return res.status(201).json({ errMsg: '닉네임 사용 불가능' })
       }
     } catch (err) {
       err.failedMsg = '전체 에러';
@@ -82,10 +85,12 @@ class UserController {
   signup = async (req, res) => {
     try {
       const { email, nickname, password, image, major_id } = req.body;
+
       if (!email) return res.status(411).json({ errMsg: '값 없음 : email' });
       if (!nickname) return res.status(411).json({ errMsg: '값 없음 : nickname' });
       if (!password) return res.status(411).json({ errMsg: '값 없음 : password' });
       if (!major_id) return res.status(411).json({ errMsg: '값 없음 : major_id' });
+
       if (!/^[a-zA-Z0-9]+(?:[.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:[.][a-zA-Z0-9]+)*(?:[.][a-zA-Z]+)?$/.test(email)) {
         return res.status(412).json({ errMsg: '형식 에러: 올바른 이메일 형식이 아닙니다' });
       }
@@ -94,11 +99,12 @@ class UserController {
           errMsg: '형식 에러: 닉네임은 2~10자의 영문, 한글, 숫자, 밑줄(_)만 허용됩니다',
         });
       }
-      // if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,15}$/.test(password)) {
-      //   return res.status(412).json({
-      //     errMsg: '형식 에러: 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~15자여야 합니다',
-      //   });
-      // }
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,15}$/.test(password)) {
+        return res.status(412).json({
+          errMsg: '형식 에러: 비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함한 8~15자여야 합니다',
+        });
+      }
+
       const userData = {
         email,
         nickname,
@@ -107,6 +113,7 @@ class UserController {
         major_id,
       };
       const signupResult = await this.userService.signup(userData);
+      
       if (signupResult) {
         return res.status(200).json({ msg: '회원가입 완료' });
       } else {
