@@ -37,10 +37,10 @@ class UserController {
       const nicknameExistsData = await this.userService.nicknameExists(nickname);
       if (!nicknameExistsData) {
         // throw resUtil(200, '닉네임 사용 가능');
-        return res.status(200).json({ msg: '닉네임 사용 가능' })
+        return res.status(200).json({ msg: '닉네임 사용 가능' });
       } else {
         // throw resUtil(201, '닉네임 사용 불가능');
-        return res.status(201).json({ errMsg: '닉네임 사용 불가능' })
+        return res.status(201).json({ errMsg: '닉네임 사용 불가능' });
       }
     } catch (err) {
       err.failedMsg = '전체 에러';
@@ -113,7 +113,7 @@ class UserController {
         major_id,
       };
       const signupResult = await this.userService.signup(userData);
-      
+
       if (signupResult) {
         return res.status(200).json({ msg: '회원가입 완료' });
       } else {
@@ -164,15 +164,8 @@ class UserController {
   updateProfile = async (req, res) => {
     try {
       const { user_id } = res.locals.user;
-      const userData = {
-        user_id,
-        email: req.body.email,
-        nickname: req.body.nickname,
-        password: req.body.password,
-        image: req.body.image,
-        authority: req.body.authority,
-        major_id: req.body.major_id,
-      };
+      const { email, nickname, password, image, authority, major_id } = req.body;
+      const userData = { user_id, email, nickname, password, image, authority, major_id };
       const updateProfileData = await this.userService.updateProfile(userData);
       if (updateProfileData) {
         return res.status(200).json({ msg: '회원정보 수정 완료' });
@@ -185,37 +178,35 @@ class UserController {
     }
   };
 
-  findPassword = async(req, res) => {
-    try{
-      const {email} = req.body;
+  findPassword = async (req, res) => {
+    try {
+      const { email } = req.body;
       const findPasswordData = await this.userService.findPassword(email);
-      if(findPasswordData){
-        return res.status(200).json({data:findPasswordData})
-      }else{
-        return res.status(419).json({errMsg: '해당 이메일로 가입된 회원이 없습니다.'})
+      if (findPasswordData) {
+        return res.status(200).json({ data: findPasswordData });
+      } else {
+        return res.status(419).json({ errMsg: '해당 이메일로 가입된 회원이 없습니다.' });
       }
-    }catch(err){
+    } catch (err) {
       console.error(err);
-      res.status(400).json({errMsg:'전체에러'});
+      res.status(400).json({ errMsg: '전체에러' });
     }
-  }
+  };
 
-  findEmail = async(req,res)=> {
-    try{
-      const{nickname} = req.body;
+  findEmail = async (req, res) => {
+    try {
+      const { nickname } = req.body;
       const findEmailData = await this.userService.findEmail(nickname);
-      if(findEmailData){
-        return res.status(200).json({data:findEmailData})
-      }else{
-        return res.status(419).json({errMsg: '해당 닉네임으로 가입된 회원이 없습니다.'})
+      if (findEmailData) {
+        return res.status(200).json({ data: findEmailData });
+      } else {
+        return res.status(419).json({ errMsg: '해당 닉네임으로 가입된 회원이 없습니다.' });
       }
-    }catch(err){
+    } catch (err) {
       console.error(err);
-      res.status(400).json({errMsg:'전체에러'});
+      res.status(400).json({ errMsg: '전체에러' });
     }
-  }
-
-  
+  };
 }
 
 module.exports = UserController;
