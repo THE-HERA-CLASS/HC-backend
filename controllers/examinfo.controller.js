@@ -24,6 +24,7 @@ class ExaminfoController {
 
   getMajors = async (req, res) => {
     try {
+      // const { user_id } = res.locals.user;
       const getMajors = await this.examinfoService.getMajors();
       if (getMajors.length > 0) {
         return res.status(200).json({ data: getMajors });
