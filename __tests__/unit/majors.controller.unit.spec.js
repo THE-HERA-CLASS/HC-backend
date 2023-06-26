@@ -15,6 +15,7 @@ let mockRequest = {
 let mockResponse = {
     status: jest.fn(),
     json: jest.fn(),
+    locals: jest.fn(),
 }
 
 let examinfoController = new ExaminfoController();
@@ -31,48 +32,51 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
     });
 
     test('Unit Test / Controller / Examinfo - Major / addMajor : Success', async () => {
-        const addMajorRequestBody = {
-            name: 'request name'
-        }
-
-        mockRequest.body = addMajorRequestBody;
-
-        const addMajorReturnValue = { msg: '전공 등록 완료' }
-
-        mockExaminfoService.addMajor = jest.fn(() => {
-            return addMajorReturnValue
-        })
-
+        mockRequest.body = { name: '컴퓨터공학' };
+        const functionResult = true;
+        mockExaminfoService.addMajor = jest.fn(() => functionResult)
         await examinfoController.addMajor(mockRequest, mockResponse);
 
-        // 1. Request body 데이터가 저상적으로 addMajor에 전달되는가?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.addMajor).toHaveBeenCalledTimes(1);
-        expect(mockExaminfoService.addMajor).toHaveBeenCalledWith(addMajorRequestBody.name);
-
-        // 2-1. mockResponse.json 결과값이 우리가 의도한 대로 잘 나오냐?
-        expect(mockResponse.json).toHaveBeenCalledTimes(1);
-        expect(mockResponse.json).toHaveBeenCalledWith({ msg: '전공 등록 완료'});
-
-        // 3. mockResponse.status 200이 맞냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.addMajor).toHaveBeenCalledWith(mockRequest.body.name);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(200);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ msg: '전공 등록 완료' });
+    })
+
+    test('Unit Test / Controller / Examinfo - Major / addMajor : Failed', async () => {
+        mockRequest.body = { name: '컴퓨터공학' };
+        const functionResult = false;
+        mockExaminfoService.addMajor = jest.fn(() => functionResult)
+        await examinfoController.addMajor(mockRequest, mockResponse);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.addMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.addMajor).toHaveBeenCalledWith(mockRequest.body.name);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.status).toHaveBeenCalledWith(419);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '전공 등록 실패' });
     })
 
     test('Unit Test / Controller / Examinfo - Major / addMajor : failed / name = null', async () => {
         mockRequest.body = {};
-
         await examinfoController.addMajor(mockRequest, mockResponse);
 
-        // 1. 요청 상태값이 400이냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 요청값 (name)을 안 넣었을 때 에러 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(411);
-
-        // 2. 에러문구가 우리가 예상하는게 맞냐?
+        // 요청값 (name)을 안 넣었을 때 에러 응답값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: name' })
     })
 
+    // --------------------------
+
     test('Unit Test / Controller / Examinfo - Major / getMajors : Success', async () => {
-        const getMajorsReturnValues = [
+        const returnValue = [
             {
                 "major_id": 1,
                 "name": "컴퓨터공학"
@@ -84,191 +88,329 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         ]
     
         mockExaminfoService.getMajors = jest.fn(() => {
-            return getMajorsReturnValues
+            return returnValue
         })
 
         await examinfoController.getMajors(mockRequest, mockResponse);
 
-        // 1. 서비스쪽에 getMajors 메서드 요청 1번만 하느냐?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.getMajors).toHaveBeenCalledTimes(1);
-
-        // 2. 최종 상태값이 200이냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getMajors).toHaveBeenCalledWith();
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(200);
-
-        // 3. 너가 예상하는 결과대로 나오냐?
-        expect(mockResponse.json).toHaveBeenCalledWith({ data: getMajorsReturnValues });
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ data: returnValue });
     })
 
+    test('Unit Test / Controller / Examinfo - Major / getMajors : Failed', async () => {
+        const returnValue = [];
+    
+        mockExaminfoService.getMajors = jest.fn(() => {
+            return returnValue
+        })
+
+        await examinfoController.getMajors(mockRequest, mockResponse);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.getMajors).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getMajors).toHaveBeenCalledWith();
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.status).toHaveBeenCalledWith(419);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '전공 조회 실패' });
+    })
+
+    // --------------------------
+
     test('Unit Test / Controller / Examinfo - Major / getOneMajor : Success', async () => {
-        const getOneMajorRequestParams = {
+        const requestParams = {
             major_id: 1
         }
 
-        mockRequest.params = getOneMajorRequestParams;
+        mockRequest.params = requestParams;
 
-        const getOneMajorReturnValue = {
+        const functionResult = {
             "major_id": 1,
             "name": "컴퓨터공학"
         }
     
         mockExaminfoService.getOneMajor = jest.fn(() => {
-            return getOneMajorReturnValue
+            return functionResult
         })
 
         await examinfoController.getOneMajor(mockRequest, mockResponse);
 
-        // 1. 서비스쪽에 getOneMajor 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
-        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(getOneMajorRequestParams.major_id);
-
-        // 2. 최종 상태값이 200이냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(requestParams.major_id)
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(200);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ data: functionResult });
+    })
 
-        // 3. 너가 예상하는 결과대로 나오냐?
-        expect(mockResponse.json).toHaveBeenCalledWith({ data: getOneMajorReturnValue });
+    test('Unit Test / Controller / Examinfo - Major / getOneMajor : Failed', async () => {
+        const requestParams = {
+            major_id: 1
+        }
+
+        mockRequest.params = requestParams;
+
+        const functionResult = null;
+    
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return functionResult
+        })
+
+        await examinfoController.getOneMajor(mockRequest, mockResponse);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(requestParams.major_id)
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.status).toHaveBeenCalledWith(419);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '요청한 전공 조회 실패' });
     })
 
     test('Unit Test / Controller / Examinfo - Major / getOneMajor : Failed / major_id = null', async () => {
         mockRequest.params = {};
-
         await examinfoController.getOneMajor(mockRequest, mockResponse);
 
-        // 1. 요청 상태값이 411이냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(411);
-
-        // 2. 에러문구가 우리가 예상하는게 맞냐?
-        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' })
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' });
     })
 
+    // --------------------------
+
     test('Unit Test / Controller / Examinfo - Major / updateMajor : Success', async () => {
-        const updateMajorRequestParams = {
-            major_id: 1,
-        };
+        mockRequest.params = { major_id: 1 };
+        mockRequest.body = { name: '컴퓨터공학' };
 
-        const updatemajorRequestBody = {
-            name: '컴퓨터공학'
-        }
-
-        mockRequest.params = updateMajorRequestParams;
-        mockRequest.body = updatemajorRequestBody;
-
-        const getOneMajorReturnValue = {
+        const functionResult = {
             "major_id": 1,
             "name": "컴퓨터공학"
         }
 
         mockExaminfoService.getOneMajor = jest.fn(() => {
-            return getOneMajorReturnValue
+            return functionResult
         });
 
-        const updateMajorReturnValue = { msg: '전공 수정 완료' };
+        const returnValue = true;
     
         mockExaminfoService.updateMajor = jest.fn(() => {
-            return updateMajorReturnValue
+            return returnValue
         })
 
         await examinfoController.updateMajor(mockRequest, mockResponse);
 
-        // 0. getOneMajor 1번 호출?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
-        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(updateMajorRequestParams.major_id);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
 
-        // 1. 서비스쪽에 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.updateMajor).toHaveBeenCalledTimes(1);
-        expect(mockExaminfoService.updateMajor).toHaveBeenCalledWith(updateMajorRequestParams.major_id, updatemajorRequestBody.name);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.updateMajor).toHaveBeenCalledWith(mockRequest.params.major_id, mockRequest.body.name);
 
-        // 2. 최종 상태값이 200이냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(200);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ msg: '전공 수정 완료' });
+    })
 
-        // 3. 너가 예상하는 결과대로 나오냐?
-        expect(mockResponse.json).toHaveBeenCalledWith(updateMajorReturnValue);
+    test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed', async () => {
+        mockRequest.params = { major_id: 1 };
+        mockRequest.body = { name: '컴퓨터공학' };
+
+        const functionResult = {
+            "major_id": 1,
+            "name": "컴퓨터공학"
+        }
+
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return functionResult
+        });
+
+        const returnValue = false;
+    
+        mockExaminfoService.updateMajor = jest.fn(() => {
+            return returnValue
+        })
+
+        await examinfoController.updateMajor(mockRequest, mockResponse);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.updateMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.updateMajor).toHaveBeenCalledWith(mockRequest.params.major_id, mockRequest.body.name);
+
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.status).toHaveBeenCalledWith(419);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '전공 수정 실패' });
     })
 
     test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / major_id = null', async () => {
         mockRequest.params = {};
         mockRequest.body = { name: '컴퓨터공학'}
         await examinfoController.updateMajor(mockRequest, mockResponse);
-        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+        
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(411);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' });
     })
 
     test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / name = null', async () => {
-        mockRequest.params = {major_id: 1};
+        mockRequest.params = { major_id: 1 };
         mockRequest.body = {};
         await examinfoController.updateMajor(mockRequest, mockResponse);
-        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(411);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: name' });
     })
 
     test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / getOneMajor = null', async () => {
-        mockRequest.params = {major_id: 1};
+        mockRequest.params = { major_id: 1 };
         mockRequest.body = { name: '컴퓨터공학'}
-        const getOneMajorReturnValue = 0
+        const functionResult = null
         mockExaminfoService.getOneMajor = jest.fn(() => {
-            return getOneMajorReturnValue
+            return functionResult
         });
         await examinfoController.updateMajor(mockRequest, mockResponse);
-        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
+        
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(416);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '요청한 전공 조회 실패' });
     })
 
+    // --------------------------
+
     test('Unit Test / Controller / Examinfo - Major / dropMajor : Success', async () => {
-        const dropMajorRequestParams = {
-            major_id: 1
-        };
+        mockRequest.params = { major_id: 1 };
 
-        mockRequest.params = dropMajorRequestParams;
-
-        const getOneMajorReturnValue = {
+        const functionResult = {
             "major_id": 1,
             "name": "컴퓨터공학"
         }
 
         mockExaminfoService.getOneMajor = jest.fn(() => {
-            return getOneMajorReturnValue
+            return functionResult
         });
 
-        const dropMajorReturnValue = { msg: '전공 삭제 완료' };
+        const returnValue = true
     
         mockExaminfoService.dropMajor = jest.fn(() => {
-            return dropMajorReturnValue
+            return returnValue;
         })
 
         await examinfoController.dropMajor(mockRequest, mockResponse);
 
-        // 0. getOneMajor 1번 호출?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
-        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(dropMajorRequestParams.major_id);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
 
-        // 1. 서비스쪽에 메서드 요청 1번만 하느냐? major_id를 잘 전달하느냐?
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockExaminfoService.dropMajor).toHaveBeenCalledTimes(1);
-        expect(mockExaminfoService.dropMajor).toHaveBeenCalledWith(dropMajorRequestParams.major_id);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.dropMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
 
-        // 2. 최종 상태값이 200이냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(200);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ msg: '전공 삭제 완료' });
+    })
 
-        // 3. 너가 예상하는 결과대로 나오냐?
-        expect(mockResponse.json).toHaveBeenCalledWith(dropMajorReturnValue);
+    test('Unit Test / Controller / Examinfo - Major / dropMajor : Failed', async () => {
+        mockRequest.params = { major_id: 1 };
+
+        const functionResult = {
+            "major_id": 1,
+            "name": "컴퓨터공학"
+        }
+
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return functionResult
+        });
+
+        const returnValue = false;
+    
+        mockExaminfoService.dropMajor = jest.fn(() => {
+            return returnValue;
+        })
+
+        await examinfoController.dropMajor(mockRequest, mockResponse);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.dropMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.dropMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
+
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.status).toHaveBeenCalledWith(419);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '전공 삭제 실패' });
+    })
+
+    test('Unit Test / Controller / Examinfo - Major / dropMajor : Failed / major_id = null', async () => {
+        mockRequest.params = {};
+        await examinfoController.dropMajor(mockRequest, mockResponse);
+        
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.status).toHaveBeenCalledWith(411);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
+        expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: major_id' });
     })
 
     test('Unit Test / Controller / Examinfo - Major / dropMajor : Failed / getOneMajor = null', async () => {
-        mockRequest.params = {};
+        mockRequest.params = { major_id: 1 };
+
+        const functionResult = null
+
+        mockExaminfoService.getOneMajor = jest.fn(() => {
+            return functionResult
+        });
+
         await examinfoController.dropMajor(mockRequest, mockResponse);
-        // 1번 호출하는게 맞냐?, 상태코드가 416이냐?, json에 errMsg가 잘 담겨있냐?
-        expect(mockResponse.status).toHaveBeenCalledTimes(1);
+
+        // 해당 메서드 실행을 정상적으로 1번 하는가?
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledTimes(1);
+        // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
+        expect(mockExaminfoService.getOneMajor).toHaveBeenCalledWith(mockRequest.params.major_id);
+
+        // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.status).toHaveBeenCalledWith(416);
+        // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '요청한 전공 조회 실패' });
     })
-
 })
