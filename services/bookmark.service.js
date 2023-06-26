@@ -4,8 +4,14 @@ const { Bookmarks, Questions } = require('../models/index.js');
 class BookmarkService {
   BookmarksRepository = new BookmarkRepository(Bookmarks, Questions);
 
+  // 내가 북마크한 모든 문제 가져오기
+  findAllBookmark = async (user_id) => {
+    const findAllBookmark = await this.BookmarksRepository.findAllBookmark(user_id);
+    return findAllBookmark;
+  };
+
   // 북마크 확인
-  findOneBookmark = async (question_id, user_id) => {
+  findOneBookmark = async (question_id,user_id) => {
     const findOneBookmark = await this.BookmarksRepository.findOneBookmark(question_id, user_id);
     return findOneBookmark;
   };
