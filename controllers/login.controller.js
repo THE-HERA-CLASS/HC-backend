@@ -35,7 +35,7 @@ class LoginController {
 
       return res.status(200).json({
         accesstoken: accessToken,
-        refreshtoken: refreshToken,
+        // refreshtoken: refreshToken,
       });
     } catch (err) {
       console.error(err);

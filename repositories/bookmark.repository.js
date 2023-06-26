@@ -38,6 +38,15 @@ class BookmarksRepository {
     return deleteBookmarkData;
   };
 
+  // 내가 북마크한 문제 모두 가져오기
+  findAllBookmark = async (user_id) => {
+    const findBookmarksData = await this.bookmarksModel.findAll({
+      where: { user_id },
+    });
+    return findBookmarksData;
+  };
+  
+
   plusQuestionBookmark = async (question_id) => {
     await this.questionsModel.increment('bookmark_count', { where: { question_id: question_id } });
   };
