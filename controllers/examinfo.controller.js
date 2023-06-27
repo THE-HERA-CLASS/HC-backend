@@ -365,7 +365,7 @@ class ExaminfoController {
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
       if (!year) return res.status(411).json({ errMsg: '값 없음: year' });
-      if (!round) return res.status(411).json({ errMsg: '값 없음: grade' });
+      if (!round) return res.status(411).json({ errMsg: '값 없음: round' });
 
       major_id = Number(major_id);
       certificate_id = Number(certificate_id);
@@ -408,7 +408,7 @@ class ExaminfoController {
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
       if (!year) return res.status(411).json({ errMsg: '값 없음: year' });
-      if (!round) return res.status(411).json({ errMsg: '값 없음: grade' });
+      if (!round) return res.status(411).json({ errMsg: '값 없음: round' });
 
       major_id = Number(major_id);
       certificate_id = Number(certificate_id);
