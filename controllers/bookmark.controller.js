@@ -8,7 +8,6 @@ class BookmarksController {
       const { user_id } = res.locals.user;
 
       if (!user_id) {
-        // console.log(user_id, question_id)
         return res.status(411).json({ errMsg: '북마크 조회에 필요한 정보가 부족합니다.' });
       }
       const findAllBookmarkData = await this.bookmarkService.findAllBookmark(user_id);
