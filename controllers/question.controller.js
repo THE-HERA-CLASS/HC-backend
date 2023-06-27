@@ -29,7 +29,11 @@ class QuestionController {
       let { data } = req.body;
       if (!data) return res.status(411).json({ errMsg: '값 없음: data' });
       const result = await this.questionService.addQuestionsEditor(data);
-      return res.status(200).json({ data: result.addQuestionData });
+      if (result) {
+        return res.status(200).json({ data: result.addQuestionData });
+      } else {
+        return res.status(419).json({ errMsg: "파싱 실패"})
+      }
     } catch (err) {
       console.error(err);
       return res.status(400).json({ errMsg: '파싱 에러' });
@@ -75,7 +79,11 @@ class QuestionController {
         solve,
       };
       const addQuestionResult = await this.questionService.addQuestion(questionData);
-      return res.status(200).json({ data: addQuestionResult });
+      if (addQuestionResult) {
+        return res.status(200).json({ data: addQuestionResult });
+      } else {
+        return res.status(419).json({ errMsg: '문제 등록 실패' })
+      }
     } catch (err) {
       console.error(err);
       return res.status(400).json({ errMsg: '문제 등록 실패' });
