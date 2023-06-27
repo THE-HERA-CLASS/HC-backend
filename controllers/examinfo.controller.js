@@ -24,7 +24,6 @@ class ExaminfoController {
 
   getMajors = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const getMajors = await this.examinfoService.getMajors();
       if (getMajors.length > 0) {
         return res.status(200).json({ data: getMajors });
@@ -55,7 +54,6 @@ class ExaminfoController {
 
   updateMajor = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { major_id } = req.params;
       const { name } = req.body;
 
@@ -108,7 +106,6 @@ class ExaminfoController {
 
   addCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { major_id, name, division } = req.body;
 
       if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
@@ -130,8 +127,6 @@ class ExaminfoController {
 
   getCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
-
       const getCertificates = await this.examinfoService.getCertificate();
 
       if (getCertificates.length === 0) {
@@ -185,7 +180,6 @@ class ExaminfoController {
 
   updateCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { certificate_id } = req.params;
       const { major_id, name, division } = req.body;
 
@@ -214,7 +208,6 @@ class ExaminfoController {
 
   dropCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { certificate_id } = req.params;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
@@ -241,7 +234,6 @@ class ExaminfoController {
 
   addSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { certificate_id, name } = req.body;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
@@ -262,8 +254,6 @@ class ExaminfoController {
 
   getSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
-
       const subjectData = await this.examinfoService.getSubject();
 
       if (subjectData.length === 0) {
@@ -315,7 +305,6 @@ class ExaminfoController {
 
   updateSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { subject_id } = req.params;
       const { certificate_id, name } = req.body;
 
@@ -338,7 +327,6 @@ class ExaminfoController {
 
   dropSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { subject_id } = req.params;
 
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
