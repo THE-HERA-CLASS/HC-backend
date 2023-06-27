@@ -34,14 +34,6 @@ describe('Unit Test / Controller / Examinfo - Exams', () => {
         });
     });
 
-    // --------------------------
-
-    // test('Unit Test / Controller / Examinfo - Exams / ', async () => {
-        
-    // })
-
-    // --------------------------
-
     test('Unit Test / Controller / Examinfo - Exams / addExam : Success', async () => {
         const requestBody = {
             major_id: 1,
