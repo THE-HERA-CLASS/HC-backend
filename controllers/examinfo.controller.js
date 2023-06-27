@@ -149,7 +149,7 @@ class ExaminfoController {
       const getCertificatesData = await this.examinfoService.getCertificateWithMajorId(major_id);
 
       if (getCertificatesData.length === 0) {
-        return res.status(416).json({ errMsg: '요청 전공 자격증 조회 실패' });
+        return res.status(419).json({ errMsg: '요청 전공 자격증 조회 실패' });
       } else {
         return res.status(200).json({ data: getCertificatesData });
       }
@@ -184,9 +184,6 @@ class ExaminfoController {
       const { major_id, name, division } = req.body;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
-      if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
-      if (!name) return res.status(411).json({ errMsg: '값 없음: name' });
-      if (!division) return res.status(411).json({ errMsg: '값 없음: division' });
 
       const getCertificatesData = await this.examinfoService.getCertificateWithCertificateId(certificate_id);
       if (!getCertificatesData) {
