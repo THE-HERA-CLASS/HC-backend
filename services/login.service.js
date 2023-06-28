@@ -21,7 +21,7 @@ class LoginService {
 
       const key = `refreshtoken:${user.user_id}`;
       const value = refreshToken;
-      const expire_time = process.env.REFRESH_TOKEN_EXPIRE_TIME;
+      const expire_time = 86000;
 
       const getData_before = await this.redisRepository.getData(key);
 
@@ -31,7 +31,7 @@ class LoginService {
 
       await this.redisRepository.setData(key, value, expire_time);
       // 테스트용으로 refreshToken도 반환
-      return [accessToken, refreshToken];
+      return [accessToken];
       // return accessToken;
     } catch (err) {
       console.error(err);

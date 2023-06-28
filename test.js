@@ -1,23 +1,71 @@
-test('logout Unit Test: Success', async () => {
-    const mockUser_id = 1;
-    mockResponse.locals = { user: { user_id: mockUserId } };
-    const logoutReturnValue = 1;
+const redis = require('redis');
+const jwt = require('../utils/jwt.js');
+const RedisRepository = require('../repositories/redis.repository.js');
+require('dotenv').config();
 
-    mockLoginService.logout = jest.fn(() => {
-        return Promise.resolve(logoutReturnValue);
-    });
+class LoginService {
+  redisRepository = new RedisRepository(redis);
 
-    await loginController.logout(mockRequest, mockResponse);
+  login = async (user) => {
+    try {
+      const accessToken = jwt.createAccessToken(
+        user.user_id,
+        user.nickname,
+        user.email,
+        user.major_id,
+        user.authority,
+        user.image
+      );
 
-    // 1-1. logout 메서드가 호출되는가?
-    expect(mockLoginService.logout).toHaveBeenCalledTimes(1);
-    // 1-2. logout 메서드가 특정 인자(mockUserId)와 함께 호출되었는가?
-    expect(mockLoginService.logout).toHaveBeenCalledWith(mockUser_id);
+      const refreshToken = jwt.createRefreshToken();
 
-    // 2-1. cookie가 제대로 지워졌는가?
-    expect(mockResponse.clearCookie).toHaveBeenCalledWith('accesstoken');
+      const key = `refreshtoken:${user.user_id}`;
+      const value = refreshToken;
+      const expire_time = 86400;
 
-    // 3-1. 상태 값과 응답 값은 맞는가?
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith({ message: '로그아웃 완료' });
-});
+      const getData_before = await this.redisRepository.getData(key);
+
+      if (getData_before) {
+        await this.redisRepository.deleteData(key);
+      }
+
+      await this.redisRepository.setData(key, value, expire_time);
+      // 테스트용으로 refreshToken도 반환
+      return [accessToken, refreshToken];
+      // return accessToken;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  logout = async (user_id) => {
+    try {
+      const key = `refreshtoken:${user_id}`;
+      return await this.redisRepository.deleteData(key);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  redis_save_email_auth_number = async (email, userNum, EXPIRE_TIME) => {
+    try {
+      return await this.redisRepository.setData(email, userNum, EXPIRE_TIME);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  redis_find_email_auth_number = async (email) => {
+    try {
+      return await this.redisRepository.getData(email);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+}
+
+module.exports = LoginService;
