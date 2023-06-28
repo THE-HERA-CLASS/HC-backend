@@ -5,14 +5,14 @@ class LoginController {
   loginService = new LoginService();
   userService = new UserService();
 
-  logintst = async (req, res, next) => {
-    try {
-      res.locals.user;
-      res.status(200).send(res.locals.user);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // logintst = async (req, res, next) => {
+  //   try {
+  //     res.locals.user;
+  //     res.status(200).send(res.locals.user);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   login = async (req, res) => {
     const { email, password } = req.body;
@@ -29,7 +29,7 @@ class LoginController {
 
       // const accessToken= await this.loginService.login(getUserData);
       // 테스트용
-      const [accessToken, refreshToken] = await this.loginService.login(getUserData);
+      const [accessToken] = await this.loginService.login(getUserData);
 
       res.cookie('accesstoken', `Bearer ${accessToken}`);
 
