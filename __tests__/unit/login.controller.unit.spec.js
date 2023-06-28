@@ -50,7 +50,7 @@ describe('Login Controller Unit Test', () => {
       image: 'https://test.image.com',
       password: 'testpassword',
     };
-    const loginReturnValue = ['TestAccessToken'];
+    const loginReturnValue = ['TestAccessToken','TestRefreshToken'];
     mockUserService.emailExists = jest.fn(() => {
       return getUserDataReturnValue;
     });
@@ -73,8 +73,8 @@ describe('Login Controller Unit Test', () => {
 
     // 3-1. 상태값과 응답 값은 맞는가?
     // 로그인시 cookie에는 accesstoken이 담기기 때문에 cookie도 mock
-    expect(mockResponse.cookie).toHaveBeenCalledWith('accesstoken', `Bearer ${loginReturnValue}`);
+    expect(mockResponse.cookie).toHaveBeenCalledWith('accesstoken', `Bearer ${loginReturnValue[0]}`);
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith({ accesstoken: `${loginReturnValue}` });
-  });
+    expect(mockResponse.json).toHaveBeenCalledWith({ accesstoken: `${loginReturnValue[0]}` });
+});
 });
