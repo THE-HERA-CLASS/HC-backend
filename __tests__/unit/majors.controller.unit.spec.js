@@ -63,7 +63,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '전공 등록 실패' });
     })
 
-    test('Unit Test / Controller / Examinfo - Major / addMajor : failed / name = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / addMajor : Failed / name = null', async () => {
         mockRequest.body = {};
         await examinfoController.addMajor(mockRequest, mockResponse);
 
