@@ -21,7 +21,7 @@ class LoginService {
 
       const key = `refreshtoken:${user.user_id}`;
       const value = refreshToken;
-      const expire_time = 86400;
+      const expire_time = process.env.REFRESH_TOKEN_EXPIRE_TIME;
 
       const getData_before = await this.redisRepository.getData(key);
 

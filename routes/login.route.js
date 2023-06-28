@@ -6,7 +6,7 @@ const loginController = new LoginController();
 
 router.post('/login', loginController.login);
 router.post('/logout', authMiddleware, loginController.logout);
-router.post('/logintst', authMiddleware, loginController.logintst);
+// router.post('/logintst', authMiddleware, loginController.logintst);
 
 
 module.exports = router;

@@ -1,19 +1,3 @@
-  // login 유닛 실패케이스 테스트 - email이 null이라면?
-//   test('Login login Unit Test : false / email = null', async () => {
-//     const email = null;
-//     const password = 'testpassword';
-//     mockRequest.body = { email, password };
-
-//     await loginController.login(mockRequest, mockResponse);
-//     expect(mockResponse.status).toHaveBeenCalledWith(411);
-//     expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '값 없음: 이메일/패스워드' });
-//   });
-
-
-
-
-
-
 const LoginController = require('../../controllers/login.controller');
 
 // 가짜 LoginService
@@ -66,7 +50,7 @@ describe('Login Controller Unit Test', () => {
       image: 'https://test.image.com',
       password: 'testpassword',
     };
-    const loginReturnValue = 'TestAccessToken';
+    const loginReturnValue = ['TestAccessToken'];
     mockUserService.emailExists = jest.fn(() => {
       return getUserDataReturnValue;
     });
@@ -91,9 +75,6 @@ describe('Login Controller Unit Test', () => {
     // 로그인시 cookie에는 accesstoken이 담기기 때문에 cookie도 mock
     expect(mockResponse.cookie).toHaveBeenCalledWith('accesstoken', `Bearer ${loginReturnValue}`);
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith({ accesstoken: loginReturnValue });
-
-    console.log('loginReturnValue:', loginReturnValue);
-
-});
+    expect(mockResponse.json).toHaveBeenCalledWith({ accesstoken: `${loginReturnValue}` });
+  });
 });
