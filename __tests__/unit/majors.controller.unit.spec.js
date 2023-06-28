@@ -63,7 +63,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '전공 등록 실패' });
     })
 
-    test('Unit Test / Controller / Examinfo - Major / addMajor : failed / name = null', async () => {
+    test('Unit Test / Controller / Examinfo - Major / addMajor : Failed / name = null', async () => {
         mockRequest.body = {};
         await examinfoController.addMajor(mockRequest, mockResponse);
 
@@ -86,7 +86,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
                 "name": "간호학"
             },
         ]
-    
+
         mockExaminfoService.getMajors = jest.fn(() => {
             return returnValue
         })
@@ -105,7 +105,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
 
     test('Unit Test / Controller / Examinfo - Major / getMajors : Failed', async () => {
         const returnValue = [];
-    
+
         mockExaminfoService.getMajors = jest.fn(() => {
             return returnValue
         })
@@ -135,7 +135,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
             "major_id": 1,
             "name": "컴퓨터공학"
         }
-    
+
         mockExaminfoService.getOneMajor = jest.fn(() => {
             return functionResult
         })
@@ -160,7 +160,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         mockRequest.params = requestParams;
 
         const functionResult = null;
-    
+
         mockExaminfoService.getOneMajor = jest.fn(() => {
             return functionResult
         })
@@ -203,7 +203,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         });
 
         const returnValue = true;
-    
+
         mockExaminfoService.updateMajor = jest.fn(() => {
             return returnValue
         })
@@ -240,7 +240,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         });
 
         const returnValue = false;
-    
+
         mockExaminfoService.updateMajor = jest.fn(() => {
             return returnValue
         })
@@ -265,9 +265,9 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
 
     test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / major_id = null', async () => {
         mockRequest.params = {};
-        mockRequest.body = { name: '컴퓨터공학'}
+        mockRequest.body = { name: '컴퓨터공학' }
         await examinfoController.updateMajor(mockRequest, mockResponse);
-        
+
         // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
         // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
@@ -291,13 +291,13 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
 
     test('Unit Test / Controller / Examinfo - Major / updateMajor : Failed / getOneMajor = null', async () => {
         mockRequest.params = { major_id: 1 };
-        mockRequest.body = { name: '컴퓨터공학'}
+        mockRequest.body = { name: '컴퓨터공학' }
         const functionResult = null
         mockExaminfoService.getOneMajor = jest.fn(() => {
             return functionResult
         });
         await examinfoController.updateMajor(mockRequest, mockResponse);
-        
+
         // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
         // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
@@ -321,7 +321,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         });
 
         const returnValue = true
-    
+
         mockExaminfoService.dropMajor = jest.fn(() => {
             return returnValue;
         })
@@ -357,7 +357,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
         });
 
         const returnValue = false;
-    
+
         mockExaminfoService.dropMajor = jest.fn(() => {
             return returnValue;
         })
@@ -383,7 +383,7 @@ describe('Unit Test / Controller / Examinfo - Major', () => {
     test('Unit Test / Controller / Examinfo - Major / dropMajor : Failed / major_id = null', async () => {
         mockRequest.params = {};
         await examinfoController.dropMajor(mockRequest, mockResponse);
-        
+
         // 해당 메서드 실행을 정상적으로 1번 하는가?
         expect(mockResponse.status).toHaveBeenCalledTimes(1);
         // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?

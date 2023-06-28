@@ -54,7 +54,6 @@ class ExaminfoController {
 
   updateMajor = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { major_id } = req.params;
       const { name } = req.body;
 
@@ -107,7 +106,6 @@ class ExaminfoController {
 
   addCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { major_id, name, division } = req.body;
 
       if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
@@ -129,8 +127,6 @@ class ExaminfoController {
 
   getCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
-
       const getCertificates = await this.examinfoService.getCertificate();
 
       if (getCertificates.length === 0) {
@@ -153,7 +149,7 @@ class ExaminfoController {
       const getCertificatesData = await this.examinfoService.getCertificateWithMajorId(major_id);
 
       if (getCertificatesData.length === 0) {
-        return res.status(416).json({ errMsg: '요청 전공 자격증 조회 실패' });
+        return res.status(419).json({ errMsg: '요청 전공 자격증 조회 실패' });
       } else {
         return res.status(200).json({ data: getCertificatesData });
       }
@@ -184,14 +180,10 @@ class ExaminfoController {
 
   updateCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { certificate_id } = req.params;
       const { major_id, name, division } = req.body;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
-      if (!major_id) return res.status(411).json({ errMsg: '값 없음: major_id' });
-      if (!name) return res.status(411).json({ errMsg: '값 없음: name' });
-      if (!division) return res.status(411).json({ errMsg: '값 없음: division' });
 
       const getCertificatesData = await this.examinfoService.getCertificateWithCertificateId(certificate_id);
       if (!getCertificatesData) {
@@ -213,7 +205,6 @@ class ExaminfoController {
 
   dropCertificate = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { certificate_id } = req.params;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
@@ -240,7 +231,6 @@ class ExaminfoController {
 
   addSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { certificate_id, name } = req.body;
 
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
@@ -261,8 +251,6 @@ class ExaminfoController {
 
   getSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
-
       const subjectData = await this.examinfoService.getSubject();
 
       if (subjectData.length === 0) {
@@ -314,7 +302,6 @@ class ExaminfoController {
 
   updateSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { subject_id } = req.params;
       const { certificate_id, name } = req.body;
 
@@ -337,7 +324,6 @@ class ExaminfoController {
 
   dropSubject = async (req, res) => {
     try {
-      // const { user_id } = res.locals.user;
       const { subject_id } = req.params;
 
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
@@ -364,7 +350,7 @@ class ExaminfoController {
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
       if (!year) return res.status(411).json({ errMsg: '값 없음: year' });
-      if (!round) return res.status(411).json({ errMsg: '값 없음: grade' });
+      if (!round) return res.status(411).json({ errMsg: '값 없음: round' });
 
       major_id = Number(major_id);
       certificate_id = Number(certificate_id);
@@ -407,7 +393,7 @@ class ExaminfoController {
       if (!certificate_id) return res.status(411).json({ errMsg: '값 없음: certificate_id' });
       if (!subject_id) return res.status(411).json({ errMsg: '값 없음: subject_id' });
       if (!year) return res.status(411).json({ errMsg: '값 없음: year' });
-      if (!round) return res.status(411).json({ errMsg: '값 없음: grade' });
+      if (!round) return res.status(411).json({ errMsg: '값 없음: round' });
 
       major_id = Number(major_id);
       certificate_id = Number(certificate_id);

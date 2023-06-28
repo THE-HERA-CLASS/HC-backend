@@ -22,20 +22,16 @@ let bookmarkController = new BookmarkController();
 
 bookmarkController.bookmarkService = mockBookmarkService;
 
-// 북마크 컨트롤러 계층 유닛 테스트
-// Bookmark Controller Unit Test
-describe('Bookmark Controller Unit Test', () => {
-  // 각 test가 실행되기 전에 실행된다
+describe('Unit Test / Controller / Bookmark', () => {
   beforeEach(() => {
-    jest.resetAllMocks(); // 모든 mock을 초기화
+    jest.resetAllMocks();
 
     mockResponse.status = jest.fn(() => {
       return mockResponse;
     });
   });
 
-  // findAllBookmark 유닛 성공케이스 테스트
-  test('Bookmark findAllBookmark Unit Test : Success', async () => {
+  test('Unit Test / Controller / Bookmark / findAllBookmark : Success', async () => {
     const user_id = 3;
     mockResponse.locals.user = { user_id };
     const findAllBookmarkReturnValue = {
@@ -49,18 +45,17 @@ describe('Bookmark Controller Unit Test', () => {
     });
     await bookmarkController.findAllBookmark(mockRequest, mockResponse);
 
-    // 1. Request body 데이터가 제대로 findAllBookmark에 전달되는가?
+    // 해당 메서드 실행을 정상적으로 1번 하는가?
     expect(mockBookmarkService.findAllBookmark).toHaveBeenCalledTimes(1);
-    // 2. 메서드 호출 시, 매개변수는 잘 담아서 보내고 있는가?
+    // 해당 메서드 매개변수에 정상적으로 담아서 요청하는가
     expect(mockBookmarkService.findAllBookmark).toHaveBeenCalledWith(user_id);
-    // 3. 상태 응답값과 응답 값은 맞는가?
+    // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
     expect(mockResponse.status).toHaveBeenCalledWith(200);
+    // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
     expect(mockResponse.json).toHaveBeenCalledWith({ data: findAllBookmarkReturnValue });
   });
 
-  // user_id가 null일때 실패케이스 테스트
-  test('Bookmark findAllBookmark Unit Test : false/ user_id = null ', async () => {
-    // user_id가 null
+  test('Unit Test / Controller / Bookmark / findAllBookmark : Failed / user_id = null ', async () => {
     const user_id = null;
     mockResponse.locals.user = { user_id };
     const findAllBookmarkReturnValue = {
@@ -71,27 +66,25 @@ describe('Bookmark Controller Unit Test', () => {
     });
     await bookmarkController.findAllBookmark(mockRequest, mockResponse);
 
-    // 1번 호출하느냐, 상태코드가 411이냐, json에 errMsg가 담기는가
-    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
     expect(mockResponse.status).toHaveBeenCalledWith(411);
+    // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
     expect(mockResponse.json).toHaveBeenCalledWith(findAllBookmarkReturnValue);
   });
 
-  // findAllBookmarkData가 null일때 실패케이스 테스트
-  test('Bookmark findAllBookmark Unit Test : false/ findAllBookmarkData = null ', async () => {
+  test('Unit Test / Controller / Bookmark / findAllBookmark : Failed / findAllBookmarkData is null ', async () => {
     const user_id = 3;
     mockResponse.locals.user = { user_id };
-    // findAllBookmarkData가 null
+    
     const findAllBookmarkReturnValue = null;
     mockBookmarkService.findAllBookmark = jest.fn(() => {
       return findAllBookmarkReturnValue;
     });
     await bookmarkController.findAllBookmark(mockRequest, mockResponse);
 
-    // 1번 호출하느냐, 상태코드가 411이냐, json에 errMsg가 담기는가
-    expect(mockBookmarkService.findAllBookmark).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    // 해당 메서드 실행 후 상태값이 우리가 예상한대로 잘 나오는가?
     expect(mockResponse.status).toHaveBeenCalledWith(411);
+    // 해당 메서드 실행 후 응답값이 우리가 예상한대로 잘 나오는가?
     expect(mockResponse.json).toHaveBeenCalledWith({ errMsg: '북마크한 문제가 없습니다.' });
   });
 
