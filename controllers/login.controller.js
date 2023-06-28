@@ -27,8 +27,6 @@ class LoginController {
         return res.status(419).json({ errMsg: '등록되지 않은 사용자' });
       }
 
-      // const accessToken= await this.loginService.login(getUserData);
-      // 테스트용
       const [accessToken] = await this.loginService.login(getUserData);
 
       res.cookie('accesstoken', `Bearer ${accessToken}`);
