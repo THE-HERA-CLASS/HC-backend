@@ -89,7 +89,7 @@ describe('Unit Test / Controller / Bookmark', () => {
   });
 
   // updateBookmark 유닛 성공케이스 테스트
-  test('Bookmark updateBookmark Unit Test : Success', async () => {
+  test('Unit Test / Controller / Bookmark / updateBookmark : Success', async () => {
     const user_id = 3;
     const question_id = 1;
     mockResponse.locals.user = { user_id };
