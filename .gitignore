@@ -46,6 +46,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# config
+config/
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
@@ -140,9 +143,6 @@ dist
 
 # SvelteKit build / generate output
 .svelte-kit
-
-# config
-config/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/node
